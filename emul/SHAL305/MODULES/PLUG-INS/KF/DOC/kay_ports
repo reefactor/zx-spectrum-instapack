@@ -1,0 +1,132 @@
+
+	ПОРТЫ KAY ВЕРСИИ ПЛАТЫ 1.4
+
+
+  port FE output	(любой неиспользуемый порт, A0=0)
+	bit	function
+ ----------------------------------------------------
+	0	border color bit0 (blue)
+	1	border color bit1 (red)
+	2	border color bit2 (green)
+	3	tape output
+	4	audio output
+	5	not used
+	6	not implemented 
+	7	not implemented
+
+  port FE input		(любой неиспользуемый порт, A0=0)
+	bit	function
+ ----------------------------------------------------
+	0	keyboard (<CAPS>AQ10P<ENTER><SPACE>)
+	1	keyboard (<ZSW29OL<SYMBOL>)
+	2	keyboard (XDE38IKM)
+	3	keyboard (CFR47UJN)
+	4	keyboard (VGT56YHB) 0= key pressed
+	5	not used (read 0)
+	6	tape input
+	7	printer port pin 11
+
+ 
+  port 1F input		(любой неиспользуемый порт, A0=1)
+	bit	function
+ ----------------------------------------------------
+	0	kempston joystick (RIGHT)
+	1	kempston joystick (LEFT)
+	2	kempston joystick (DOWN)
+	3	kempston joystick (UP)
+	4	kempston joystick (FIRE)
+	5	not used (read 0)
+	6	not used (read 0)
+	7	not used (read 0)
+
+
+  port 7FFD output	(дешифрация: 01xxxxxx xxxxxx01)
+	bit	function
+ ----------------------------------------------------
+   	0	ram_page3 bit0
+	1	ram_page3 bit1
+	2	ram_page3 bit2
+	3	screen 5/7 bank
+	4	rom48 / rom128	
+	5	lock port 7ffd
+	6	not used
+	7	KAY version 1.5 : ram_page3 bit5
+
+
+
+  port 1FFD output	(дешифрация: 00xxxxxx xxxxxx01)
+	bit  LPT pin		alt. function
+-----------------------------------------------------------------------
+   	0			page0 : 1=ram bank 0, 0=rom
+	1	25 (#)	
+	2	17 (#)		1= turbo mode, 0= slow			
+	3			1= rom A15=1
+	4			ram_page3 bit4
+	5	1  (#) strobe	
+	6	23 (#)
+	7	25 (#)
+
+	(#) -- inverted signal!
+
+
+  ports of AY8910	(дешифрация: 1Xxxxx xxxxxx01)
+  printer interface
+------------------------------------------------------
+
+	port A (reg.14)  OUTPUT ONLY (because buffered)
+	bit	printer port pin
+     	-------------------------
+	 0		2
+	 1		3
+	 2		4
+	 3		5
+	 4		6
+	 5		7
+	 6		8
+	 7		9
+	
+	port B (reg.15)  INPUT/OUTPUT
+	bit	printer port pin
+	-------------------------
+	 0		15
+  	 1		18
+	 2		11
+	 3		19
+	 4		20
+	 5		10
+	 6		12
+	 7		13
+
+
+
+   РАСПАЙКА ПОРТА ПРИНТЕРА
+
+ pin	direction	Centronix name		Nemo-homemade name 
+----------------------------------------------------------------
+   1	out		/STROBE			/STROBE
+   2	out		DATA0			DATA0
+   3	out		DATA1			DATA1
+   4	out		DATA2			DATA2
+   5	out		DATA3			DATA3
+   6	out		DATA4			DATA4
+   7	out		DATA5			DATA5
+   8	out		DATA6			DATA6
+   9	out		DATA7			DATA7
+   10	in/out		ACK			C0
+   11	in/out		/BUSY			BUSY
+   12	in/out		PAPER_END		C1
+   13	in/out		SELECT			C2
+   14	power (!)	/AUTO_LF		INIT (+5v) (!!!)
+   15	in/out		ERROR			SELOUT
+   16	open collector	INIT			/AUTO
+   17	open collector	SELECT_IN		/SLCTIN
+   18	in/out		GROUND			ACKNLG
+   19	in/out		GROUND			PE
+   20	in/out		GROUND			ERROR
+   21	power		GROUND			GND
+   22	power		GROUND			GND
+   23	open collector	GROUND			/Q6
+   24	power		GROUND			GND
+   25	open collector	GROUND			/Q8
+
+

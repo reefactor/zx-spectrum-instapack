@@ -1,0 +1,269 @@
+;**************************************************************************
+;* Модуль эмуляции *MAS* ZX-Link для эмулятора Н.Шалаева v3.0 или выше    *
+;* (L) CopyLeft Kirill Frolov 2002                                        *
+;**************************************************************************
+
+;  PC     <------------>     ZX
+;  Data 0      d0>	    Kempston 0	
+;  Data 1      d1>          Kempston 1
+;  Error       d0<          Centronics 0
+;  PaperEnd    d1<          Centronics 1
+;
+;
+
+                IDEAL
+                P386
+                MODEL USE32 SMALL
+                ASSUME cs:@code, ds:@data, es:@data
+                INCLUDE "emudata.inc"
+
+UDATASEG
+	
+TblData		dd ?	; emulator data table pointer
+WinPnt		dd ?	; window descriptor pointer
+
+LptPortAddr	dw ?    ; address of LPT port
+
+LptPortNum	dd ? ; port number 0, 1, 2
+ModelType	dd ? ; zx model 0=scorpion, 1=pentagon
+
+Lpt1Addr	dw ?
+Lpt2Addr	dw ?
+Lpt3Addr	dw ?
+Lpt4Addr	dw ?
+
+; unused bits state
+KempstonBits    db ?
+CentronicsBits	db ?
+
+
+
+DATASEG
+
+LABEL _DSC BYTE
+                db "PC<->ZX Link", 0
+
+_CFG            CfgDat <OFFSET CfgTable, 2> ; have 2 cfg var in CfgTable
+CfgTable        CfgS <TTbl, OFFSET CfgKeyPort, OFFSET CfgPort>
+		CfgS <TTbl, OFFSET CfgKeyModel, OFFSET CfgModel>
+
+CfgKeyPort	db "PCLptPort=", 0
+CfgKeyModel	db "ZXLprintModel=", 0
+
+CfgPort         CnTbl <OFFSET LptPortNum, OFFSET LptPortScope, 4>
+LptPortScope    dd OFFSET LptPort1
+         	dd OFFSET LptPort2
+		dd OFFSET LptPort3
+		dd OFFSET LptPort4
+LptPort1	db "LPT1", 0
+LptPort2	db "LPT2", 0
+LptPort3	db "LPT3", 0
+LptPort3	db "LPT4", 0
+
+CfgModel	CnTbl <OFFSET ModelType, OFFSET ModelScope, 2>
+ModelScope	dd OFFSET ModelScorpion
+		dd OFFSET ModelPentagon
+ModelScorpion	db "Scorpion", 0
+ModelPentagon	db "Pentagon", 0
+
+
+TxtCfgPort	db 1, "PC printer port:", 0ah
+TxtLpt1		db "LPT1 (addr"
+TxtLpt1Addr	db "0000)", 0ah
+TxtLpt2		db "LPT2 (addr"
+TxtLpt1Addr	db "0000)", 0ah
+TxtLpt3		db "LPT3 (addr"
+TxtLpt1Addr	db "0000)", 0
+TxtLpt4		db "LPT4 (addr"
+TxtLpt1Addr	db "0000)", 0
+
+TxtCfgModel	db 1, "ZX printer port:", 0ah
+		db "Scorpion (addr #DF)", 0ah
+		db "Pentagon (addr #FB)", 0
+
+TxtTitle        db "PC<->ZX Link", 0
+TxtOk           db 1, "Ok", 0
+TxtCancel       db 1, "Cancel", 0
+;TxtHelpButton	db 1, "Help, 0
+TxtHelp         db "*MAS* ZX-Link emulation module v0.1alfa", 0ah
+		db "(C) Kirill Frolov 500:812/1.507@zxnet",0ah
+		db 0ah, "Greetz: Vega, когда будет pелиз Цейтнота?", 0
+
+
+CODESEG
+
+;********* Module initialization *****************************
+
+PROC _INI    
+	        mov [TblData], eax   ; emulator data table pointer
+
+		xor ebx, ebx
+		mov eax, 2
+		int 31h
+		; jc init_failure  ; segmentation fault
+
+		push es
+		mov es, ax
+		mov ax, [word es:0408h]
+		mov [Lpt1Addr], ax
+		mov ax, [word es:040ah]
+		mov [Lpt2Addr], ax
+		mov ax, [word es:040ch]
+		mov [Lpt3Addr], ax
+		mov ax, [word es:040eh]
+		mov [Lpt4Addr], ax
+		pop es
+
+		mov 
+
+		xor eax, eax
+		mov [ModelType], eax
+		mov [LptPortNum], eax
+		call configure_port
+
+        	ret
+ENDP
+
+; *** installation of module
+PROC _INS  
+		call configure_port
+                ret
+ENDP
+
+; *** deinstallation
+PROC _UNI
+                ret
+ENDP
+
+
+; *** write to port
+
+PROC _OUT
+	   	cmp [ModelType], 0
+		jnz  out_pentagon
+ 		; scorpion
+		cmp bl, 0dfh
+		jmp out_any
+out_pentagon:	cmp bl, 0fbh	; fixme mask
+out_any:	jz out_my
+		xor al, al
+		ret
+
+out_my:		mov [CentronicsBits], al
+		mov dx, [LptPortAddr]
+		out dx, al
+		mov al, 1
+		ret
+ENDP
+
+
+; *** read from port
+
+PROC _IN_
+                xor eax, eax
+		cmp bl, 1fh	; fixme mask
+		jz in_my
+		ret
+
+in_my:          dec eax
+		mov dx, [LptPortAddr]
+		inc dx
+		in al, dx
+		and al, 0	; fixme bits
+		or al, [KempstonBits] 
+		ret
+
+; *************************************************************
+
+PROC bin2hex
+	push eax
+	rol al, 4
+	call nibble
+	pop eax
+nibble:
+	and al, 0fh
+	cmp al, 0ah
+	jc @@lown
+	add al, 7
+@@lown:	add al, 30h
+	stosb
+	ret
+ENDP
+
+
+PROC configure_port
+    		cmp [LptPortNum], 1
+		mov dx, [Lpt2Addr]
+		jz cfg_port_ok
+    		cmp [LptPortNum], 2
+		mov dx, [Lpt3Addr]
+		jz cfg_port_ok
+    		cmp [LptPortNum], 4
+		mov dx, [Lpt4Addr]
+		jz cfg_port_ok
+		mov dx, [Lpt1Addr]
+cfg_port_ok:
+		mov [LptPortAddr], dx
+		xor al, al
+		mov [KempstonBits], al
+		mov [CentronicsBits], al
+		ret
+ENDP
+
+
+;***** Configuring module ****************************
+
+PROC _SET
+        push    ebp
+
+        ; Create window
+        mov ebp, [TblData]
+        MWinCreate ebp, 16, 7, 50, 10, 31 ; Reg, X, Y, szX, szY, C
+        mov [WinPnt], eax
+
+        ; set window title
+        MWinTitle  ebp, eax, <OFFSET TxtTitle>, 0F0h
+
+        MWinHelp ebp, [WinPnt], 52, 7, <OFFSET TxtHelp>
+
+        ; set [ok] button
+        mov eax, [WinPnt]
+        MSetButton ebp, eax, 2, 7, 10, <OFFSET TxtOk>, 1
+
+        ; set [cancel] button
+        mov eax, [WinPnt]
+        MSetButton ebp, eax, 14, 7, 10, <OFFSET TxtCancel>, 0
+
+;        ; set [help] button
+ ;       mov eax, [WinPnt]
+  ;      MSetButton ebp, eax, 24, 7, 10, <OFFSET TxtHelpButton>, 2
+
+	; set LPT port selector
+        mov eax, [WinPnt]
+	MSetRadio ebp, [WinPnt], 2, 2, <OFFSET TxtCfgPort>, <OFFSET CfgPort>
+
+	; set ZX model selector
+        mov eax, [WinPnt]
+	MSetRadio ebp, [WinPnt], 25, 2, <OFFSET TxtCfgModel>, <OFFSET CfgModel>
+
+        ; wait for user input
+        MWinExe ebp, [WinPnt]
+
+        ; check result
+        test eax, eax
+        jz  cancel_cfg
+
+        ; save result ([ok] button pushed)
+        MWinResult ebp, [WinPnt]
+
+cancel_cfg:
+        mov eax, [WinPnt]
+        call [ebp+EmuData.WinRemove]
+
+	call configure_port
+
+        pop ebp
+        ret
+ENDP
+
+	END

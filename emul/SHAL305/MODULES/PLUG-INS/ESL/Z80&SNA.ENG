@@ -1,0 +1,107 @@
+       Translated by Computer "Prompt V3.1"
+
+Gang of modules for the Emulator ZX-Spectrum 3.03 +
+                The version 0.3
+
+       Seregy Erokhin, Kharkov, Ukraine.
+
+            FidoNet: 2:461/108.7
+
+             November 30, 1997.
+
+
+
+In structure of a package entering:
+
+UNILOAD.ADD - the Loader of files of a format .Z80 48k and 128k (v2.01&3.0) 
+             .SNA 48k and 128k and format SLT (read the description!!!!!)
+
+TAPL.ADD - Reading of files of a format .TAP
+
+Z80S.ADD - Entry _ONLY_ .Z80 128k 
+
+Gang of modules for the Emulator ZX-Spectrum 3.03 +
+
+The version 0.3
+
+Seregy Erokhin, Kharkov, Ukraine.
+
+FidoNet: 2:461/108.7
+
+November 30, 1997.
+
+
+
+In structure of a package entering:
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+UNILOAD.ADD - the Loader of files of a format .Z80 48k and 128k (v2.01&3.0)
+              .SNA 48k and 128k and format SLT (read the description!!!!!)
+TAPL.ADD    - Reading of files of a format .TAP
+
+Z80S.ADD    - Entry _ONLY_ .Z80 128k
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+
+
+Brief comments to modules.
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+
+UNILOAD:
+
+Loads .Z80 .SNA and .SLT files.
+
+It is possible in command line of the emulator to indicate a name of the 
+loaded file:
+     spectrum.exe -LC:\path\file.z80 -S
+ 
+    Key by default F8. To change in (Modules > a Configuration) 
+For want of to successful loading the type of the loaded file is 
+issued (it is possible to prohibit, the option Show Version info), 
+in case of a read error happens a dumping in a mode Spectrum 48k.
+
+The option AutoLoad is intended for loading the selected file for 
+want of start of the emulator.
+
+Comment to the loader .SLT
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+I DO NOT HAVE ANY SLT of the file, the information about a format is 
+obtained from ZX.SPECTRUM.FAQ and debuging X128V08S.
+
+if YOU have FULL description SLT send it to me; -) 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+
+It like should work but I was checked up only on the file which has made itself, i
+t worked for me and X128 uniformly.
+
+Wait for a miracle; -) 
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+
+
+TAPL:
+Key by default F9. To change in (Modules > a Configuration) Installs 
+work of the tape unit with TAP by the file.
+Point of interception: #056A (changes ROM image in memory!) 
+
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+
+Z80S:
+Key by default F9. To change in (Modules > a Configuration) 
+Always write .Z80 v2.01 128k (even in a mode 48k, but is loaded it 
+will be correct) 
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+
+Thanks:
+
+Nick Shalaev - For the Emulator ZX-Spectrum 3.00 +
+
+Sllava Mednonogov, 2:5030/362.4 - For RAVEN004. Z80 without him(it) all it imposible.
+                             (The Black Raven - Real Time Strategy for spectrum)
+
+Michael Markowsky (aka KLUG), 2:5020/378 - For docks on formats both emulator and patience.
+
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+
+Gretings
+
+Shadow Dragon, KLAV, Rst7, Cobra, Max Iwamoto, SJ, Mr. X, ............... 
+

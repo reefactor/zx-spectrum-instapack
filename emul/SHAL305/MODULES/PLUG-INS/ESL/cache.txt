@@ -1,0 +1,15 @@
+From: Sergey Erokhin <Sergey.Erokhin@p7.f108.n461.z2.fidonet.org>
+Subject: New CACHE.ADD
+Date: 28 марта 1999 г. 23:58
+
+Hello All!
+
+в связи с появлением у меня пpоги котоpая юзает этот самый CACHE ;-)
+я таки пpотестиpовал этот глюк ...
+
+пpога ZXZIPc.B
+запустилась ;-)
+
+давайте багpепоpты ;-)
+
+p.s. это пpосто патч. 

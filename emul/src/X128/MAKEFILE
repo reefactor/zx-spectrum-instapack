@@ -1,0 +1,70 @@
+#±± ÚÄÄÄÄÄÄÄÄ Watcom C/C++ Project Manager Product ÄÄÄÄÄÄÄÄÄ¿ ±±
+#±± ³             X128 V0.5 DOS By James McKay              ³ ±±
+#±± ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ ±±
+
+PROJ   = x128
+LINK_S = dos4g
+DEBUG  = no
+
+.ERASE
+
+!ifeq DEBUG yes
+C_OPT   = -i=$(%WATCOM)\h -zq -d2 -dMSDOS /Fo=$^@ -fh=$^&.pch
+CPP_OPT = -i=$(%WATCOM)\h -zq -d2 /Fo=$^@
+ASM_OPT = /nologo /c /Zi /Fo $^@
+DEBUG_APPEND = @%append $(LNK) debug all
+!else
+C_OPT   = -i=$(%WATCOM)\h -mf -fp5 -5r -oxntl+ -zq -dMSDOS /Fo=$^@  -fh=$^&.pch
+CPP_OPT = -i=$(%WATCOM)\h -zq /Fo=$^@
+ASM_OPT = /nologo /c /Fo $^@
+DEBUG_APPEND = @rem
+!endif
+
+LNK_OPT = op{q} system $(LINK_S)
+LNK     = $(PROJ).lnk
+
+OBJS    = ay8910.obj x128_dsp.obj x128_ed.obj x128_cb.obj x128_z80.obj &
+	  x128_t.obj
+LIBS    = 
+
+all : $(PROJ).exe
+
+ay8910.obj       : ay8910.c ay8910.h x128_end.c
+
+x128_dsp.obj     : x128_dsp.c x128_dsp.h x128_end.c
+
+x128_ed.obj      : x128_ed.c x128_ed.h x128_def.c x128_end.c
+
+x128_cb.obj      : x128_cb.c x128_cb.h x128_def.c x128_end.c
+
+x128_z80.obj     : x128_z80.c x128_z80.h x128_def.c x128_end.c
+
+x128_t.obj       : x128_t.c ay8910.h x128_var.c x128_def.c x128_ed.h &
+		   x128_cb.h x128_z80.h x128_tap.c x128_fsl.c x128_voc.c &
+		   x128_dsp.h x128_end.c
+
+$(LNK) : makefile
+	@echo ÛÛ Create Linker Project File
+	@echo ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+	@%create $(LNK)
+	$(DEBUG_APPEND)
+	@%append $(LNK) name $(PROJ)
+	@for %i in ($(OBJS)) do @%append $(LNK) file %i
+	@for %i in ($(LIBS)) do @%append $(LNK) file %i
+
+.c.obj :
+	wcc386 $(C_OPT) $[@
+
+.cpp.obj :
+	wpp386 $(CPP_OPT) $[@
+
+.asm.obj :
+	ml $(ASM_OPT) $[@
+
+$(PROJ).exe : $(OBJS) $(LNK) $(LIBS) makefile
+	@echo ÛÛ Linking With Debug Option = $(DEBUG)
+	@echo ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+	@rem > result.lst
+	wlink $(LNK_OPT) @$^* > result.lst
+
+# End Of MakeFile..

@@ -1,0 +1,39 @@
+# configure paths
+AS = tasm
+CC = wcl386 /cc++
+LD = wlink.exe
+DLL2ADD = ..\addition\bin\dll2add.exe
+INC = ..\addition\include
+#set lib=d:\prog\watcom\lib386\dos;d:\prog\watcom\lib386
+
+# macro (NOT ALL SUPPORTED BY BORLAND MAKE)
+# $< list of all dependents
+# $@ target
+# $^ target
+# $* target w/o ext
+# $? list of dependents that are younger
+
+all: zxlink.add
+
+zxlink.add: zxlink.dll
+	$(DLL2ADD) $*
+
+zxlink.dll: zxlink.obj zxlink.lnk
+        $(LD) format os2 le dll  library clib3r  name $* file $* @$*
+
+
+#zxlink.obj: zxlink.asm
+#	$(AS) /ml /m3 /i$(INC) $*
+
+zxlink.obj: zxlink.c
+	$(CC) /c /zp1 /3r /ox /s /bt=dos4gw /i=d:\prog\watcom\h /i=$(INC) $*.c
+
+dist:   all
+	del *.obj
+	del *.dll
+	pkzip zxlinkm.zip *
+
+clean:
+	del *.obj
+	del *.dll
+	del *.add

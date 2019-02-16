@@ -1,0 +1,48 @@
+
+ LPT AY/YM chip plug-in
+ for Shalaev's emulator
+
+ (c) by Wolf^eTc/Scene
+
+ version 1.6
+
+ history/features:
+
+ [!] main change
+ [+] new features
+ [-] fixed bugs
+ [*] not fixed bugs
+
+ version 1.6 last edition: 21.11.99
+ [-] change output function (perfect for digital music)
+ [!] some code optimizations
+ [!] music ripper absent
+ 
+ version 1.5
+ [+] music ripper function
+ 
+ version 1.4
+ [-] main bug fixed with envelope
+
+ version 1.3
+ [!] set reset/reg/data commands for lpt AY/YM
+ [-] bug fixed with C channel
+
+ version 1.2
+ [+] autodetect lpt ports
+ [+] change lpt ports in configuration
+ [+] on/off any AY/YM channel
+ [+] auto saving/loading configuration
+ [+] on/off move data in lpt port
+
+ version 1.1
+ [!] AY/YM plug-in for Shalaev's emulator
+
+ contact me:
+ 2:4635/8.18@fidonet
+ Wolf^eTc/Scene [Александp Кулик]
+
+ special thanks to:
+                    KenoTron^eTc/Scene
+                    Vitaly Mayatskih
+                    Kirill Frolov
