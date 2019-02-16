@@ -1,0 +1,1598 @@
+****************************************************************************
+**                   X128 Spectrum 128 Emulator V0.94                     **
+**                            by James McKay                              **
+****************************************************************************
+
+X128 runs under DOS, but can run under Windows 95 & 98 just fine.
+A 486DX+ is recommended.  For the Sound Blaster version, a 486DX2-66 is
+(not) recommended.  (Actually, just use a Pentium).
+
+The SB version will not work under NT, 2000 and XP.  The Adlib version will,
+but you'll have no timing control.
+
+One option is to use VDMSound:
+http://www.ece.mcgill.ca/~vromas/vdmsound/
+
+X128 (SAOM) has been tested and confirmed to work (under Windows 2000 and XP)
+using VDMSound - it should (probably) work on NT (4.0) as well.
+
+The author accepts no responsibility for any damage caused to anything by
+this software - no software is bug free! Although it's never done my machine
+any harm so far...  NOTE: Please read the warning regarding VESA modes under
+Windows later in this text file.
+
+Troubleshooting and the list of improvements are near the bottom of this text
+file.
+
+NOTE:
+
+This version (V0.94) contains some half-finished features, like ZX81 support,
+D80 disk support, IF1 emulation, some extra joystick types, ...
+
+They can be activated by adding the /halffinished option at the command
+line, or by setting HALFFINISHED=ON in the INI file.
+
+* ZX81: Screen timing is off, notably in FAST mode and in hi-res games.
+        .P and .81 files are loaded like TAP files, not like other
+        ZX81 emulators which read a directory's worth of files.
+        The menus are also very off-line in this mode.
+        ROM: ZX81_ORG.ROM (8192 bytes).
+* D80:  If you reset the Spectrum without a disk in, then it can't see the
+        drive (until you reset again with a disk inserted).  You also can't
+        use Betadisk and D80 at the same time because they share the FDC in
+        the emulator.  But otherwise, very good.
+        ROM: D80.ROM (16384 bytes).
+* IF1:  One microdrive supported, but MDR files just don't work properly.
+        ROM: ZXI1.ROM (16384 bytes).
+* Extra Joysticks: Incomplete, but working.
+* Save Movie: An experimental attempt at 'movie' files (a Z80 V3 snapshot
+        with key data at the end - may be loaded with F5).  They sort of
+        work, but are incomplete and won't be supported anywhere!
+* Sinclair Profi+: Implementation is very partial.  Overall lack of
+        information prevents me from saying what's missing!
+        ROM: PROFI1K.ROM (65536 bytes).
+
+Copyrights:
+===========
+Sinclair 48K, 128K, +2, +2A and +3 roms are owned by Amstrad PLC and are used
+under their specially permitted circumstances of being part of a freeware
+emulator (and unmodified).
+
+Format Publications are the copyright holders of the DISCiPLE/+D roms.
+
+========
+FIRSTLY:
+========
+See further down the text file for details about the new TZX files!
+
+Starting from V0.7, x128 comes in two varieties:
+
+1.  Adlib version.  This is like the older version of x128, and supports
+Adlib and internal speaker sound.
+
+2. S.A.O.M. (Special Audio Output Mode) version, this uses the SB to produce
+excellent quality sound, including the 48k internal speaker and AY speech!!
+
+The ZIP file will be called X128V94A.ZIP for the Adlib version, and
+X128V94S.ZIP for the SAOM version.
+
+The SAOM version requires a faster machine than the Adlib version, if your
+machine isn't fast enough then the output will be fuzzy.  Also the SAOM
+version cannot autodetect the machine speed, basically, if you try to set
+the SAOM version to go at a speed which makes the sound fuzzy, then you are
+asking it to go too fast.  Do not think that as a result of this,
+your P266 MMX will run it ridiculously fast, this is not the case, and
+generally, if you do have a faster machine then SAOM is the version for you.
+(This was written at a time when a P266 MMX was as fast as you could get).
+
+Also note that even though low end 486s cannot use the SAOM version without
+fuzzy sound, it is worth a go, just to hear the speech!
+
+========================================
+EASY GUIDE TO SPECTRUM FILES YOU CAN USE
+========================================
+file.z80 : Use F5 to load.
+file.sna : Use F5 to load.   ** Including SNA 128 **
+file.slt : Use F5 to load.
+file.voc : Use F7 to select, then type load "" or use tape loader. *
+file.tap : Use F7 to select, then type load "" or use tape loader.
+file.tzx : Use F7 to select, then type load "" or use tape loader. *
+file.dsk : Use F12 to select then use loader (in +3 mode).
+file.trd : Use F12 to select (in TR-DOS), LIST (the K key) then <RETURN> for
+           a directory, then do RUN "filename" <RETURN>.
+file.fdi : Use F12 to select (in TR-DOS), LIST (the K key) then <RETURN> for
+           a directory, then do RUN "filename" <RETURN>.
+file.fdd : Use F12 to select (in TR-DOS), LIST (the K key) then <RETURN> for
+           a directory, then do RUN "filename" <RETURN>.
+file.scl : Use F12 to select (in TR-DOS), LIST (the K key) then <RETURN> for
+           a directory, then do RUN "filename" <RETURN>. ***
+file.$?  : Use F12 to select (in TR-DOS), LIST (the K key) then <RETURN> for
+           a directory, then do RUN "filename" <RETURN>. ***
+file.mgt : Use F12 to select (DISCiPLE/+D), then **.
+file.img : Use F12 to select (DISCiPLE/+D), then **.
+file.d80 : Use F12 to select (D40/D80), then use CAT <RETURN> for a
+           directory, then do LOAD *"filename" <RETURN>.
+file.000 : Use F12 to select (D40/D80), then use CAT <RETURN> for a
+           directory, then do LOAD *"filename" <RETURN>. ***
+           
+
+file.pok : This is automatically loaded when it's accompanying Z80/SLT/SNA
+           file is loaded.  The POK file should be in a POKES directory
+           underneath the directory that the accompanying snapshot is in, or
+           it can be kept in the same directory as the snapshot.  (If they
+           both exist then the one in the POKES directory is used).
+
+file.p   : Use F7 to load (in ZX81 mode), then type LOAD "".
+file.81  : Use F7 to load (in ZX81 mode), then type LOAD "".
+
+* With TZX and VOC files, you now have to unpause them in order for them to
+  play.  Press Alt-F8 to do this (make the play icon turn white).
+
+** With the DISCiPLE/+D you may have to RUN the system first and all that
+   sort of thing.  Files are loaded by LOAD d1"filename", etc...
+
+*** With these formats, a temporary disk image is created.  As a result you
+    can load and save from this image, but any changes will be lost.
+    In the case of the $? (Hobeta) format, selecting any Hobeta file will
+    create a disk image containing all the Hobeta files in that directory.
+
+To use the DISCiPLE/+D you have to set the path to the rom in the INI file
+and set MGTpresent to the correct interface...  You can use PLUSDROM.BIN
+(in PLUS D mode...) without modification and it will be "already ran".
+
+If you get a .z80 file with other files called .dat then these will be
+dealt with automatically, just load the .z80 as described above, and if the
+filenames of the .dat files are wrong then the file selector will appear and
+you will have to select the correct DAT, or press ESCAPE.  If you downloaded
+it then this should not be the case.  If the file is a SLT format file
+which has still been incorrectly named .z80 at the end, then this emulator
+deals with it automatically.
+
+NOT SUPPORTED:
+
+file.mdr : This cannot deal with microdrive cartridges (nearly there!).
+
+Any other file type you come across cannot be handled in this version of
+the emulator.
+
+===============================
+NOTE ABOUT MENU COLOUR SCHEMES:
+===============================
+
+WHITE  : It can be selected.
+CYAN   : It is temporarily unavailable due to another option in use, for
+         example.
+RED    : It does not work, ie it has not been implemented in the emulator or
+         a crucial piece of hardware has not been detected.
+
+=============
+INSTRUCTIONS:
+=============
+Once you have typed 'x128' to run the emulator and the 128 BASIC screen
+has appeared (hey, /mono users can't see the menu bar!) then the
+following function keys are available:
+
+---------
+F1 - HELP
+---------
+This brings up a list of the functions keys available on the Spectrum
+window, press ESCAPE to go back to the emulation.
+
+Now when you bring up this option, you can select the function of any
+other function key from the menu that appears, by using cursor up/down and
+return to select.  The selected option will have a > beside it.  When you
+have completed the selected option, you will return to the emulator, not
+the help screen.
+
+Options available here that aren't available anywhere else are:
+
+* Alter ULA Delay: This controls the lining up of overscan bits (see F8
+  and F9 keys), the max. value is 255.
+
+* Alter Frame Skip: This allows you to set up the screen update, 1/1 is
+  full update, 1/255 updates the screen once every 255 times.  1/0 is
+  AUTO skip, which attempts to reach the target speed by letting the frame
+  skip value drop to 5 (if necessary).
+
+  In the Adlib version the frame skip is automatically selected as a value
+  between 1 and 5, the SB version will always start with frame skip 1.
+
+* Alter Slow Down: This only applies to the Adlib version, the range is
+  0-65535 where 0 is no delay and 65535 is a ridiculously large delay.
+
+* Percent Speed: On the SAOM version, you actually change the speed by
+  changing the actual percentage speed (see values below).
+
+  When changing the speed you are actually stopping and starting the DMA
+  and reallocating it with a different size buffer!  You are not allowed to
+  set the speed below 10% but you can set it "too high", in other words:
+
+                       4900% WILL CRASH YOUR PC.
+
+  You have been warned, so don't do it.  I will accept no liability!
+  When you try to set the speed to higher values it starts to get
+  inaccurate, this is due to the fact that the percentage speed is actually
+
+                      (sound_rate*2)/BUFFER_SIZE
+
+  The default sound rate is 22050hz.
+
+  To help you determine if you can achieve the speed desired on your PC,
+  there is an "overflow" dot at the top left of the PC screen, if you see
+  a little white dot then your PC cannot emulate at the speed you are
+  attempting, so slow down or try using a lower sample rate with the /hz
+  command line option.  (Dot can be turned off in INI file).
+
+* Loading Speed:
+
+  SAOM:
+  This lets you have one speed while loading a VOC/TZX and another for
+  normal activity, you can set the loading speed to a higher value to cause
+  tapes to load quicker.  When the tape is paused or closed then the
+  emulator will automatically return to the "percent speed" value.
+
+  Adlib:
+  When the tape is loading the slowdown value is set to zero.  When the
+  tape is paused or closed, the old slowdown value is restored.  There is
+  not much point in messing around with the slowdown value during loading,
+  as the changes will be wiped out, and replaced with the value before
+  loading took place.
+
+  The values can be changed by moving the cursor to the option and pressing
+  left (-1), right (+1), page up (-10) or page down (+10).  Or you can press
+  return and type them in - hex is allowed by preceeding the number with '$'
+  or '#'.
+
+  Generally, the values will wrap round if you try to pass 0 or its maximum
+  value. These options don't return to the emulator when you select them,
+  you have to press ESCAPE.
+
+* Keyboard Issue: Press left/right to toggle between issue 2 and issue 3,
+  where issue 3 is by far the most common.  Occasionally a program will
+  need this option to be set to 2 (usually an old program) otherwise the
+  keys won't respond. A .Z80/.SLT file will change this value when you load
+  it. Note that all 128K Spectrums were issue 3 and some Spectrum 48K were
+  issue 2, but not that many.
+
+  Note that options like load snap, save z80, joystick select, memory mode,
+  etc return to the help menu, so that you can load in a snap and resave it
+  with changed settings.
+
+---------------------------------
+ALT F1 - PREDEFINED POKES & POKES
+---------------------------------
+This has been in previous versions as well (for the TZX pokes block), but I
+forgot to mention it.
+
+If the emulator has passed a Pokes Block in a TZX file or a POK file is
+currently valid, then you will be able to use pre-defined pokes to cheat
+in that particular game.  Otherwise you'll only be able to enter manual
+POKEs.
+
+Move up and down to select a "trainer", then press RETURN to select.  If it
+is an ON/OFF type then it will be toggled.  If it is an "INS" type, you will
+be asked to enter the value to be poked (0-255).
+
+The first "trainer" is always "Enter POKE".  Press RETURN and you can enter
+the address (in decimal, or in hex by prefixing it with '$' or '#'), then
+press RETURN, enter the value you wish to poke and press RETURN one final
+time.  Unfortunately, the validation checks aren't very good, but at least
+you can see what the last poke was afterwards.
+
+-----------------------------
+F2 - NMI / ALT F2 - OTHER NMI
+-----------------------------
+The NMI is now determined by the setup in the F3 extra menu.
+
+NMI options are:
+
+* Normal.
+* Multiface 128.
+* DISCiPLE/+D Snapshot Button.
+* Betadisk Magic Button.
+* Scorpion Monitor.
+
+MF128
+-----
+Yes, the Multiface 128 by Romantic Robot.  If you can get the Genie 128
+software then you have a push button disassembler on your hands.
+
+Note that pressing the button more than once causes a crash, just like the
+real thing!
+
+You can have a different ROM called genie128.rom.
+This allows you to start up the emulator with the Genie 128 (or any other
+MF 128 utility) without having to manually install it!
+
+All you have to do is (using mf128.rom) install the Genie (or any other
+MF 128 utility) as normal, then reset the Spectrum, then type this short
+program:
+
+        POKE 30000,243
+        POKE 30001,219
+        POKE 30002,191
+        POKE 30003,118
+
+        RANDOMIZE USR 30000
+
+Then, go into the F6 menu and set the start address to 0 and the length to
+16384, then save it as genie128.rom (in the directory that x128 is in).
+
+The next time you load x128, the Genie (or any other MF 128 utility) will be
+automatically installed!  In order to un-install a MF 128 utility, you press
+Caps Shift, Space and F2 at the same time.
+
+NOTE : My keyboard does not allow Shift, Space and F2 to be pressed at the
+       same time, but it does allow Caps Lock, Space and F2 at the same time.
+
+DISCiPLE/+D Snapshot Button
+---------------------------
+NOTE : If you are using an unmodified DISCiPLE rom then you may have to hold
+       down Caps Shift as well.
+
+The border will start to flash and it now requires input from the keys:
+
+3 - Save Screen to disk*.
+4 - Save 48K snapshot to disk*.
+5 - Save 128K snapshot to disk*.
+
+* Disk - meaning a MGT file.
+
+For the 128K snapshot the drive light will flash then the border will go
+stripey again, it now wants you to press "y" if the picture changed or "n"
+if it didn't.  The drive light will then flash for another period of time
+before the operation is complete.
+
+Some special roms will have different keys and meanings, etc...
+
+To reload a  48K snapshot: LOAD d1"filename"S
+To reload a 128K snapshot: LOAD d1"filename"K
+
+Betadisk Magic Button
+---------------------
+Just press the button and it will save a snapshot to a TRD file.
+To reload a snapshot type GO TO "filename" within TRDOS.
+
+Scorpion Monitor
+----------------
+A fully fledged monitor with lots of options and stuff.
+
+----------------------
+F3 - RESET/MEMORY MODE
+----------------------
+From here you have a little menu that you can select reset to 48 or 128
+mode, or you can try to swap modes with no reset, note that from 128 to 48
+no reset mode that ram page 0 will be slotted in regardless of what ram
+was actually paged in.
+
+Menu:
+
+ZX81 (16K). (HALF FINISHED).
+Spectrum  48 Mode.
+Spectrum 128 Mode.
+Spectrum  +2 Mode.
+Spectrum +2A Mode.
+Spectrum  +3 Mode.
+Pentagon 128 Mode.
+Scorpion 256 Mode.
+?
+?
+Sinclair Profi+. (HALF FINISHED).
+
+Press RETURN to reset to a particular mode, or press SPACE to attempt to go
+to that mode (may cause trouble with +2A/+3 modes).  It is impossible to
+press SPACE to go to or from ZX81 mode from any Spectrum mode.
+
+Press Left/Right to go to the F3 extended menu.
+
+Note that when you do a "reset" to a mode then the Betadisk option is forced
+into it's default mode (usually off, except for the Pentagon and Scorpion).
+
+In order to get to TR-DOS from the original Spectrums, type:
+(with Betadisk set to On)
+RANDOMIZE USR 15616
+
+The Scorpion 256 is still incomplete, but works better now.
+
+You can use cursor up/down to move and escape to abort selection.  Use
+cursor left/right to toggle the Betadisk on or off.
+
+You are on your own trying to work out the keywords in 48K Basic.
+
+F3 Extended Menu
+----------------
+Press ESCAPE to get back to the normal F3 menu.
+
+* Multiface : MF128/MF3/Off.
+
+Switches MultiFace Type or switches Off.  Note that using a MF3 in 128K mode
+(on any machine other than the +2A or +3) will cause a reset to 48K mode.
+This happens because of the design of the original MF3).
+
+The MF128 can be used on a +2A or +3 in 48K mode, or in 128K mode whenever a
+reasonable memory setup is in place, for example, in the tape loader or
+during a PAUSE 0.
+
+* Betadisk : On/Off.
+
+Switches Betadisk On or Off, this is automatically set to On whenever you go
+into Pentagon or Scorpion modes.
+
+* DISCiPLE/+D : DISCiPLE/PLUS D/Off.
+
+Decides which model of the interface or whether to switch it off.
+Since the interface traps the rom keyboard routine, there may be times that
+you want this switched off...
+
+If you have Betadisk and DISCiPLE/+D on at the same time, you will probably
+encounter major difficulties.
+
+* Mouse : Kempston/AMX/AY/Amiga/Off.
+
+Switching this to Kempston can cause the return of the Kempston joystick bug
+(on some Spanish games) so switch it Off on those occasions.
+
+The other 3 mice are only partially tested and you won't find much software
+that actually uses them!
+
+* CPU Speed : *1, *2, ....., *19, *20.
+
+What would the Spectrum be like if it was armed with a faster processor?
+Now you can find out (if you have a faster than fast PC) by selecting the
+following CPU speeds:
+
+*  3.54 Mhz (Default).
+*  7.08 Mhz (Double Speed).
+* 10.62 Mhz (Triple Speed).
+* 14.16 Mhz (Quadruple Speed).
+* ....
+* 70.?? Mhz (20 times the usual speed).
+
+In order to achieve each speed you will have to be able to achieve 100%, 
+200%, 300%, 400% and 2000% respectively at the default speed (not strictly
+true because there'll be less screen rendering taking place).
+
+Hopefully this will enable "slow" games to run "fast" without the timer
+going too quickly.  However, there's not much point in going too fast because
+the emulation will just end up running too slow.
+
+NOTE:
+Load VOCs and TZXs at the default CPU speed.
+
+DISCLAIMER:
+This effect is achieved by multiplying the number of t-states-per-line, so
+it is probably useless for testing accurate screen timing and tape loaders
+for Z80 based machines which do have a faster processor.  Most games were
+not written to expect a faster processor, so they won't work as you wish.
+
+* AY in 48K : On/Off.
+
+If this is switched on then it emulates the AY chip in Spectrum 48K mode.
+Apparently this was true for some Spanish Spectrums.
+
+* Load 48K Rom.
+
+Allows loading in of a different ROM for the 48K, useful for the many
+Spectrum 48K clones and those 16K ROM games.
+
+NOTE : This also affects the Pentagon 128.
+
+* Load 128K (0) Rom.
+
+Allows loading of an alternative editor rom for the Spectrum 128K.
+Mainly for the Spanish Spectrum 128K.
+
+* Load 128K (1) Rom.
+
+Allows loading of an alternative basic rom for the Spectrum 128K.
+Mainly for the Spanish Spectrum 128K.
+
+* Load TRDOS Rom.
+
+Allows loading of an alternative TRDOS/Betadisk rom, handy since there are so
+many versions.
+
+--------------------
+F4 - JOYSTICK SELECT
+--------------------
+There are 8 different joystick types, if 'halffinished' mode is activated,
+but the other 3 ("DK Australian", TrickStick 1 and TrickStick 2) are only
+ever used in International Match Day!
+
+This will map one of 5 joystick possibilities (Kempston, Sinc 1, Sinc 2,
+Cursor and Fuller) onto the cursor keys and TAB for fire.
+
+You will see the 5 options and a > which points to the current option.  To
+select one use cursor keys up and down then press return to select.  To
+abort and use current option, press ESCAPE.
+
+You can press left or right to toggle caps on/off for cursor keys, except
+when you're on the Kempston joystick.  In that case, it switches it ON or
+OFF.  When ON, it works as previously (port 31 reading 0 even when the
+Kempston joystick isn't selected).  When OFF, port 31 reads 255 when Kempston
+is not selected.
+
+Note that .Z80/.SLT files set the joystick configuration when loaded.
+Whether cursor has caps shift included is not stored in a .Z80/.SLT and you
+may have to change this yourself.  * REMEMBER THIS! *
+
+Z80/SLT files only support the first 4 joystick types, so you cannot save
+them and expect the correct joystick to be selected when you load them back
+in!
+
+X128 supports 2 PC joysticks, the 1st is mapped onto the option chosen in
+this menu, the 2nd one is always mapped onto Sinclair (1-5).
+
+-------------------
+F5 - LOAD SNAP FILE
+-------------------
+Yes, this will allow you to load, at any time, a V1, V2 or V3 .z80 file in
+48K or 128K mode (it will automatically pick the correct mode for the snap).
+This also allows loading of .sna (including SNA 128) files and .slt files.
+
+These files are exactly the same format as those used by the famous Z80
+Spectrum emulator for the PC.  Note that any hardware like Interface 1,
+SamRam or MGT will be stripped off and ignored, if that piece of hardware
+was paged in at the time the Z80 was saved, then it might not work.
+But this is not usually the case.
+
+--------------
+F6 - SAVE MENU
+--------------
+NOTE : Yes, I know that one of the options is a "load" option!
+
+Options:
+
+* Save Z80/SLT file.
+
+  This allows you to save the whole of memory to a snapshot file.  It can
+  save in 48K or 128K mode and will decide by itself what memory it has to
+  save.  The resulting file can be loaded back in using F5, or can be loaded
+  in by another emulator that supports Z80 V2 files.
+  This option is good for cheating at games.
+
+  If the file is a SLT file then the additional level data will be crammed
+  into the new file.
+
+  NOTE : You do not select if it is a Z80 or SLT file, this is automatic.
+  NOTE : Due to limitations within the Z80 file format, all 128K type
+         Spectrums will be saved as Spectrum 128.
+
+* Save SNA file.
+
+  This allows you to save a SNApshot of memory, like above but in an
+  uncompressed manner.  This may be useful for older emulators which don't
+  support the .Z80 format (are there any that don't?)  Or maybe you just want
+  the information to be easy to remove for a personal project.
+
+  If you save a SNA in 48K mode then a traditional SNA file will be made.
+  If you save in 128K mode then a SNA 128 file will be made.
+
+* Open VOC for saving.
+
+  This option does not work!
+
+* Open TAP for saving.
+
+  At last you can save TAP files!  All blocks saved go into the currently
+  open (save) TAP file.
+
+  If the file already exists then you are given the option to Overwrite,
+  Append or Cancel.  Overwrite will remove the file and make a new one.
+  Append will attach onto the end of the file, and Cancel will leave the
+  file as it is.  REMEMBER TO CLOSE IT BEFORE TRYING TO LOAD IT AGAIN!
+
+* Load Mem Block.
+
+  You can load in raw files into the Spectrum's memory space, there is little
+  point in trying to load anything into 0-16383, unless there is RAM paged
+  in via the +3, Scorpion or Multiface.  The block is loaded based on the
+  values in Start Address and Length (below).  Since there is no default file
+  extension, the file selector will show everything.
+
+* Save Mem Block.
+
+  Saves out raw files from the Spectrum's memory space, based on the values
+  set in Start Address and Length (below).  There is no default file
+  extension.
+
+* Start Address.
+
+  Simply sets the start address for loading and saving mem blocks.
+  Press <RETURN> to begin entering the number, you can type in decimal or
+  in hex by having $ or # as the first character.
+
+* Length.
+
+  Sets the Length for loading and saving mem blocks.  If you just press
+  RETURN then the length will be set to (65536-Start Address).  If Start
+  Address is 0, then this is illegal - you cannot save a block greater than
+  65535.  Number entry is the same as "Start Address" above.
+
+* Restore Screen Values.
+
+  Sets the Start Address to 16384 and the Length to 6912.
+  If the second screen happens to be in use ... tough!
+
+* Save SCR To Path.
+
+  This saves a SCR file to the SCRSHOT directory underneath the current path
+  of the current snap or tape.
+
+  E.g. D:\X128\SNAPS\ABC.Z80 -> is saved to -> D:\X128\SNAPS\SCRSHOT\ABC.SCR
+
+  If the SCRSHOT directory doesn't exist, then X128 will try to create it.
+
+  Note that this option may be available for longer than necessary, like
+  resetting after loading a snap.
+
+---------------------
+F7 - SELECT TAPE FILE
+---------------------
+You want multiload games on emulator, yes?  Well, this allows it to happen
+by being a file containing a string of just the important data from saves.
+
+These TAP files are the Z80 compatible files, NOT the Warajevo emulator
+ones, they won't work at all.
+
+Firstly select the file from the file selector.
+
+To load a file you must either:
+
+* Use the 128 BASIC Tape Loader (just press return).
+* In 128 BASIC (type load SHIFT-' SHIFT-' Return).
+* In 48 BASIC (type J SHIFT-' SHIFT-' Return).
+* In ZX81 BASIC (type J SHIFT-P SHIFT-P Return).
+
+(ie Press shift and apostrophe at the same time, also do not leave a space
+between the two inverted commas).
+
+BEWARE: When using TAPs and other types of tape file.  TAPs use ROMpokes,
+and TZX/VOC does not (usually), if trouble arises make sure that you open a
+tape file (F7) before reaching the actual load routine in the ROM.
+
+NOTE : Starting from V0.8 the ROMpokes will only be present while a TAP file
+is open, and at no other time.  A TAP file can now be closed in the F8 menu.
+
+Note for /mono users: when you start up the invisible bar is on the
+Tape Loader option.
+
+If you've selected this option in ZX81 mode, then you'll be choosing from P
+files and 81 files.  They "flash load" like Spectrum TAP files.
+
+A VOC file is a Creative Voice Sample File, i.e. a multimegabyte-sized sample
+of your Spectrum cassette, you will have to make this on your own using
+some sampler and whatever.
+
+Any VOC file must be 8-bit, unpacked and mono.  The sample rate doesn't
+matter, but it should be as high as possible to make sure that the game
+has the best chance of loading.  This version of x128 can handle the 4 main
+VOC blocks that are usually required and will skip the ones that it doesn't
+like.  When the VOC is finished loading it will close without telling you.
+
+When making a VOC file, you must be aware that some samplers leave a tiny
+little gap in the VOC file while it is being recorded, if such a VOC file
+is played into x128 (or any other emulator) then there is no way it can work.
+Try another sampler!  The sampler in TAPER is designed specifically for the
+purpose of Spectrum tapes, so it shouldn't have this problem.
+
+---------------
+** TZX FILES **
+---------------
+TZX files contain all the information of a VOC file but in a size similar to 
+TAP files!
+
+There is really no need to use VOC files now, what you should do is get
+TAPER or VOC2TZX and convert the VOC into the all new format.
+
+When a TZX file reaches the end, it will go back to the start and then pause.
+
+* NOTE : When using a VOC or TZX file, these cause a large processor
+  overhead, and will cause the emulator to run significantly slower.
+
+------------------
+** EDGE LOADING **
+------------------
+When everyone has P800 processors - snapshots will be a thing of the past!
+(Note: there was nothing remotely like a P800 when I wrote this!)
+
+The main function of edge loading is to allow faster loading of TZX files.
+It also allows slower loading of TAP files, but can also cope with non-rom
+loaders...
+
+When you switch edge mode to Slow or Fast...  This causes some traps to be
+placed in the ROM for the purpose of edge loading.  In addition, there is an
+overhead.  Every time the emulator comes across "IN A,(254)" it will start
+examining memory to determine whether it is in an "edge loading routine".
+
+Hmm... that's enough detail for just now.
+
+Not every loader will be detectable and sometimes it may even crash.  Some
+loaders will require that you search for a slow edge for compatibility
+reasons.  But don't worry, you won't have to do any of the work, just select
+the edge mode from the F8 menu (you must close all tape files before you can
+change edge mode).
+
+If you want to see it working then switch "Report Edge" to "On" in the F8
+menu.  There is no loading noise via edge, so switch on the loading noise and
+you will be able to tell if the current TZX loading is via edge or normal
+slow speed.  If your PC is fast enough then you can also combine the speed of
+edge loading with the "loading speed" option for immense loading speeds!
+
+Loader                  Edge Mode
+=================================
+Alkatraz                Fast
+Bleepload               Fast
+Speedlock (no timer)    Fast
+Speedlock (with timer)  Slow
+
+---------------------
+ALT-F7 - TAPE BROWSER
+---------------------
+This is a shortcut to the tape browser mentioned in the F8 menu.
+
+-----------------
+F8 - TAPE OPTIONS
+-----------------
+NOTE : Some options only appear if they are appropriate.
+
+* Loading Noise : Yes/No - If No, then no sound while loading, otherwise you
+  get an approximation of the sound depending on how many IN 254s are
+  happening.  Having it switched on will require more CPU time.
+
+* Hide Blocks : Yes/No - If yes, then certain blocks will be suppressed
+  from viewing when in the TZX browser.
+
+* Tape Browser - Lets you see what blocks are available in the current TZX
+  or TAP file, you can also select a block to play by moving the cursor and
+  pressing return.
+
+* Close Tape File - Does what it says, and is white if one is open.
+
+* VOC/TZX : Paused/Playing - Left or Right toggles the status...
+
+* TZX Edge : Off/Slow/Fast - This is the edge detection method for TZX files,
+  if Off then it is no different to previous x128 versions.
+* TAP Edge : Off/Slow/Fast - This is the edge detection method for TAP files,
+  if Off then it is no different to previous x128 versions.
+
+  If Slow/Fast then it will load TAP and TZX files by "edge" loading.
+  Slow is a slower method of edge loading which a few more loaders are
+  capable of using.  Edge loading is much faster for TZX files, slower for
+  TAP files but does allow the use of some non-rom loaders in a TAP file.
+
+  NOTE : Close Tape File before you can change this option.
+  NOTE : It is not within the specification of a "Z80 Style" TAP file to be
+  able to handle non-rom loaders, so be careful when you are making a TAP
+  file that you plan to use in other emulators.
+
+* Report Edge : On/Off - Lets you get an idea of what the edge detector is
+  up to...
+
+---------------------------------
+ALT-F8 - TOGGLE TAPE PAUSE ON/OFF
+---------------------------------
+TZX and VOC files now start off paused (indicated by the red icon at the top
+left of the screen), white indicates that it is playing.
+
+------------------------------
+SHIFT-F8 - INCREMENT ULA DELAY
+------------------------------
+T-States are a tricky business.
+
+This adds a value to the number of t-states counted at the end of every
+screen line (192 of them).
+So you can use this option to help align up that nice overscan bit on the
+screen.
+
+This option usually moves overscan bits DOWN the screen.
+
+It starts at 0, if you move too far, the emulator performance will start
+to be unusual, as this will affect the number of instructions between
+interrupts.
+The ULA Delay is reset to 0 every time you reset or load a snapshot.
+
+-------------
+F9 - PCX DUMP
+-------------
+The ability to save a (*)320x200 256 colour PCX, it saves it with any
+overscan bits intact!  (And the white dot).
+
+* 320x240 in X-mode, available via INI file.  And the white dot can also be
+  switched off from the INI file.**
+** Actually, it now saves in whatever resolution you're running in.
+
+A little window will pop up containing the full path of the last PCX file
+saved, you can type the name you want, and you can use backspace or delete
+to ... delete a character, you can choose the directory to save to by
+altering the path.  If you decide that you didn't want to save after all
+then press ESCAPE.  The code will try to be clever and determine whether you
+have typed .PCX at the end of the line, and append it as necessary, but you
+could still confuse it by calling a filename a.a or whatever.
+
+If the file you are trying to save already exists then you will be given
+the message 'Overwrite(Y/N)?'.  You can reply 'y' to overwrite, 'n' to abort
+and ESCAPE to abort also.
+
+NOTE : On pressing F9 the screen will be saved to dump.tmp in the same
+directory as the emulator so make sure there is space for 2 PCX files and
+that the emulator is on a write enabled/permission drive.
+
+NOTE : Regardless of what palette scheme you have chosen, the PCX will be
+saved with the full colour settings.
+
+------------------------------
+SHIFT-F9 - DECREMENT ULA DELAY
+------------------------------
+See SHIFT-F8 for information.
+
+This option usually moves overscan bits UP the screen.
+Once you reach 0, it will not go into negative numbers.
+
+The ULA Delay is reset to 0 every time you reset or load a snapshot.
+
+----------
+F10 - QUIT
+----------
+This will quit the emulator and close the window and all that sort of thing,
+and yes it does remember to de-allocate the memory and close the TAP file,
+(maybe).
+
+On exit you will be told what ULA Delay you had.
+
+A small window appears and you have to press Y to quit.  If you press N or
+ESCAPE then the quit does not occur.
+
+-------------------
+F11 - SOUND OPTIONS
+-------------------
+You see three useful options:
+
+FOR THE SB VERSION:
+
+* Sound is On/Off : Press left/right to toggle this.
+
+  On/Off is easy to understand?
+
+* 48K Sound : Low/Real. Low means that the volume of the beeper is
+  equivalent to one AY channel. Real means that the beeper volume is
+  equivalent to all three AY channels!
+
+FOR THE ADLIB VERSION:
+
+* Sound is Off/PC Speaker/Adlib : Press left/right to toggle this.
+
+  Off - no sound is played.
+  PC Speaker - Spectrum internal speaker is played through the PC speaker,
+  and the AY-3-8912 is also played out of the PC speaker.
+  Adlib - Spectrum internal speaker is played through the PC speaker and
+  the AY-3-8912 through the Adlib card.
+
+* White Noise On/Off : I have added some really pathetic emulation of the
+  white noise of the AY-3-8912 through the Adlib card, using the snare
+  drum channel, so I have included this option to turn it off.
+
+FOR BOTH VERSIONS:
+
+* Create/Close PSG File : This allows you to log the OUTs to the AY-3-8912
+  sound chip, you will be asked for a filename, it will automatically have
+  a .psg extension, the files are then playable using the utility PSGPLAY,
+  which comes with the Unix version of fMSX (/dev/dsp or /dev/audio), a DOS
+  PSGPLAY doesn't exist yet (I think).  Note that all interrupt marks are
+  0xFF and the multiple marks are not used.  Also note that these are old
+  style PSG files, in other words there is no configuration data in the
+  16 byte header.
+
+  Note that you can convert PSG files to run under STSound, by using the
+  PSG2YM utility.
+
+* Create/Close VOC File: Save the audio output to a VOC file (not suitable
+  for saving tape output).  The format will match the current hardware use,
+  so if SBPro or SB16 is in use, then the VOC will be stereo, even if the
+  stereo mode is currently set to mono!  The sample rate will be whatever
+  was set in the INI file and the bit-depth will always be eight.
+
+* Create/Close WAV File: The same as the above option, but saved into a WAV.
+  This is much better if you just want to double-click the WAVs and play them
+  in Media Player (etc).  But did you seriously think I would give up VOCs,
+  after all the excellent service they've given us over the years?  Never!
+
+Also....
+
+* Stereo Mode : ACB/ABC/Mono.  Allows ACB stereo, ABC stereo
+  (Pentagon/Scorpion) or normal mono.  Provided that you have an OPL3
+  (Adlib version) or a SB Pro (SAOM version) and have all the correct
+  command line/INI file options in place.
+
+* Swap Speakers : On/Off.  Swaps the output of the left and right speakers.
+
+----------------------
+SHIFT F11 - VIDEO MODE
+----------------------
+Now (finally) you can use VESA 2 linear video modes (not paged).
+
+WARNING!  Windows is not too keen on VESA modes.  When task switching or when
+the screen saver kicks in, you can experience a long pause while Windows is
+being confused.  That's not too bad, but when trying to reactivate the
+process some disturbing behaviour can occur.  Usually this will just involve
+the screen being corrupt when the emulator restarts, but in some cases (with
+my setup, at least) the monitor will emit a highly worrying high-pitched
+screech (which sounds similar to when you try to use a Spectrum with a power
+supply with the wrong polarity).
+
+This may sound extremely worrying (it frightens me!) but it's exactly the
+same behaviour that you'd get from any VESA mode using DOS program, so if
+you've already used other emulators with VESA modes under Windows, you'll
+be no worse off.
+
+The first six entries in the list are:
+
+320x200x8-bit (Mode 13h)
+320x240x8-bit (Mode X)
+320x200x4-bit (EGA)
+640x200x4-bit (EGA)
+640x350x4-bit (EGA)
+640x480x4-bit (EGA)
+
+(All EGA modes use the VGA palette).
+
+If VESA 2 modes are detected then they show up in the list after those six.
+
+You can select any video mode from the list (although some incompatible
+modes, like text modes, may show up in the list - don't select them!)
+
+Some of the 4-bit modes can't be used (they require paging).  Basically
+any resolution greater than 800x600.  4-bit modes are generally quite bad
+because of the slow bitplane way that they have to be accessed and once
+they use up a certain amount of VRAM (yes, paging again) then they can't have
+multiple screens, so you get a strange colour effect.
+
+8-bit, 15/16-bit, 24-bit and 32 bit modes can be used (although 8-bit is
+optimal in terms of speed and only 16 colours are used anyway!).
+
+Since VESA 2 modes could be any resolution (in theory) X128 tries to decide
+how much border to show and how to stretch it automatically.  It does OK,
+most of the time...  (640x350 looks rather odd).
+
+If you choose a mode with a Y resolution of 400-480 then the image will have
+every second line missed (like the 'scanlines' option of some emulators).
+If you choose a mode with a Y resolution of 600 then the image will have one
+line of screen followed by two missing lines!  But if your monitor is bad
+enough then you won't notice (but it'll still show up when you dump a
+screen shot).
+
+-----------------
+F12 - SELECT DISK
+-----------------
+In +3 mode this will show a menu to select DSK files.  Otherwise it will
+show a menu for selecting TR-DOS files.  Otherwise it will show a menu for
+selecting DISCiPLE/+D files.  Or Didaktik files or Microdrive files...
+
+With one exception, if you are in +3 mode and have Betadisk turned on then
+the first menu you get will be the +3 menu, then after pressing ESCAPE the
+Betadisk menu will appear.  Press ESCAPE once more to get out of the menu
+maze!  And another exception...  +D and BetaDisk and +3!
+
+* DRIVE A: - Select a DSK.
+* Write Protect : On/Off.
+* Remove Disk. - Remove a DSK.
+
+* DRIVE B: .... etc....
+
+NOTE : How to get a +3 to think it has 2 drives attached.  Simply insert a
+disk into "Drive B" or switch write protect on "Drive B" to "On" then reset
+the Spectrum in the F3 menu.  You MUST reset : +3 DOS will not check for
+"Drive B" at any other time.
+
+=============
+MULTIFACE 128
+=============
+By pressing F2 the M128 menu will appear, if you have the ROM.  For the MF3
+you need to have MF3.ROM (8192 bytes) in the same directory as x128.
+
+The ROM:
+
+mf128.rom 8192 bytes long, and is a dump of the values of the Spectrum from
+0-8191 AFTER the mf128 rom has been paged in.
+
+It is also tightly entombed within the file ROMS.BIN that comes with Z80.
+
+The MF128 pages in 16K, of which 8K is ROM and 8K is RAM:
+
+0-8191     ROM
+8192-16383 RAM
+16384+     Usual Spectrum memory.
+
+The memory is paged in and out like so (for the MF128 Disciple version):
+
+IN A,(191) Pages MF128 in.  Returns 127 if the normal Spectrum screen is
+visible, or returns 255 if using the 128K second screen in RAM 7.
+IN A,(63)  Pages MF128 out.
+
+When the MF128 is paged in, OUTs to 32765 still work, so that you can access
+all RAM, but for ROM the OUT to 32765 dictates which ROM will be visible
+after you page the MF128 back out.
+
+=======================
+USING THE FILE SELECTOR
+=======================
+Use the cursor keys to move up and down, the file selected is the one at
+the top (with the inversed colours).
+
+Directories are Magenta and Black with a slash preceeding the name.
+File are Blue and White.
+Drives (PC) are Cyan and Black.
+
+You can change directory/drive by pressing return while it is being pointed
+to, the listing of that directory will then appear for you to view.
+
+Keys:
+
+Up/Down : Move Up 1 file/Down 1 file.
+Page Up/Page Down : Move up 22 files/down 22 files.
+Home/End : Move to the top/bottom of the list.
+Return : select the file/drive/directory.
+Escape : leave the file selector without loading anything.
+
+Another feature is the file search by typing letters, so if you press 'b'
+the pointer will be moved to the first file (not directory) that starts
+with 'b'.  If the search was successful, then when you type another letter
+you will be searching for the 2nd character position and so on, if a search
+fails, (in which case the pointer will not move) the next attempted search
+will begin with the first character again.
+
+If you move the pointer with cursor keys, page keys or home/end then the
+next search will be on the first character.  Also included in the term
+'letters' are numbers and some punctuation symbols.
+
+====================
+COMMAND LINE OPTIONS
+====================
+You can get x128 to do things from the command line by adding the following
+parameters:
+
+x128 /?
+Shows all the command line options available.
+
+x128 /48
+Resets to 48K mode on startup.
+
+x128 /128
+Resets to 128K mode on startup (default).
+
+x128 /P2
+Reset to +2 mode on startup.
+
+x128 /P2A
+Reset to +2A mode on startup.
+
+x128 /P3
+Reset to +3 mode on startup.
+
+x128 /pentagon
+Reset to Pentagon mode on startup.
+
+x128 /scorpion
+Reset to Scorpion mode on startup.
+
+x128 /a <filename>
+x128 /b <filename>
+Selects a DSK, TRD or MGT to go in drive A or drive B (respectively).
+Please use a full path ie C:\TRD\GAME.TRD otherwise the file selector will
+be messed up.
+
+x128 /quiet
+This starts up the emulator with the sound off, it can still be switched
+back on in the F11 menu.
+
+x128 /240
+Runs the emulator in a 320x240 X-mode, which is substantially slower but does
+include the upper and lower borders.  Some people also prefer the aspect
+ratio which looks more like a real Spectrum.
+
+x128 /mono
+A silly option which runs the emulator in a monochrome EGA mode.
+
+x128 /colour <type>
+
+Where <type> can be:
+
+        full  - full colour (default).
+        grey  - grey scale (for mono monitors).
+        red   - red scale.    Useless!
+        green - green scale.  Useless!
+        blue  - blue scale.   Useless!
+
+This does not affect any PCX file that you make.
+
+x128 /delay <number>
+This sets the slow down delay (0-65535), eg x128 /delay 30000
+ADLIB only.
+
+x128 /frame <number>
+This sets the frame skip value (0-255), eg x128 /frame 4
+Frame 1 is perfect update, while frame 0 is actually 1/256 screen update!
+
+x128 /ula <number>
+This sets the ULA delay (0-255), eg x128 /ula 30
+
+x128 /speed <number>
+This sets the target percentage speed (0-65535).
+The default target speed is 100%.
+
+x128 /lspeed <number>
+This sets the loading percentage speed (0-65535).
+The default loading speed is 100%.  On the Adlib version the slowdown is
+set to zero whenever loading takes place.
+
+x128 /nlspeed
+Prevents the loading speed from being used, meaning that the emulator only
+ever goes at the "target percentage speed".  Use this if you have soundcard
+problems and you can't seem to load any TZX or VOC at all.
+
+x128 /lnoise
+Switches on the loading noise.  ** SAOM ONLY **
+
+x128 /hz <number>
+This sets the sample rate for the SB output, anything from 4000 up to 45454
+is accepted. The default is 22050hz.  ** SAOM ONLY **
+
+x128 /sbclone
+This software now uses DSP command 0x1C to activate the soundcard at speeds
+of 22Khz or below.  If you try sample rates greater than that then x128 will
+use DSP command 0x90, which some clones will not like, so use /sbclone to
+make sure that 0x1C is used at all speeds.  ** SAOM ONLY **
+
+x128 /sbpro
+Uses the stereo facilities of the SB Pro card to produce ACB or ABC stereo.
+
+x128 /sb16
+Uses the command syntax of the SB16 to produce sound (if you want stereo then
+do /sbpro as well).
+
+x128 /real
+This selects "real" (loud) 48k beeper volume.  ** SAOM ONLY **
+
+x128 /halffinished
+Activates all the half-finished options (like ZX81, D80 support, IF1, etc).
+
+x128 /nolfn
+Switches off the Long Filenames, use this if you have problems.
+
+x128 /novesa
+Prevents detection of VESA modes.
+
+NOTE: With all these numerical options, entering non numbers, or numbers
+that are too large will cause confusion.  Generally it will decide that
+the value should be set to 0, so don't enter bad numbers!
+
+x128 <filename>
+If the filename is a sna or z80 then it will automatically load (and /48
+and /128 will be overridden by the type of snap loaded).  This will work
+for slt files as well.  There is no longer any need to supply a full path
+for any kind of file.
+
+If the filename is a tap then it will be selected, but you will still have
+to load it via the tape loader or by typing load "".
+
+If the file is a VOC or TZX then you will have to do the same as a TAP file
+to actually get it to start loading.
+
+Tip : Make a .Z80 which is just before a LOAD "" takes place, ie:
+
+PAUSE 50 : LOAD ""
+
+Press enter, then quickly press F6 and save the .Z80, it is important to save
+it BEFORE the load takes effect, as there may be rom traps which would be
+skipped if you attempted to load the tape file after the load had taken
+effect.  Make a .Z80 in 48 (LOAD48.Z80), and another in 128 mode
+(LOAD128.Z80).
+
+Then when you want to autoload a tape from the command line (which you want
+to load in 48k mode):
+
+x128 LOAD48.Z80 ROBO.TAP
+
+OK!  I have done an INI file!  It is commented, so read how to use it there
+(x128.ini).
+
+Some INI features:
+
+* Switch off that damn dot and the other icons off.
+
+===============
+TROUBLESHOOTING
+===============
+SYMPTOM : The emulation is too slow.
+CAUSE   : Try running this in DOS, if you are using a Windowed environment.
+Alternatively all you can do is get a faster machine or hope that a future
+release of this is more efficient (ha!).  Or use the frame skip option, see
+near the top of this document on how use this option.  Another option is to
+get your hands on a much faster video card (this probably doesn't apply to
+these modern days).  Also try using the /hz command line option to lower the
+sample rate.
+
+SYMPTOM : The EXE supplied will not run.
+CAUSE   : Make sure you are using a 386 or above, and have at least 2Mb free.
+CAUSE   : Do you have DOS4GW.EXE in the directory/path?
+NOTE    : 2Mb is an old figure, and probably more is required now.
+
+SYMPTOM : The file selector will not open.
+CAUSE   : Desperate shortage of memory!  Free up some memory before running.
+
+SYMPTOM : The Pentagon and Scorpion aren't working!
+SYMPTOM : Some games which use the ROM keyboard routine don't work.
+CAUSE   : Maybe you have the DISCiPLE or +D switched on?  Switch it off.
+
+SYMPTOM : I picked Kempston joystick in a Spanish game but I have no control.
+CAUSE   : Switch off the Kempston Mouse.
+
+SYMPTOM : I can't switch on Kempston Mouse.
+CAUSE   : You haven't loaded a mouse driver under DOS - load one!
+
+SYMPTOM : The 128K music is occasionally fuzzy when I start up.
+CAUSE   : If this isn't for speed reasons as covered earlier (i.e. no white
+          dot), then I don't know why.
+NOTE    : This version (V0.94) contains a new fix for this. 
+
+SYMPTOM : x128 returns to the DOS prompt/closes the window immediately.
+CAUSE   : (SAOM) No BLASTER environment variable has been found.
+CAUSE   : (SAOM) SoundBlaster has IRQ >7, which x128 can only handle if
+          you're running under a DPMI setup (like a Windows DOS Shell).
+          This is because the non-commercial version of DOS4GW will not
+          handle IRQs 8-15 on it's own.
+CAUSE   : Some of the ROMs may be missing from the directory.
+
+SYMPTOM : x128 hangs/locks up tight.
+CAUSE   : For some reason the SB doesn't generate an IRQ sometimes, I don't
+          know why!  You should now be able to press F10 to quit (hopefully).
+          You could try running your soundcard reinitialising software.
+CAUSE   : Some soundcards let you use command 0x90, but then refuse to close
+          it down!  Try using /sbclone or /sb16.
+          Try reducing the sound rate to 22050 hz and don't use SB16 or
+          SBPro, this *should* work on every card...
+
+SYMPTOM : x128 (SAOM) locks up when trying to load a VOC or TZX file.
+CAUSE   : Probably an SB problem, try running x128 with /nlspeed on the
+          command line, or the equivalent in the INI file.
+
+SYMPTOM : Unusual output to TV (using video card with a TV Out socket).
+CAUSE   : The video mode may be unsupported, try using a different video
+          mode.
+
+SYMPTOM : Unusual stuff displayed when you enter a file selector.
+CAUSE   : Check the paths set in the INI file, some may be invalid.
+CAUSE   : Try running with /nolfn on the command line, or by setting
+          LongFilenames=NO in the INI file.
+
+SYMPTOM : x128 is not producing stereo!
+CAUSE   : Have you done /opl3 (Adlib) or /sbpro (SAOM)?
+CAUSE   : Does your BLASTER environment variable have T4 or above?
+CAUSE   : Have you set the appropriate stereo mode in the F11 menu?
+CAUSE   : Do you have a SB Pro (or 100% compatible)?  Note that 16-bit
+          "compatible" soundcards might not work, so try using /sbpro and
+          /sb16 as well.
+
+TEST    : Try the following program in 128 basic:
+
+10 PLAY "a"
+20 PLAY "","a"
+30 PLAY "","","a"
+
+If Mono then the notes will be played: BOTH, BOTH, BOTH.
+If ACB then the notes will be played: LEFT, RIGHT, BOTH.
+If ABC then the notes will be played: LEFT, BOTH, RIGHT.
+
+(Meaning LEFT speaker, RIGHT speaker and BOTH speakers).
+
+Also note that the SAOM version of x128 will REFUSE to run if it doesn't
+find a Sound Blaster - make sure you have the BLASTER environment
+variable in your autoexec.bat.
+
+===================
+FUTURE IMPROVEMENTS
+===================
+
+-------
+General
+-------
+Speed : Ever Better (not likely).
+Better t-state timing for overscan demos.
+Better Pentagon and Scorpion 256 emulation.
+Better TR-DOS/Betadisk disk emulation (at the WD1793 level).
+
+--------
+Specific
+--------
+Speed Detect (SAOM).
+Pause between TAP blocks.
+TZX trap (sort of done it...).
+Pause Until Load "" for VOC/TZX.
+VOC (music) save option.
+VOC (file) save option.
+VOC browser (silly?).
+Keyboard "error".
+
+X128's web page lives here:
+"World Of Spectrum" http://www.worldofspectrum.org/x128/index.html
+
+And is also a good place to look for all sorts of things associated with
+Spectrum emulation.
+
+=================
+HOW TO GET GAMES:
+=================
+Check ftp and www sites for files, Norway seems to have a lot.
+
+Try ftp://ftp.nvg.unit.no/pub/spectrum/
+
+NVG is a bit old, the World Of Spectrum has been updated more recently.
+
+Most sites will be in Europe.  Try doing a web search for 'Sinclair' or
+'Spectrum' if you have plenty of spare time that is.
+
+If you have a SB and a good sampler, then you can turn your tapes into VOC
+files and play them that way, then you could get some utilities to convert
+them into TZX files so that they take up hardly any space at all.
+
+You could register Z80 (a different Spectrum emulator which I am not involved
+with) and buy a tape interface and +D file copier.
+
+MGT disk images can now be made with MGTREAD.  There are probably other ways
+to do it involving Teledisk and Anadisk, I'll have to write a MGT FAQ
+sometime.
+
+Unprotected +3 disks can be converted to the PC if you own a +3 AND a +D
+(with Fixit) if you download the +3/+D conversion package from the x128
+webpage - if I bother releasing it!  Which I haven't.
+
+Since the +3 emulation cannot format DSK files and cannot create them, you'd
+be advised to download this utility from NVG:
+
+ftp://ftp.nvg.unit.no/pub/cpc/utils/msdos/cpcfs085.zip
+
+A similar situation applies to TRD files, try this page for a number of
+utilities (copies of which are also on the X128 page):
+
+http://www.elf.stuba.sk/~eged/english.html
+
+An absolutely identical situation applies to MGT files, I suggest that you
+copy an empty (formatted) disk using MGTREAD.
+
+========
+CREDITS:
+========
+James McKay : Author of the code.
+
+Duncan McKay : Designed the original web page, and found loads of stuff.
+
+Martijn van der Heide : Big boss of WOS, handles the x128 webpage for me.
+
+WorldWide RamSoft : (Luca and Stefano) for all the DISCiPLE/+D info.
+
+Allan Skillman : (SimCoupe) for the usage of the MGT FDC code.
+
+Random for TR-DOS/Pentagon/Scorpion info etc...
+Hacker Scorpion for his help on the above subjects also.
+
+Ulrich Doewich : His uPD765A emulation code - as used in CPE (Amstrad CPC
+emulator, which he has adopted) allows for I/O level emulation and therefore
+protected +3 disks (although I have never managed to find a protected +3 disk
+on the web), so it's thanks to him for +3 disk support.
+
+Tomaz Kac : He created the TZX format, and offered a lot of support in
+implementing the TZX support in x128.  Also the underlying SB library is
+based on his PlayTZX utility.  And he helped with all sorts of files for
+testing.
+
+Ville Halik : His original AY code for fMSX Unix was the starting point for
+the code in this release, the square wave generator, method of counting,
+envelope table and random number generator are still used.  The general
+mixing, envelope timing, general code structure and playing library are
+substantially different.
+
+Igor Eged : Thanks for the TR-DOS files and information.
+
+Carl Murray : For testing and support in the modern era!
+
+VESA 2 support from the Vertigo "VGOVBE20" library, with some slight
+modifications.
+
+Ralf Brown's interrupt list always comes in handy, notably for mouse, VESA
+and LFN support.
+
+ALSO:
+-----
+Marat Fayzullin : His C source gave the idea about how to access a
+variable as bytes and words at the same time.  Also the Adlib AY emulation is
+written by Alex Krasivsky and him.
+Gerton Lunter : His Z80.DOC that came with his emulator, was a very useful
+technical reference.
+Rui Ribeiro : For the info on the Kempston joystick problem.
+Spectrum +2A Manual by Amstrad.
+Master Machine Code On Your Amstrad CPC 464 And 664 by Jeff Naylor and
+Diane Rogers.
+Understanding Your Spectrum by Dr. Ian Logan.
+My Spectrum 128 with it's dodgy keyboard.
+All those who took part in the SLT debate.
+All those who took part in the TZX debate.
+All those responsible for the c.s.s debate about perfectly emulating the AY
+sound chip, the document detailing this is available with the shareware
+version of Z80 V3.05.
+All those who gave SB help.
+Ulrich Doewich for his Ensoniq soundcard testing.
+Yuri Snegirev for IFF2/INT and TR-DOS speedup poke.
+All those who gave feedback and did beta-testing for x128.
+All on the TAPER/EMUL mailing list for telling me where I'd left a "printf"
+in the code - again.
+
+=======================
+HISTORY OF DEVELOPMENT:
+=======================
+(UK DD/MM/YY)
+
+V0.0 Date : 02/02/1996
+V0.1 Date : 08/02/1996
+V0.2 Date : 26/02/1996
+V0.3 Date : 19/03/1996
+V0.4 Date : 01/05/1996
+V0.5 Date : 30/06/1996
+V0.6 Date : 24/03/1997
+V0.61 Date: 27/03/1997
+V0.7 Date : 21/07/1997
+V0.71 Date: 04/08/1997
+V0.8 Date : 03/10/1997
+V0.9 Date : 23/10/1998
+V0.91 Date: 27/10/1998
+V0.92 Date: 05/11/1998
+V0.93 Date: 05/01/2000
+V0.94 Date: 02/09/2002
+
+----------------
+V0.8 Bugs fixed:
+----------------
+* Command line loading is now operational again!
+* Slight sound bug that prevented samples being played when R0R1=0.
+* Sometimes x128 thought that a SNA was a SNA128, and thus *bang*.
+* Minor bug when typing the "save" filename.
+
+------------------
+V0.9 Improvements:
+------------------
+* ACB/ABC stereo via OPL3 or SB Pro.
+* TRD writing.
+* Edge loading.
+* 320x240 X-mode.
+* INI file.
+* DISCiPLE/+D emulation via MGT files.
+
+----------------
+V0.9 Bugs fixed:
+----------------
+* Bugfix : X128 no longer claims to be a beta "V0.9b"!
+* Bugfix : TAP traps no longer crash the PC!
+* Bugfix : Kempston mouse was terrible.
+
+-------------------
+V0.91 Improvements:
+-------------------
+* "Theoretical" 5% speed increase in CPU emulation.
+
+-----------------
+V0.91 Bugs fixed:
+-----------------
+* TAP and snap mixing from the command line did not work properly.
+* Sometimes TAP files were read which had not been opened yet...
+* Fault in X-mode whereby the play icon was poked using a null pointer!
+  This caused the PC to lock up when you tried to quit X128.
+
+-------------------
+V0.92 Improvements:
+-------------------
+* Z80 engine modified slightly in preparation for V1.0 (no visible effect).
+
+-----------------
+V0.92 Bugs fixed:
+-----------------
+* IFF2=0 for a normal INT (fixes parts of Satisfaction Megademo).
+* Can now CATalogue a disk in the Scorpion Monitor.
+* Can now use 128 TR-DOS in Scorpion mode (if you have a disk inserted).
+* Can now insert IMG files from the command line.
+
+-------------------
+V0.93 Improvements:
+-------------------
+* Super-clean X-mode by using triple buffering!
+* Faster X-mode by reducing the amount of video ram accesses.
+* Sound always regains synchronisation automatically.
+* Added TR-DOS speedup option in the INI file. (UNMODIFIED TRDOS ROMS ONLY).
+* SB16 syntax option.
+* Soundcard IRQs 8-15 supported (under certain circumstances).
+* POK files supported.
+* Multiface 3 supported (needs MF3.ROM).
+
+-------------------
+V0.94 Improvements:
+-------------------
+* BUGFIX: 16K DISCiPLE ROM would not load properly (it was flipped by 8K).
+* BUGFIX: R-register wrong when TR-DOS paged in/out (AnyTank, BBSTOP#4,
+  BBSTOP#5 and anything using "Ars Protection").
+* BUGFIX: DAT trap switched off after reset (Elite 3).
+* BUGFIX: Sound synchronisation finally fixed!
+* BUGFIX: T-states could be wrong after loading a V3 Z80 file.  (Audio fix).
+* Added INI option to flip 8K for MGT ROMs (in case it's necessary for some).
+* ZX81 emulation (half-finished).
+* Support for P and 81 tape files (ZX81).
+* Support for FDI, FDD, SCL and Hobeta ($?) files.
+* TRD files can now be 40S, 40D, 80S or 80D.
+* Fuller, DK'Tronics, TrickStick 1 and TrickStick 2 joystick support.
+  (Last 3 only available in "half-finished" mode).
+* Kempston joystick can be (optionally) switched off completely (previously
+  it would still leave port 31 reading 0).
+* VESA 2 linear video modes supported (partially) - Please read the warning.
+* Amiga, AY and AMX Mouse.
+* D40/D80 disk interface (half-finished).
+* Support for 000 files (builds a D80 disk image).
+* IF1 emulation (half-finished).
+* BUGFIX: Num-Lock caused Caps Shift to be pressed with 'grey' keys.
+* PC Keys used for joystick can be redefined.
+* Sinclair Profi+ (half-finished).
+* Auto frame skip (replaces /frame 0).
+* Speed up key - hold down " ` " (the key to the left of "1") for full speed
+  (works best with auto-frameskip on).
+* Long filenames supported under Win'95/98.
+* Audio save to VOC or WAV.
+* No more relative path problems from the command line (..\A.SLT is fine).
+* (Basic) ability to enter POKEs.
+* Option to save SCR files in the place where SGD would expect them.
+
+===========
+KNOWN BUGS:
+===========
+* File selector can't do a filename search if CAPS-LOCK is on!
+* VESA modes sometimes return to DOS with a dull palette.
+* The emulator will always check drive A or B if you try to load a file
+  from the command line that starts with A or B!
+
+Currently under investigation:
+* Refresh XTM.
+
+Sometimes SNA 128 files don't load properly from the command line.
+
+Since the Z80 file format only supports 48K and 128K Spectrums, and only
+Interface 1, Sam Ram, MGT and Multiface 128 hardware interfaces - this means
+that saving snaps in all the new modes could be troublesome!
+
+Konami Ping Pong (released by Imagine) has corrupted bats, due to my shifty
+contended memory timing.
+
+New style of .Z80 not saveable yet (I could not be bothered doing it).
+
+This is more of a bad point : the parallel development of x128 on DOS and
+Unix has basically collapsed, meaning that the Unix version has almost none
+of the improvements listed above (since V0.5), and will NOT be released.
+
+Windows 3.1 can crash when you change the speed of the emulator, but don't
+worry, it only does it when you have important information to lose!  This
+can apparently happen under other circumstances as well, so we can't pin the
+blame on Win 3.1.  Update: It's basically a soundcard problem, Win 3.1 isn't
+to blame.
+
+Certain 48k games seem to try to output to the beeper so often that it is
+outside the human hearing range.  When replayed through the SB, they fall to
+11Khz which is within the human hearing range, as a rather annoying high
+pitched beep.  I have muffled it slightly but it is still there.
+The games which are known to do this:  Arkanoid, Fairlight, Fairlight 2,
+Fist 2 Practice, International Karate (A & B) and Sweevo's World.
+
+Sometimes a .Z80 file will fail to work, then you reload it and it does
+work....
+
+In addition the screen timing is still offline, I have seen the work done by
+Pedro Giminez, and I'll probably implement it at some point.  It will really
+slow down the emulation though...  I've now had (what I think is) a good idea
+for implementing this...  I'll try and have it in place for V1.0.  Providing
+that I don't reach V1.0 by default, as a result of non-stop bugfix releases.
+
+(Hey, I had that bit there last time....)
+(I have a feeling that it will be there for a long time.)

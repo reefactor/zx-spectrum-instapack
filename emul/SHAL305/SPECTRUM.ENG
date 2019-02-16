@@ -1,0 +1,493 @@
+ZX-Spectrum Emulator (c) 1995-1997 Nikolay Shalaev
+English Translation  (c) 1997 Marat Fayzullin
+
+                       ZX-SPECTRUM EMULATOR 3.04
+            	               USER GUIDE 
+
+
+                          Purpose and Features
+
+  The program is an emulator of ZX-Spectrum personal computer. It includes
+the following features:
+
+  - Z80 CPU, including undocumented commands and behaviour
+  - 128kB RAM
+  - AY-3-8910/12 sound chip, including undocumented digital sound feature
+  - Disk controller based on WD2793 chip
+  - Screen retaining original ZX-Spectrum screen ratio
+  - Kempston joystick
+  - Kempston mouse
+  - Beeper
+
+  All devices are emulated at the hardware level and do not require any
+special adaptation of the ZX-Spectrum software.
+
+  While the emulator does not directly support TR-DOS disks, it works with
+the images of such disks. The emulator comes with a set of utilities
+allowing to create such disk images from the real disks.
+
+  The emulator is also capable of supporting external modules.
+
+
+                            System Requirements
+
+  To run the emulator, you will need the following:
+
+  - IBMPC-compatible computer with 386 or better CPU
+  - VGA-compatible video controller
+  - No less than 2MB of RAM
+  - MSDOS 3.00 or better
+
+  The program is running under DOS/4GW 32bit extender and tested with
+DOS4GW.EXE version 1.97.
+
+
+                            Packing List
+
+  Standard distribution includes following files:
+
+  SPECTRUM.EXE - Emulator itself
+  SPECTRUM.DOC - This user guide
+  SPECTRUM.DLL - Microsoft Windows icons
+  SPECTRUM.TRD - TR-DOS disk image with testing utilities
+  ADDITION     - Directory with Open Architecture development tools
+    ADDITION.DOC        - Open Architecture programming manual
+    BIN\DLL2ADD.EXE     - Convertor for external modules
+    INCLUDE\EMUDATA.H   - Include file for Watcom C/C++
+    INCLUDE\EMUDATA.INC - Include file for Borland Turbo Assembler
+    EXAMPLES            - Directory with examples
+
+
+                         Distribution Conditions
+
+  This program is FREEWARE. You can distribute it as long as you do not
+change anything in the distribution package and do not get any profit from
+it. 
+
+  The program is distributed "AS IS" meaning that the author is not
+responsible for any problems, damages, or lost profits caused by its
+usage.
+
+
+                          Contacting the author
+
+  You can contact the author of a program at the following addresses:
+
+  FidoNet:   2:5020/378.40
+  Internet:  nshal@usa.net
+
+
+                           Quick Installation
+
+  If you are running the emulator for the first time and do not want to
+mess with all features and configuration options, do the following:
+
+  - Create a new directory
+  - Unpack emulator distribution into this directory
+  - Put DOS4GW.EXE, ROM images, and disks images into the
+    same directory
+  - Run SPECTRUM.EXE
+  - Set necessary ROM images in the "ROM" dialog box
+  - If you do not have an AdLib-compatible sound card, choose
+    "No Card" in the "Sound" dialog box.
+  - Start emulation with the "Start" button.
+
+
+                                 Options
+
+  The emulator is invoked in a following way:
+
+  SPECTRUM [<-option> ...] [<disk A> <disk B> ...]
+
+  Options may start either with "/" or with "-". Available options:
+
+  H - Help
+  S - Quick start without going into main menu
+
+  File names following the options correspond to disk image files. There
+may be up to four disk images attached to drives A, B, C, and D.
+
+
+	                         ROMs
+
+  To work, emulator requires several ROM image files (with .ROM extension).
+To select ROM images, go into "ROM" dialog, input the name of a directory
+containing ROM images, and choose the appropriate image files. The program
+does not check for incorrect ROM selection and will fail if ROMs are set
+incorrectly.
+
+
+                                 Disks
+
+  The emulator does not directly support TR-DOS disks but uses disk image
+files (with .TRD extension) instead. To make such a file from a real disk,
+you can use disk utilities accessible from the main menu. You can also use
+these utilities to restore a disk from the disk image.
+
+  Disk image file with a "Read Only" attribute is treated as a
+write-protected diskette. Non-existing files are treated as unformatted
+diskettes. The emulator will create such a file as soon as it tries to
+format its first track.
+
+  You can attach disk images to the emulator by inputting their names in
+the command line or in the "Configuration" dialog. Same dialog allows to
+set a directory where disk images are located. To change a disk image file,
+during emulation, use the "Disks" dialog invoked by pressing F5. It can
+also be used to set or reset the "Read Only" attribute. The emulator
+supports up to four disks attached to drives A, B, C, and D respectively.
+
+
+                         Sound (AY-3-8910/12)
+
+  The emulator includes support for the AY-3-8910/12 sound chip. The
+"Sound" dialog allows to select the sound card type for the AY emulation
+and adjust its parameters. The AY sound chip has an additional undocumented
+feature known as the "digital sound" which can only be emulated with a
+SoundBlaster-compatible sound card. It won't be supported if you select an
+AdLib-compatible sound card. If you selected SoundBlaster, be sure to
+input its base address (usually 0x220). To suppress digital sound
+emulation, uncheck the appropriate checkbox.
+
+  The "Volume" parameter sets the digital sound volume relative to the
+volume of FM-synthesis which is fixed.
+
+  The "Envelope" parameter determines the time-wise resolution of the
+envelope emulation. When "x1" selected, the envelope will be updated with
+the frequency of interrupts, with "x2" it will be twice faster, and so on.
+The bigger this value is, the more precise envelope emulation becomes, but
+the emulator itself runs slower. Some systems do not allow to set this
+parameter too high. For example, Windows95 will ask you to reboot in the
+MSDOS mode when you set it higher than "x16" (with "Interrupt Frequency"
+set to 50Hz).
+
+  The "AdLib wait cycles" parameter allows to set the number of wait cycles
+performed when accessing AdLib. Thus, you can reduce the time lost
+to access AdLib when emulating the AY chip. AdLib documentation prescribes
+to use 36 wait cycles, but most sound cards work normally with a smaller
+number. Basically, you should set this parameter so that it is minimal and
+AdLib still works.
+
+  Some notes on the AY emulation:
+
+  - Emulated frequencies do not correspond to the real AY frequencies
+    when 0001h-0018h values are written into R0-R5 registers.
+  - White noise has fixed mean frequency. Register R6 is not emulated.
+  - With small envelope periods and small value of the "Envelope"
+    parameter, sound distortions may occur.
+
+  Problems with certain sound cards:
+
+  - Orchid SoundWave32
+    Before starting the emulator, run SW32/F:3DFM.LD (SW32.EXE comes
+    with the card). Otherwise, the sound will differ from original AY
+    very much. Do not use AdLib for digital sound.
+  - Ensoniq SoundScape
+    FM-synthesized sound is far from the original AY sound.
+
+
+                               Keyboard
+
+0-9, A-Z			0-9, A-Z
+Enter (left and right)		Enter
+Shift, Ctrl (left and right)	Caps Shift (CS)
+Alt (left and right)		Symbol Shift (SS)
+Caps Lock			Caps Lock (CS+2)
+Tab				Ext Mode (CS+SS)
+~				Edit (CS+1)
+- (white and gray)		- (SS+J)
+=				= (SS+L)
+\				: (SS+Z)
+[				( (SS+8)
+]				) (SS+9)
+;				; (SS+O)
+'				" (SS+P)
+,				, (SS+N)
+.				. (SS+M)
+/ (white)			? (SS+C)
+/ (gray)			/ (SS+V)
+* (gray)			* (SS+B)
++ (gray)			+ (SS+K)
+Backspace			Delete (CS+0)
+Page Up				True Video (CS+3)
+Page Down			Inv Video (CS+4)
+Gray Arrows			Left (CS+5), Right (CS+8),
+				Down (CS+6), Up (CS+7)
+Numeric Keypad 1-9		Kempston Joystick
+ESC				Exit
+F1				Help on Keyboard
+F2				Reset into 48k mode
+F3				Reset into 128k mode
+F4				Reset into TR-DOS mode
+F5				Select Disk for TR-DOS
+
+
+                               Joystick
+
+  After enabling the joystick via the "Control" dialog, you should be
+able to use IBMPC analog joystick as Kempston (Kempston Interface I and
+II) and/or Sinclair (Interface II, keys 6-0) joysticks. The emulator will
+automatically detect and calibrate joystick during initialization. In
+that moment, the joystick handle should remain in the neutral position.
+
+  The emulator also supports Kempston joystick via keys 1-9 of the
+extended IBMPC keyboard.
+
+
+                                Mouse
+
+  The emulator has mouse support. You can select the mouse with the "Mouse
+Type" switch in the "Control" dialog. There are also settings for mouse
+sensitivity and left/right button assignment.
+
+
+                                 Speed
+
+  The program has following speed settings:
+
+  - Normal      - close to the real Spectrum speed
+  - Maximal     - maximal possible speed
+  - Accelerated - 1/8 higher than the normal
+  - Reduced     - 1/8 lower than the normal
+  - User        - based on the user-defined parameters
+
+  In most cases, it is possible to set the "Maximal" speed: the faster is
+a program the better. Programs synchronized with VBlank interrupts will
+run the same as on a real Spectrum (when VBlank interrupt speed is also
+set the same as in a real Spectrum). Nevertheless, there are cases where
+you will have to set the "Normal" speed
+
+  Not all computers may run on the correct "Normal" speed. If the speed
+doesn't differ from the original one much, you can adjust it by choosing
+"Accelerated" or "Reduced" speed modes. If the speed differs a lot though,
+it is better to use user-defined speed. To adjust it, you will have to
+input three parameters: main speed and two VRAM speed values.
+
+  To set the main speed, you can used the SpdMain program supplied at
+the SPECTRUM.TRD disk image. It produces the following results on a real
+Spectrum:
+
+  410   - In 128kB mode  (with 1986 ROM edition)
+  592   - In 48kB mode   (with 1982 ROM edition)
+
+  You should set the main speed parameter to make results of SpdMain as
+close to the real ones as possible. If SpdMain returns lower results even
+with the 0 value of the main speed parameter, you computer is not fast
+enough to emulate Spectrum in real time.
+
+  To set the VRAM speed parameters, use the SpdScr program supplied at
+the SPECTRUM.TRD disk image. It produces 44852 on a real Spectrum (both
+models). Set the VRAM speed parameters to make results of SpdScr as
+close to the real ones as possible.
+
+  Certain Spectrum programs may work incorrectly, reboot Spectrum, or
+hang if the emulation speed is far from the original one (especially
+if emulation is slower).
+
+  As a rule of thumb, independently of the speed setting, it is preferable
+to have the maximal speed in TR-DOS. Even if some program requires a
+certain speed, this limitation does not apply to the disk access. To
+maximize TR-DOS speed, use the option "Maximal Speed in TR-DOS".
+
+
+                       Open Architecture and Modules
+
+  The emulator allows to use external "modules" containing additional
+subroutines. These subroutines may perform various functions, such as
+support for unusual hardware add-ons, loaders for different file
+formats, debuggers, alternative CPU and device emulators, etc.
+
+  To add a module, use the "Modules" dialog. After adding a module, you
+can configure it by pressing the "Configure" button in this dialog.
+
+  Everything necessary to create new modules is located in the ADDITION
+directory.
+
+  Standard distribution contains five additional modules:
+
+  TIMES    - Counts CPU cycles and switches into waiting mode after the
+             count reaches a preset number. With "Skip Interrupts" option
+             enabled, TIMES will cancel interrupts unless preset number
+             of cycles is reached.
+  LOG      - Logs emulator execution state. LOG is an extended version
+             of a log facility present in the 1.xx versions of the
+             emulator.
+  MEMPROFI - Support for the extended memory manager of the Profi
+             Spectrum clone.
+  MAGIC    - Support for the Magic Button (generates NMI in TR-DOS).
+  REFRESH  - Implements a hotkey to refresh the screen. Some multitasking
+             systems will not correctly restore the video mode used by
+             the emulator.
+
+
+                         Screen and VBlank Interrupts
+
+  The emulator will switch VGA controller into a non-standard 256x192
+mode with a large border. The proportions of this mode are close to the
+ones used in a real Spectrum.
+
+  Spectrum also has an interrupt synchronized with the beginning of a
+vertical blanking impulse (so-called VBlank interrupt). The emulator
+provides you with three different ways to generate VBlank interrupts.
+You can select one with the "Interrupt Source" parameter:
+
+  - Interrupts are generated by the timer. In this mode, they are not
+    synchronized with the VGA video. This will make border effects look
+    differently from a real Spectrum. Some picture flicker and jerky
+    display of sprites and scrolling lines may also occur. When
+    selecting this mode you can set the interrupt frequency with the
+    "Interrupt Frequency" parameters taking values of 20-100Hz (default
+    value is 50Hz, same as a real PAL/SECAM Spectrum has).
+
+  - Interrupts are bound to the VGA VBlank interrupts. In this mode,
+    they will by synchronized with the VGA video, but you will also
+    need to set the VGA IRQ number (option "IRQ VGA"). Interrupt
+    frequency will depend on the frame rate. NOTE: Not all VGA cards
+    support VBlank interrupts, and your computer BIOS settings may
+    block such interrupts.
+
+  - Interrupts are generated during the VGA VBlank period. This mode
+    is different from the previous one because the emulator itself
+    will track the VBlank. The emulator will work slower in this mode
+    and you won't be able to adjust its speed correctly. This mode
+    is supplied as an alternative for those whose VGA cards do not
+    support VBlank interrupts. It also accounts for skipping of
+    interrupts (during the VBlank period, the emulator may be processing
+    a port access by the Spectrum program and skip an interrupt).
+
+  The emulator supports video modes with frame rates of 50Hz, 55Hz,
+60Hz and 75Hz:
+
+  50Hz MODE:
+  This mode is closest to the one of a real PAL/SECAM Spectrum. It uses
+  scanning frequencies which are not supported by some VGA and SVGA
+  monitors. Such monitors will display picture with a lot of flicker in
+  this mode.
+
+  55Hz MODE:
+  Intermediate between 50Hz and 60Hz modes.
+
+  60Hz MODE:
+  This mode has scanning frequencies equivalent to ones of a standard
+  320x240 VGA mode. It is supported by any VGA monitor.
+
+  75Hz MODE:
+  This mode has increased scan rate. It is supported by any SVGA monitor.
+
+  NOTE: Interrupt frequency determines the speed of execution for
+        Spectrum programs synchronized to the interrupts: overall
+        speed, reaction to keyboard input, music synthesis, timer,
+        etc. 
+
+
+                    Miscellaneous Parameters and Features
+
+  - "Interrupt Length" 1-100 (default 1)
+    Number of CPU commands during which interrupt request line stays
+    active. This option was introduced for compatibility with real
+    Spectrum, as some programs check the interrupt request length.
+   
+  - "Format Data Length" 1-16384 (default 1)
+    Number of bytes accepted by WD2793 disk controller when performing
+    TRACK WRITE operation. This option was introduced for compatibility
+    with real Spectrum, as some programs check the data length. The
+    smaller this its value is, the faster disk formatting works in the
+    emulator.
+
+  - "Restart Mode"
+    This switch allows to change the mode in which emulator goes after
+    you restart it with the "Start" button from the main menu.
+
+  - "Constant Disk Ready"
+    When this switch is on, the disk delays will not be emulated. Each
+    disk controller command is considered completed at the next access
+    to the disk controller. Virtual disk drives "always rotate". In
+    this mode the emulator works faster, but it is less compatible with
+    the real Spectrum. The option has been introduced for compatibility
+    as some programs may check this parameter.
+
+  - "Read Track Number"
+    This switch will affect the first data byte read by the disk controller
+    on the "Read Address" command. When the switch is off, the track number
+    will always be 1. Some programs will not work then. When the switch is
+    on, the current truck number will be returned. In such case, TR-DOS
+    will format all disks as one-sided.
+
+  - "Autosave Config"
+    The emulator will automatically save configuration when this option is
+    on.
+
+  Some standartly formatted disks cannot be copied into a file. The error
+occurs at the first sector of each track and related to the distance from
+the beginning of a track to the beginning of a first sector insufficient
+for IBM PC disk drives. The emulator works normally with disks formatted
+with special TR-DOS format programs for IBM PC (for example, the one
+supplied with the emulator). It also supports the disks formatted with
+most good Spectrum format programs. If you do encounter a problem, you
+can resolve it by replacing your disk drive and the controller (mainly
+controller) with a different model. You can also try to cover half of the
+synchronization hole at the disk with the opaque material. This may be
+enough to read some previously unreadable disks.
+
+
+                      Configuration File SPECTRUM.INI
+
+  This file contains lines in format
+
+                       <Option>[=<Value>]
+
+  Spaces are ignored, unless they are encapsulated in quotation marks.
+Character case is ignored. The file may contain comments prepended with
+the ";" symbol. When saving emulator configuration, all comments will
+disappear though. Possible options are listed below:
+
+  ROMPath=<path>                    - Path where ROM files are located
+  ROM48=<48kB ROM name>             - ROM file names
+  ROM128=<128kB ROM name>
+  ROMTR=<TR-DOS ROM name>
+  ROMUser=<user ROM name>
+  DiskPath=<path>                   - Path where disk images are located
+  DiskA=<disk A name>               - Disk image file names
+  DiskB=<disk B name>
+  DiskC=<disk C name>
+  DiskD=<disk D name>
+  DiskUtilityDrive=A|B              - Drive for disk utilities
+  DiskUtilityFilename=<name>        - File name for disk utilities
+  Beeper=Off|On                     - Beeper emulation
+  SoundCard=None|AdLib|SoundBlaster - Soundcard for AY-3-8910 emulation
+  SoundDigital=Off|On               - Digital sound emulation
+  SoundAdLibWaitState=1..36         - AdLib wait states
+  SoundBlasterAdress=210..280       - SoundBlaster port number
+  SoundBlasterVolume=0..128         - Digital sound volume
+  SoundEnvelopeMulti=x1..x512       - Envelope generator resolution
+  JoystickKempston=Off|On           - Kempston Interface joystick emulation
+  JoystickSinclair=Off|On           - Sinclair Interface joystick emulation
+  MouseType=None|Kempston           - Mouse type
+  MouseRateX=10..200                - Horizontal mouse resolution
+  MouseRateY=10..200                - Vertical mouse resolution
+  MouseKempButtonXChange=Off|On     - Kempston mouse button swapping
+  Speed=Normal|Max|Fast|Slow|Custom - Emulation speed
+  SpeedCustom                       - Main speed parameter
+  SpeedCustomPixel                  - VRAM speed parameter (pixels)
+  SpeedCustomAttr                   - VRAM speed parameter (attributes)
+  SpeedMaxTR=Off|On                 - Maximal speed in TR-DOS
+  FrequencyInt(Hz)=20..100          - Interrupt frequency (Hz)
+  InterruptLength(Command)=1..100   - Interrupt request length (commands)
+  VerticalRate(Hz)=50|55|60         - Frame rate
+  IntSource=Timer|Video|Retrace     - Interrupt source
+  VideoIRQ=9..12                    - VGA controller IRQ
+  GrayMode=Off|On                   - Monochrome mode
+  FormatDataLen=0..16384            - WD2793 "Write Track" data length
+  DiskReadyAnytime=Off|On           - Constant Disk-Ready
+  DiskReadIndexTrack=Off|On         - Track number read
+  ResetType=48|128|TRDOS            - Restart mode
+  AutoSaveConfig=Off|On             - Automatic config saving
+  AddPath=<path>                    - Path where add-ons are located
+  Addition=<module name>            - Include an add-on
+  Add:<option>[=<Value>]            - Add-on option
+
+
+                              Thanks to...
+
+  Special thanks to Alexey Emelyanov (AvE), Andrey Zamesov, Sergey Yurin,
+Alexander Miklyaev, and everybody who sent his comments and suggestions
+about the emulator.

@@ -1,0 +1,625 @@
+------------------------------------------------------------------------------
+                              W H A T 'S   N E W
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+ v0.30 - 8th March 2000 (new sound engine)
+------------------------------------------------------------------------------
+
+  - New/Updated: SOUND
+
+    * 8/16 bits mono/stereo playback.
+    * Internal 16 bits mixing in 8 bits playback for more accurate sound.
+    * AY-3-8912:
+      > Stereo (ABC, ACB and all other combinations)
+      > Right volumes. Thanks to Sergey Vladimirovich Bulba for the table.
+      > Fixed low tone and envelope periods, still not perfect, but much
+        better.
+      > Fixed envelope shape 10 and 14.
+    * Sound Drive: in Pentagon & Scorpion models, with stereo support.
+    * Stereo/Profi Covox: in Pentagon & Scorpion models, with stereo support.
+    * Updated GUI to allow configuration of new options (F12 - Sound), more
+      sound options coming in next versions.
+
+  - New: DEBUGGER. Added some options (some requested a lot of times) to
+         debugger.
+
+    * Main window:
+      > Changed a bit overall layout of main window.
+      > Registers, flags and IM can be changed from debugger.
+      > Divided Program window in two. First window shows next instruction
+      that will be executed. Second window shows 10 instructions and you can
+      move around with UP and DOWN keys. You can set/remove breakpoints
+      with SPACE or with 1 to 0 keys.
+      > You can also move around in Stack window with CONTROL+UP and
+      CONTROL+DOWN. You can set a breakpoint to the value under the
+      pointer with CONTROL+SPACE.
+      > Removed breakpoints window (F6). Moved breakpoints to main window.
+        Set (CTL+F2), remove (CTL+F3) and remove all (CTL+F4).
+      > Added area breakpoints (CTL+F5 & CTL+F6). (Mac Buster)
+      > Run to pointer (F6).
+      > Step Over (F8) (too much people to list :))
+
+  - Bug: Fixed loading from ZIP & RAR with spaces in the path or filename.
+    (Aley Keprt)
+
+  - Bug: Fixed scanning inside of RAR. It was not showing files with
+    lowercase extension.
+
+  - Bug: Fixed volume bars in mode 3 and 4 (Davide Barlotti and someone
+    else).
+
+------------------------------------------------------------------------------
+ v0.23 - 5th February 2000 (just another bug fix release)
+------------------------------------------------------------------------------
+
+  - New: Crap 320x200 50Hz video mode. It is a first attemp ... Check r80.ini
+         for more info.
+
+  - Updated: Save menu now shows the files, so you can select a file instead
+         of typing the name each time (Mac Buster).
+
+  - Updated: Load data fileselector from debugger-memory now accepts all
+        files, so a DAT extension is not required (someone I don't remember
+        and I cannot find the e-mail ;)).
+
+  - Bug: Fixed save code when final address is #FFFF. It was writing to
+         the file until your whole disk is full, ehem ... :) (Mac Buster).
+
+  - Bug: Fixed fileselector crash when path of r80.ini is not valid (Ramsoft
+         and Cliff).
+
+  - Bug: Fixed sound when set to none. It was crashing in games using beeper
+         and while loading TZX (Cliff and Hendrik Bezuidenhout).
+
+  - Bug: Fixed a bit TAP loader, which was not working well in some cases.
+         (Jarek Adamski).
+
+  - Bug: Fixed automatic tape start. It was starting tape sometimes that
+         should not. (Mac Buster).
+
+------------------------------------------------------------------------------
+ v0.22 - 19th December 1999 (bug fix release, again)
+------------------------------------------------------------------------------
+
+  - New: SOUND
+    * Covox emulation for Sound Blaster.
+    * LTP-AY support. I can not test this, so send reports please.
+
+  - Update: Overall speedup, about 2%-10%.
+
+  - Bug: Pressing ENTER/DELETE/BACKSPACE in POKEs window without a file
+         loaded was crashing (Hendrik Bezuidenhout).
+
+  - Bug: TR-DOS not working in Pentagon's 48 BASIC option (only in version
+         0.21) (Mac Buster).
+
+  - Bug: LD (IY-XX) like instructions offset were wrong in debugger (Jarek
+         Adamski).
+
+  - Bug: Fixed Kempston Mouse emulation, it seems that port #FDDF can be used
+  to read Y position too and not only #FFDF (Random).
+
+------------------------------------------------------------------------------
+ v0.21 - 2nd November 1999 (bug fix release)
+------------------------------------------------------------------------------
+
+  - New: R80.INI
+    * ActivationArea=1/2 select TR-DOS activation area 3Dxx/3Cxx
+
+  - Updated: DEBUGGER.
+    * F2 (Memory): Shows characters.
+
+  - Updated: GUI.
+    * CONTROL+F10 and ALT+F10 now quits without asking confirmation.
+
+  - Updated: Command line.
+    * Now R80 doesn't ask to hit a key to start emulation unless you
+    use -pause command.
+
+  - BUG: Fixed (I hope) problems with Sound Blaster support.
+
+  - Bug: Fixed SB emulation of AY-3-8912, Robocop speech was not playing
+    right. Also fixed Hostages and Light Corridor speech.
+
+  - Bug: Loading tapes in Spectrum 16k was not working.
+
+  - Bug: Scorpion memory mapping fixed.
+
+
+------------------------------------------------------------------------------
+ v0.20 - 10th October 1999
+------------------------------------------------------------------------------
+
+  - New: Spectrum 16k support.
+
+  - New: Accurate contended memory emulation. Spectrum 48k, 128k and +2A
+         multicolor demos now are right. Note that still there is not
+         T screen update (32T screen update at the moment) nor accurate
+         border emulation. This means border effects (like border texts)
+         are not right. The accurate contended memory emulation makes
+         Z80 emulation use more CPU time than in previous versions. I
+         suppose at least a Pentium 100 or maybe more is required to run
+         R80 at good speed. Thanks to Pedro Gimeno for the info in CSS FAQ.
+
+  - New: Sound Blaster support. Beeper and AY-3-8912 emulation.
+
+  - New: Pentagon and Scorpion 512k memory emulation.
+
+  - New: Scorpion turbo mode emulation.
+
+  - New/Updated: FORMATS:
+      * TRD (Betadisk): Save (full size) and load cutted files.
+      * SCL (Betadisk): Check CRC.
+      * VOC (Tape): Handle a some blocks and checking if VOC is in a
+                    format supported by R80 (mono, no compressed, 8 bits ...)
+      * DAT (Database): Added support for version 2.02. Old version still
+                        supported.
+
+  - Updated: DEBUGGER
+
+      * Added support for Spectrum 16k
+      * Main window: (1-8) set breakpoint in line of code.
+                     (F8) if block instruction (LDIR,CPIR,DJNZ to itself,...)
+                          executes it in one step, otherwise works as F7.
+                     Timing information.
+      * Memory (F2): (F4) Save dissembled code to a file.
+                     (F5/F6) Load/Save bytes from/to a file
+      * Show screen (F9): In Spectrum 128k,+2,+2A, Pentagon and Scorpion,
+                          keys 1/2 select screen buffer to show.
+
+  - Updated: User interface.
+
+      * Main Help (F1): Divided in three windows, F?, CTRL+F? and ALT+F?
+      * Command help (ALT+F1): Command/Key help. Check yourself, enter here
+        and type something.
+
+      * Disk Browser (F8): Save, enable/disable write protect and create new
+                           disk.
+
+      * Tape Browser (F9): Updated 'Custom Info Block: POKEs'.
+
+      * POKEs (CONTROL+F7):  POKEs window. Load from .POK files.
+
+      * Current model configuration (ALT+F2): Configure current model
+        configuration (ROMs, memory, devices, sound, ...). You can change
+        this settings from Reset/Hardware (F2) too. Select the model you want
+        to change and press SPACE.
+
+      * Fixed fast search for all load/save windows. Pressing:
+          - single key: moves to the first file starting with the key.
+          - key+SHIFT: moves to the first directory starting with this key.
+
+      * Removed fast load snapshot and fast save snapshot options. With
+        compressed files it was not working. If you think it should be
+        in R80, send an e-mail.
+
+  - Updated: R80.INI
+
+      * Quite a lot of changes, mainly to add support for individual
+        configuration of each model.
+
+  - Updated: Betadisk.
+
+      * Implemented Write Sector command so basic writing operations now
+        work ok. R80 will remember you to save any modified disk before you
+        exit.
+
+      * Many minor Betadisk fine tuning with the help of Mac Buster :).
+
+  - Updated: Command line.
+
+      * Removed -keyboard. Only Spectrum 16k and Spectrum 48k allow
+        changing keyboard issue and it must be done in r80.ini or
+        hardware configuration (ALT+F2).
+      * Replaced -sound with -beeper and -ay38912. In the new options
+        you can select the sound card to use with each one.
+
+  - Bug: Some problems with new keyboard handler have been fixed (JetPac
+         and probably others). Thanks to Mac Buster for the report :).
+
+  - Bug: Fixed the P/V flag of LD A,R and LD A,I. Now Kolobok 2 runs fine.
+
+  - Bug: INC (HL) and DEC (HL) were writing to ROM.
+
+  - Bug: Loading a SLT, then resetting two times was crashing R80.
+
+------------------------------------------------------------------------------
+ v0.09 - 15th May 1999
+------------------------------------------------------------------------------
+
+  - New: FDI support.
+
+  - New: Win95/98 long file name support.
+    * Loading LFN, PKUNZIP 2.50 and RAR 2.?? required to extract from
+      ZIP/RAR with LFN. If you don't have the proper versions, files will
+      appear in fileselector but will give an error when loading. In DOS
+      mode, compressed files with LFN are not listed in the fileselector.
+    * Long paths.
+
+  - New: NMI window. Select which NMI you want to launch. CTRL+F11 will
+         do NMI without showing window.
+
+  - New: Kempston mouse support
+
+  - New: Saving PSG sound files. Also made a small utility to convert from
+    PSG to YM format. To save a psg file use '-sound 5' in command line and
+    all sound output will be saved to r80.psg file. PSG saving is very
+    limited at the moment and will be improved in the future.
+
+  - Updated: DJGPP v2.02, Allegro 3.11 and UPX 0.51
+
+  - Updated: Command line.
+
+    * Using more than one file. Example:
+
+      > r80 file1.z80 file2.trd file3.tap file4.trd)
+
+      This command will load file1.z80 snapshot, select file3.tap as tape,
+      load file2.trd in drive A of Betadisk and file4.trd in drive B.
+
+    * -mouse n: 0 - None, 1 - Kempston
+
+  - Updated: R80.INI => New options:
+
+    * mouse: 0 - None, 1 - Kempston
+    * swapbuttons: swap buttons of mouse emulation
+
+  - Updated: KEYBOARD.INI => It is no longer compatible with older
+    versions. Now you can map any combination of Symbol Shift/Caps Shift key
+    + another key to a single key of PC keyboard. This KEYBOARD.INI should
+    be forever!!.
+
+  - Updated: Betadisk emulation. A few TRDs not loading before load Ok now.
+             Also, limited loading speed, speed of animations in demos like
+             Refresh and Power Up are closer to original.
+
+  - Updated: Save SNA snapshots works now for Spectrum +2 and Pentagon 128
+             as model info is not saved. To load a SNA first reset to the
+             model you want to load it. Then load the SNA. If the emulator
+             is in Spectrum 48k or Spectrum +2A mode and it is a 128k
+             SNA it resets to Spectrum 128k. Loading a 48k SNA always
+             resets to Spectrum 48k.
+
+  - Updated: Scorpion synchronization. Slowdown in Z80 emulation (about 5%).
+
+  - Bug: Extracting a file from a RAR when file was already in temporal
+         directory was hanging the emulator.
+
+  - Bug: Fixed save PCX screenshot in VGA mode, the save dialog was
+         saved too ;).
+
+  - Bug: Fixed H flag in 16 bits ADC and ADD instructions.
+
+  - Bug: Fixed HALT instruction. R register was not being update correctly. I
+         though it won't be any program that needed it, but yes, there is
+         one :). (PSG-WINS.SCL)
+
+------------------------------------------------------------------------------
+ v0.08 - 27th February 1999
+------------------------------------------------------------------------------
+
+  - Scorpion 256 emulation, screen not well synchronized.
+
+  - RAR support.
+
+  - Finally fixed all bugs (I hope) with Matrox video cards.
+
+  - Internal re-organization of tape structures. External effects?
+  nothing important. Why I changed it? I don't know :).
+
+  - Internal re-organization of disk structures. External effects?
+  can load SCL now, with old structure it was impossible.
+
+  - New formats supported:
+    * Snapshot: SLT.
+    * Betadisk: SCL.
+
+  - Betadisk improved: refresh.trd, forever.trd and others now load.
+
+  - Fixed Z80 loader. It was crashing in one snapshot (deep.slt).
+
+  - Faster loading of SGD files (three times faster).
+
+  - Changed mode of drive detect. Thanks to Christian Hackbart for the
+  code.
+
+------------------------------------------------------------------------------
+ v0.07 - 6th January 1999
+------------------------------------------------------------------------------
+
+  - ZIP support: you can PKZIP all your files and save a lot of disk space.
+   'pkunzip.exe' must be in the PATH.
+
+  - Fixed Save Snapshot, Save Tape, Save Screenshot and Message in video
+    mode 0.
+
+  - Removed noisy start-up and quit :) in Adlib.
+
+  - Fixed speaker a little.
+
+------------------------------------------------------------------------------
+ v0.06 - 21st December 1998
+------------------------------------------------------------------------------
+
+  - Spectrum +2A emulation.
+
+  - Screen routine optimization (1% faster?).
+
+  - Betadisk available for Spectrum 48k, 128k, +2 and +2A. Added 'enablebd'
+    to r80.ini. If it is set to on, betadisk is available when in
+    Spectrum 48k, 128k, +2 or +2A mode. If it is set to off, betadisk is not
+    available. For Pentagon, betadisk is always available.
+
+  - Fixed Multiface 128 for Spectrum +2.
+
+  - Fixed save TAP for Pentagon 128.
+
+------------------------------------------------------------------------------
+ v0.05 - 17th December 1998
+------------------------------------------------------------------------------
+
+  - Interface:
+    * The User Interface is now in graphic mode, except for Instructions
+      in Tape Browser which need 80 columns and I only have 64. POKEs
+      is also in text mode.
+    * Added a keyboard help image (CONTROL+F1). Mode 640x480x256 is required.
+    * Fileselectors:
+      - Directories and files in the same list.
+      - Units added.
+      - Shows a screenshot of the game/program if available.
+      - Shows information of the game/program if available. The info is
+        extracted from SGD v2.0 DAT files.
+    * Debugger:
+      - Added Betadisk ports.
+    * F10 now asks always for confirmation.
+
+  - Formats:
+    * Snapshot: SP, SIT.
+    * Tape: BLK, VOC.
+    * TZX: updated to v1.13.
+
+  - Video:
+    * New video mode: VESA 2.0 400x300x256 (almost full border, 4 lines
+      missing from upper border)
+    * New video mode: VESA 2.0 512x384x256 (full border)
+    * Tried to fix some problems with Matrox, but seems it is not working
+      at all yet.
+    * Fixed save PCX screenshot for mode 7.
+
+  - r80.ini (new options):
+    * frame: auto -> automatic frame skip when required.
+             1 to 9 -> draw 1 of every n (1 to 9) frames. No synchronization.
+    * loadscrpath: path to search for screenshots by the fileselector.
+    * databasefile: files to load from info of programs/games to show in the
+             fileselector. Must be SGD 2.0 .DAT files.
+    * packgroups: on -> don't show blocks inside GROUP in tape browser.
+                  off -> show all blocks in tape browser.
+    * autoplay: on -> emulator starts tape automatically when is typed
+                LOAD "" or Tape Loader is selected.
+    * TAPload: fast -> Trap ROM to load TAP files fast.
+               slow -> Load TAP as a TZX.
+    * frameload: values are the same as frame. It is used when tape is
+                 playing. If you set to '1' it will load at top speed
+                 showing all frames, if you set a bigger number it will load
+                 even faster. Use 'auto' to load at normal speed.
+
+  - Command line:
+    * fixed -keyboard, it didn't worked.
+    * added -frame.
+
+  - Other:
+    * Fast Save Snapshot (CONTROL+F4) only saved Z80 snapshots, not SNA.
+    * More accurate contended memory emulation when IN $FE. At least 4 TZX
+    not loading before load now.
+    * Code optimization: about 10% faster.
+
+------------------------------------------------------------------------------
+ v0.04 - 26th October 1998
+------------------------------------------------------------------------------
+
+  - TRD support with partial Betadisk emulation:
+    * Read only and far from perfect.
+    * Use any drive (A, B, C or D).
+    * Use any type of disk:
+        * 80 tracks double side.
+        * 40 tracks double side.
+        * 80 tracks single side (not tested as I didn't found any, but I
+          suppose it works).
+        * 40 tracks single side.
+    * I tested with more than 100 TRD files and only 3 failed.
+
+  - Z80 emulation:
+    * DD CB and FD CB opcodes were using 4 T more than should.
+    * LD IXl,A like opcodes are 8 T instead of 9 T.
+    * Not valid FD ** and DD ** commands only increase by 1 R register.
+    * Added undocumented opcodes DD CB ** and FD CB **.
+    * Fixed flags for INC opcode ( it was missing P/V and H!!! :) )
+    * CALL is now executed the right way, now all TZX with Paul Owens
+    loader load Ok.
+    * and many other small fixing with undocumented opcodes and flags.
+
+  - Adlib:
+    * Used some code by Alex Krasivsky and Marat Fayzullin from fmsx
+    emulator to get a more accurate wave shape in Adlib. Note that only used
+    initialisation code, the rest of AY-3-8912 emulation, including play
+    tone, noise, envelopes, ..., is by me.
+    * Isaac Santaolalla adjusted pitch, he says now it is played the right
+    pitch.
+
+  - Tape rewinds to Start of Tape when it arrives to the End of Tape.
+
+  - Fast reset (CONTROL+F2) now works for Pentagon 128.
+
+  - Tape Browser (some modifications):
+    * added 'Custom Info Block: Spectrum Screen'.
+    * updated 'Archive Information' to v1.12.
+    * updated 'Hardware Information'.
+    * modified 'Custom Info Block: Instructions'.
+    * modified 'Custom Info Block: POKEs'.
+
+  - Interface:
+    * added quit dialog (only when in graphic mode).
+
+  - added a new video mode: VESA2 640x480x256.
+
+  - command line is 100% working again.
+
+------------------------------------------------------------------------------
+ v0.03 - 21st September 1998
+------------------------------------------------------------------------------
+
+  - Pentagon 128 emulation, useless as there is not TRD support yet.
+
+  - ROMs are not modified any more when loading/saving a TAP file.
+
+  - Save GRP snapshots (code by Ricardo Bittencourt).
+
+  - Added breakpoints to the debugger.
+
+  - Added traps to the debugger. Traps are like breakpoints but for internal
+    use of the emulator.
+
+  - Added (again) display screen to the debugger.
+
+  - Changed configuration options for sound and joystick in r80.ini.
+
+  - More options in Setup (F12).
+
+  - A bit more accurate contended memory emulation, far from perfect yet.
+
+  - Fixed a silly bug in Z80 v1.35 loader introduced in release 0.02.1.
+
+  - Faster display screen routines, about 15%-20%.
+
+------------------------------------------------------------------------------
+ v0.02.1 -  9th September 1998
+------------------------------------------------------------------------------
+
+  - Spectrum +2 emulation.
+
+  - NMI emulation.
+
+  - Multiface 128 emulation.
+
+  - Load SNA 128k.
+
+  - Save SNA 48k and 128k.
+
+  - More accurate pseudo-noise frequencies for GUS.
+
+  - Many internal changes, I hope everything still works.
+
+------------------------------------------------------------------------------
+ v0.02 - 7th September 1998
+------------------------------------------------------------------------------
+
+-> Formats:
+  - Load TZX tapes (partial support, but 99.999% of TZX files will load).
+    > Supported blocks (* supported)
+      * 10 Standard Speed Data Block
+      * 11 Turbo Loading Data Block
+      * 12 Pure Tone Block
+      * 13 Sequence of Pulses of Different Lengths
+      * 14 Pure Data Block
+      * 15 Direct Recording
+      * 20 Pause/Stop Tape
+      * 21 Group Start
+      * 22 Group End
+      * 23 Jump to Block
+      * 24 Loop Start
+      * 25 Loop End
+      * 26 Call Sequence
+      * 27 Return from Sequence
+      * 28 Select
+      * 2A Stop Tape if in 48k Mode
+      * 30 Text Description
+      * 31 Message Block
+      * 32 Archive Info
+      * 33 Hardware Type
+      - 34 Emulation Info (ignored)
+      * 35 Custom Info Block
+        * POKEs
+        * Instructions
+        - Spectrum Screen (not displayed yet)
+      - 40 Snapshot (ignored)
+      * 5A 'Z'
+
+      if you have a file with a Emulation info block or a Snapshot block,
+      please send it to me < raulgomez@mx3.redestb.es >.
+
+  - Save PCX screenshots.
+
+  - Fixed a bug in Z80 save. Some pages were saved 16385 bytes instead
+    of 16384 bytes.
+
+  - Fixed a bug in TAP save. The checksum byte was not saved the right way.
+
+-> Sound:
+  - GUS: noise (pseudo-frequency) and volume envelopes. Now is 99%
+    perfect!!!! , you have to listen to it. Many thanks to ISS!!! :)
+  - Adlib: volume envelopes implemented.
+
+-> Interface
+  - Fixed a couple of bugs in load fileselectors.
+  - TZX Browser (F9).
+  - Removed old keys for tape manipulation. Now it can be done in
+    the Tape Browser. Added HOME to Start Tape and END to Stop Tape.
+  - Screen info available again only for video modes 3 and 4. Now you can
+    select in r80.ini what info do you want to see (infofps, infosound,
+    infotape & infomodel).
+
+-> Debugger
+  - Changed colors :).
+  - Memory (F2):
+      * added edit mode (F3), you have to set it on if you want to edit
+        memory.
+      * now you are allowed to write to ROM.
+
+-> Emulation
+  - Real Tape support.
+  - Contented memory emulation. It seems to work well in most games.
+    'Chase H.Q.', 'Combat School' and other flickering problems solved. Also,
+    other games like 'Hostages' now run.
+
+-> Fixed, I hope, VESA 2.0 problems. Now it should work with all VESA 2.0
+  software or hardware compatible cards.
+
+-> keyboard.ini: added key definitions for quote (") and colon (;) which
+  I forgot.
+
+------------------------------------------------------------------------------
+ v0.01c - 22nd June 1998
+-------------------------------------------------------------------------------
+
+-> User interface
+  - Options (F1)
+  - Reset  (F2)
+  - Fast load using last loaded snapshot (CONTROL+F3)
+  - Fast save using last saved snapshot (CONTROL+F4)
+  - More setup options (F12)
+  - Bug fixing in SAVE screens.
+
+-> Sound
+  - Support for GUS sound card using ISS code.
+  - Bug fixing in the adlib code, notes with volume envelope are not
+  played the right way yet, but at least, now are played.
+
+-> VESA 2.0 support with 4 new graphic modes:
+
+    - VGA 320x200 (old mode)
+
+    - VESA 320x200
+    - VESA 320x240 (top & bottom borders)
+    - VESA 320x400 (black lines)
+    - VESA 320x480 (top & bottom borders, black lines) *** recommended
+
+    VESA is 15% faster than VGA.
+
+-> Full customizable keyboard emulation using keyboard.ini
+
+-> Sinclair 1 & 2 joystick emulation using keyboard.
+
+-> Real Tape support for TAP and TZX files not included yet as it is not
+  finished.
+
+-> Info box in the top left corner removed.

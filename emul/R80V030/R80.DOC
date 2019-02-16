@@ -1,0 +1,376 @@
+______________________________________________________________________________
+//////////////////////////////////////////////////////////////////////////////
+             R80 Spectrum Emulator v0.30 by Raul Gomez Sanchez
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+ 0 - Index
+------------------------------------------------------------------------------
+
+    0 - Index
+    1 - Introduction
+      1.1 - Disclaimer
+      1.2 - Contents of the distribution
+      1.3 - System requirements
+      1.4 - How you can help me
+    2 - Features
+    3 - Configuration
+      3.1 - r80.ini
+      3.2 - keyboard.ini
+      3.3 - Command Line
+    4 - User Interface
+    5 - Tips & Hints
+    6 - Known bugs
+    7 - To do
+    8 - Greetings
+    9 - Contact me
+
+------------------------------------------------------------------------------
+ 1 - Introduction
+------------------------------------------------------------------------------
+
+ 1.1 - Disclaimer
+ ----------------
+
+        USE THIS PROGRAM AT YOUR OWN RISK.I TAKE NO RESPONSIBILITY OF
+   ANY DAMAGE THIS PROGRAM MAY PRODUCE.
+
+
+ 1.2 - Contents of the distribution
+ ----------------------------------
+
+      List of files in R80 distribution (r80v030.zip):
+
+        cwsdpmi.exe      - Needed by r80.exe, you can delete it if you
+                           already have it in your path.(20473 bytes)
+        r80.exe          - R80 executable. (222352 bytes)
+        r80.doc          - R80 documentation.
+        48.rom           - Spectrum 48k ROM.
+        128.rom          - Spectrum 128k ROM.
+        plus2.rom        - Spectrum +2 ROM.
+        plus3.rom        - Spectrum +2A, +3 ROM.
+        pentagon.rom     - Pentagon 128 ROM.
+        scorpion.rom     - Scorpion 256 ROM.
+        trdos.rom        - TR-DOS 5.03 ROM.
+        new.txt          - What's new in this release.
+        r80.ini          - Configuration file.
+        keyboard.ini     - Keyboard configuration file.
+        keyboard.pcx     - Keyboard help image.
+        r80.ico          - Icon for Windows (by Mac Buster).
+
+      About the roms: Amstrad allow free distribution of roms for emulation
+  purposes.
+
+      About Multiface 128: Multiface rom is not included in this
+  distribution. You have to get it from somewhere else and rename it
+  to 'mf128.rom' or change the name in r80.ini.
+
+  Do NOT distribute with anything else.
+
+
+ 1.3 - System requirements
+ -------------------------
+
+    R80 runs under DOS, Windows 95/98 DOS box and has been reported
+  to work under OS/2. When running in a Windows 95/98 DOS box it takes
+  advantage of long filenames. Due to the changes done in version
+  0.20 I don't know exactly what are the minimum requirements to run R80,
+  but I think a Pentium 100 with about 8Mb of memory should be enough. A
+  Sound Blaster, Adlib or Gravis sound card is required for AY-3-8912
+  emulation. A VGA video card is required and VESA 2.0+ recommended.
+
+    In slow computers (386 and 486) you will see a blank screen. In a 386
+  better leave it and go for another emulator. In a 486 you can try to set
+  a high frame rate value and at least you will see something.
+
+
+ 1.4 - How you can help me
+ -------------------------
+
+    No, I'm not going to ask you money. The best way of helping me is
+  testing games, programs,... and mailing me if you find something
+  not working.
+
+
+------------------------------------------------------------------------------
+ 2 - Features
+------------------------------------------------------------------------------
+
+  * Hardware:
+
+    - Spectrum 16k, Spectrum 48k, Spectrum 128k, Spectrum +2,
+      Spectrum +2A, Pentagon and Scorpion.
+    - All official opcodes of the Z80.
+    - All documented unofficial opcodes and flags, except for I/O
+      instructions flags.
+    - Interrupts: Mode 0, 1 and 2, and Non Mascarable Interrupts (NMI).
+    - Register R.
+    - Accurate contended memory emulation for Spectrum 16k, Spectrum 48k,
+      Spectrum 128k, Spectrum +2 and Spectrum +2A.
+    - Accurate screen update (32T) for screen area.
+    - Beeper: using PC Speaker or Sound Blaster.
+    - AY-3-8912 mono: using Adlib, Sound Blaster, GUS.
+    - AY-3-8912 stereo(abc/acb): using Sound Blaster.
+    - LPT-AY.
+    - Covox, Stereo/Profi Covox & Sound Drive: using Sound Blaster.
+    - Keyboard: Issue 2 or 3 for Spectrum 16k and Spectrum 48k.
+    - Joysticks: Kempston, Sinclair 1, Sinclair 2 and Cursor using
+                 standard PC joystick or keyboard.
+    - Mouse: Kempston mouse.
+    - Multiface 128 emulation for Spectrum 48k, 128k and +2.
+    - Betadisk with up to 4 drives for all models except Spectrum 16k.
+    - 512k memory for Pentagon and Scorpion.
+    - Turbo mode for Scorpion.
+
+  * Formats supported:
+
+    Load:
+
+    - Snapshot: Z80, SNA, SLT, SP and SIT.
+    - Tape: TZX, TAP and VOC (8 bits, no compressed, mono/stereo).
+    - Disk (betadisk): TRD, SCL and FDI.
+    - Data bytes: * (Debugger).
+
+    Save:
+
+    - Snapshot: Z80 and SNA.
+    - Tape: TAP.
+    - Disk (betadisk): TRD.
+    - Screenshot: SCR, PCX and GRP.
+    - Assembler: COD (Debugger).
+    - Data bytes: DAT (Debugger).
+
+  * Debugger:
+
+    - Main Screen: program, stack, registers and timing information.
+    - Memory: edit any position of memory, including ROM.
+    - Ports: status of ports $FE, $BFFD, $7FFD and Betadisk.
+    - Breakpoints: set/remove breakpoint, set/remove area breakpoint.
+    - Screen: show screen.
+    - Trace into, step over and run to.
+    - Saving dissembled code to file.
+    - Loading/Saving data from/to file.
+
+  * Other:
+
+    - Tape Browser: supporting all major blocks of TZX.
+    - Graphic User Interface.
+    - Support for files compressed with ZIP and RAR.
+    - Support for SGD's DAT (program information) and POK (POKEs)
+      files.
+    - 8 different video modes from VGA 320x200 to VESA2 640x480 and
+      a 50Hz VGA video mode.
+    - Emulator configuration in file 'r80.ini'
+    - Keyboard configuration in file 'keyboard.ini'
+    - Automatic start of tape when loading.
+
+
+------------------------------------------------------------------------------
+ 3 - Configuration
+------------------------------------------------------------------------------
+
+ 3.1 - r80.ini 
+ -------------
+
+    The emulator searches this file in the path or in the current directory.
+  If found it loads default settings of the emulator.
+
+    See r80.ini for the list of options and valid values of each one.
+
+ 3.2 - keyboard.ini
+ ------------------
+
+    This file is used to customize the keyboard. You can set any
+  key of a Spectrum 48k to a PC key. Also you can map any combination
+  of key + Symbol Shift or Caps Shift to a single key of PC keyboard.
+
+    See keyboard.ini for a description on how to configure this file.
+
+    Also I have done a small program that detects scan codes from the
+  keyboard. You can use it to find the scan code of any key of your
+  keyboard. Download from http://www.chaosite.com/r80
+
+ 3.3 - Command line
+ ------------------
+
+    Command line options overwrite settings of r80.ini. Use r80.exe -h to
+  see all available options.
+
+
+------------------------------------------------------------------------------
+ 4 - User interface
+------------------------------------------------------------------------------
+
+  * Main keys:
+
+    ESC       - Debugger
+    F1        - Help
+    CTRL+F1   - Keyboard help
+    ALT+F1    - Command/Key help
+    F2        - Model selection/reset
+    CTRL+F2   - Reset in current model
+    ALT+F2    - Model configuration
+    F3        - Load snapshot
+    F4        - Save snapshot
+    F5        - Load tape
+    F6        - Save tape
+    F7        - Save screenshot
+    F8        - Disk browser
+    F9        - Tape browser
+    F10       - Quit
+    F11       - Select NMI
+    CTRL+F11  - NMI
+    F12       - Setup
+    CTRL+F7   - POKEs
+    HOME      - Start tape
+    END       - Stop tape
+
+  * Debugger keys:
+
+    ESC       - Back to emulator
+    F1        - Help
+    F2        - Memory
+    F3,F4,F5  - Ports information
+    F6        - Run to
+    F7        - Trace into
+    F8        - Step over
+    F9        - Show screen
+    F10       - Quit
+    F11       - Run to
+
+  At any moment, press F1 to get help about a window.
+
+
+------------------------------------------------------------------------------
+ 5 - Tips & Hints
+------------------------------------------------------------------------------
+
+  * Fileselector (Screenshot): When you select a file, R80 tries to find
+  a screenshot (SCR) of this file to show in the right window of the
+  fileselector. The screenshot must have exactly the same name as the file,
+  except for the extension that must be SCR. R80 tries to find it in a
+  directory of current directory named SCRSHOT or in the directory selected
+  in r80.ini
+
+  * Fileselector (Game/Program info): When you select a file, R80 tries
+  to find information of this program/game to show in lower window of
+  fileselector. To get this information, R80 loads at startup the SGD's
+  DAT files selected in r80.ini. So get SGD and start filling the info
+  for your favorites games/programs.
+
+  * ZIP/RAR: R80 has support for ZIP/RAR compressed files. The only R80 needs
+  is pkzip.exe and rar.exe in your PATH to unpack them. If you have files
+  compressed with long filenames you need PKZIP 2.50 and run R80 in a
+  Windows 95/98 DOS box.
+
+
+------------------------------------------------------------------------------
+ 6 - Known bugs
+------------------------------------------------------------------------------
+
+  * In Adlib, there is not noise pseudo-frequency emulation. Low envelope
+    periods (<#0200) are not played right.
+
+  * Even screen updating is now 32T, there are still some programs that
+    require more accurate screen update.
+
+  * There are other minor bugs here and there that you will never notice,
+    so I save them for myself :)
+
+------------------------------------------------------------------------------
+ 7 - To Do
+------------------------------------------------------------------------------
+
+  This list shows what are my plans for next versions, in the order I want
+  to do them, but it may change at any time. Also, it shows status of them:
+
+    * Fix all bugs. (done, R80 has no bugs :))
+    * Perfect screen update, with complete rewrite of screen code, including
+      GUI. (still thinking how to do the perfect screen update)
+    * Complete rewrite of timing control for tape and disk emulation.
+      Emulation should be faster and I will have more control for
+      devices timing. (I have the idea, must be implemented)
+    * General Sound emulation. (reading docs and thinking how to add)
+
+    Other things in no order.
+
+    * Sound saving (WAV (coded, missing GUI), PSG (needs fixing and GUI)
+      and other formats)
+    * Spectrum +3 emulation, DSK emulation (I read some docs, delayed)
+    * Finish Betadisk emulation. (Waiting for rewrite of timing control)
+    * Disciple, +D emulation. (Waiting for rewrite of timing control)
+    * AY and AMX mouse support. (I may add at any time, AY should not be much
+      time)
+    * Adding new GUI options
+    * Interface 1, Microdrive support.
+    * Pentagon and Scorpion extra video modes (Waiting for screen code
+      rewrite)
+    * Sam Coupe emulation (I read some docs)
+    * Timex Sinclair emulation (I read some docs).
+
+    Future projects (2010 or so): port R80 to Linux and even Win32.
+
+------------------------------------------------------------------------------
+ 8 - Greetings
+------------------------------------------------------------------------------
+
+      * Isaac Santaolalla: many thanks for GUS routines, fixing pitch
+      in my adlib routines :), ideas , comments, showing me how slow
+      r80 runs in his DX2-66 :) and everything else (que no es poco :)).
+      Check his MSX emulator 'MSKISS', it is the best (and only?) spanish
+      MSX emulator.
+
+      * Mac Buster: many thanks for your help with Betadisk and Petagon,
+      and for the lot of ideas of what could be nice to add to R80 :).
+      Also many thanks for taking the risk to test beta versions of R80 ;)
+
+      * Random: many thanks for your info about Scorpion, your ideas for
+      debugger and for testing beta version of R80.
+
+      * Ricardo Bittencourt: many thanks for your source code for SB
+      playback, even I finally did my own routines.
+
+      * Gerardo Oporto Jorrin: thanks for testing and ideas for the emulator.
+
+      * Steve Smith: thanks for the info about tape loaders and ideas for
+      the debugger and emulator.
+
+      * Alex Krasivsky and Marat Fayzullin: I used some of their Adlib init
+      routines to get a better sound output.
+
+      * Jose Manuel Claros: thanks for your support and feedback. Check his
+      World of Spectrum site at http://www.arrakis.es/~tecnilin
+
+      * Microhobby: Old spanish Spectrum mag which released a great book and
+      cards about the Z80 assembler. It had some bugs, but of great help at
+      the very beginning of development.
+
+      * Phillip Kendall: thanks for the info I got from the CSS FAQ.
+
+      * Gerton Lunter: thanks for the technical info included with Z80.
+
+      * Sean Young: thanks for the great collection of undocumented
+      features of the Z80.
+
+      * Rodolfo Edison Guerra: thanks for helping me fix Sound Blaster
+      problems in version 0.20 and also for supporting R80 in SpecBase.
+
+      * and everybody else who sent a mail with ideas, bug reports,
+      feedback, ...
+
+------------------------------------------------------------------------------
+ 9 - Contact me
+------------------------------------------------------------------------------
+
+  Raul Gomez Sanchez (Cornella de Llobregat - Barcelona - Spain)
+
+  e-mail: raulgomez@retemail.es
+  R80 Homepage: http://www.chaosite.com/r80 (English)
+  IRC NET:     #z80 as 'raulg'
+  IRC Hispano: #emuladores as 'raulg'
+  IRC Hispano: #spectrum   as 'raulg'
+
+  You can subscribe to the R80 Annouce mailing list where you will receive
+  notifications of new versions. If you want to join send an e-mail
+  to r80-subscribe@listbot.com.
