@@ -1,174 +1,174 @@
-        org     #8000
-buffer  equ     #a000
-colbuff equ     #b000
-        xor     a
-        out     (254),a
-        ld      hl,#4000
-        ld      de,#4001
-        ld      bc,6912
-        ld      (hl),a
-        ldir
-        ld      a,7
-        ld      (23624),a
-        ld      (23693),a
-boldfnt ld      hl,15616
-        ld      de,40000
-        ld      bc,768
-        push    de
-bold1   ld      a,(hl)
-        srl     a
-        or      (hl)
-        and     %01010111
-        ld      (de),a
-        inc     hl
-        inc     de
-        dec     c
-        jr      nz,bold1
-        djnz    bold1
-        pop     hl
-        dec     h
-        ld      (23606),hl
-        ld      hl,txt1
-        ld      a,12
-        call    scroll
-        ld      hl,txt2
-        ld      a,13
-        call    scroll
-        ld      hl,15360
-        ld      (23606),hl
-        ei:halt
-        di
-buum    ld      hl,code
-LLFF38  ld      bc,#FFFD
-        ld      a,(hl)
-        inc     hl
-        inc     a
-        jr      nz,LLFF69
-        ld      e,(hl)
-        inc     hl
-LLFF42  ld      b,(hl)
-LLFF43  djnz    LLFF43
-        ld      bc,#FFFD
-        ld      a,#02
-        out     (c),a
-        in      a,(c)
-        add     a,#0C
-        ld      b,#BF
-        out     (c),a
-        jr      nz,LLFF63
-        ld      b,#FF
-        ld      a,#03
-        out     (c),a
-        in      a,(c)
-        inc     a
-        ld      b,#BF
-        out     (c),a
-LLFF63  dec     e
-        jr      nz,LLFF42
-        inc     hl
-        jr      LLFF38
-LLFF69  dec     a
-        jr      z,next       ;exit
-        out     (c),a
-        ld      b,#BF
-        ld      a,(hl)
-        inc     hl
-        out     (c),a
-        jr      LLFF38
-next    ld      b,#e0
-repit   push    bc
-BEGIN   ld      a,-3
+        ORG     #8000
+buffer  EQU     #a000
+colbuff EQU     #b000
+        XOR     A
+        OUT     (254),A
+        LD      HL,#4000
+        LD      DE,#4001
+        LD      BC,6912
+        LD      (HL),A
+        LDIR
+        LD      A,7
+        LD      (23624),A
+        LD      (23693),A
+BOLDFNT LD      HL,15616
+        LD      DE,40000
+        LD      BC,768
+        PUSH    DE
+BOLD1   LD      A,(HL)
+        SRL     A
+        OR      (HL)
+        AND     %01010111
+        LD      (DE),A
+        INC     HL
+        INC     DE
+        DEC     C
+        JR      NZ,BOLD1
+        DJNZ    BOLD1
+        POP     HL
+        DEC     H
+        LD      (23606),HL
+        LD      HL,txt1
+        LD      A,12
+        CALL    scroll
+        LD      HL,txt2
+        LD      A,13
+        CALL    scroll
+        LD      HL,15360
+        LD      (23606),HL
+        EI:HALT
+        DI
+buum    LD      HL,CODE
+LLFF38  LD      BC,#FFFD
+        LD      A,(HL)
+        INC     HL
+        INC     A
+        JR      NZ,LLFF69
+        LD      E,(HL)
+        INC     HL
+LLFF42  LD      B,(HL)
+LLFF43  DJNZ    LLFF43
+        LD      BC,#FFFD
+        LD      A,#02
+        OUT     (C),A
+        IN      A,(C)
+        ADD     A,#0C
+        LD      B,#BF
+        OUT     (C),A
+        JR      NZ,LLFF63
+        LD      B,#FF
+        LD      A,#03
+        OUT     (C),A
+        IN      A,(C)
+        INC     A
+        LD      B,#BF
+        OUT     (C),A
+LLFF63  DEC     E
+        JR      NZ,LLFF42
+        INC     HL
+        JR      LLFF38
+LLFF69  DEC     A
+        JR      Z,NEXT       ;Exit
+        OUT     (C),A
+        LD      B,#BF
+        LD      A,(HL)
+        INC     HL
+        OUT     (C),A
+        JR      LLFF38
+NEXT    LD      B,#E0
+REPIT   PUSH    BC
+BEGIN   LD      A,-3
         ;-3 -7 -11
-START   LD      HL,#5ac0
+START   LD      HL,#5aC0
         LD      B,64  ;52
-CICLE   ld      (hl),a
+CICLE   LD      (HL),A
         INC     L
         DJNZ    CICLE
-        inc     A
-        cp      7+1
+        INC     A
+        CP      7+1
         JP      NZ,START
-        pop     bc
-        djnz    repit
-        ld      hl,#5ac0
-        ld      de,#5ac0+1
-        ld      bc,#20
-        push    bc
-        ld      a,6
-        ld      (hl),a
-        ldir
-        pop     bc
-        ld      a,3
-        ld      (hl),a
-        ldir
-        im      1
-        ei
-        halt
-        ld      a,(23560)
-        cp      "s"
-        jp      z,svetrk
-        halt
-        ld      a,(23560)
-        cp      "S"
-        jp      z,svetrk
-        ret
-svetrk  ld      a,2
-        out     (#fe),a
-        ld      hl,buffer
-        push    hl
-        ld      de,#0000
-        ld      bc,#1005
-        call    #3d13
-        xor     a
-        out     (#fe),a
-        ld      hl,mycpyrt
-        ld      de,buffer+#850
-        ld      bc,8*3
-        ldir
-        pop     hl
-        ld      de,#0100
-        ld      bc,#1006
-        call    #3d13
-        ret
-scroll  ld     (y+1),a
-        ld     (t+1),hl
-        ld     b,31
-cicle1  ld     a,22
-        rst    16
-y       ld     a,0
-        rst    16
-        ld     a,b
-        rst    16
-        ld     a,16
-        rst    16
-        ld     a,r
-        and    7
-        rst    16
-        ld     a,17
-        rst    16
-        xor    a
-        rst    16
-        ld     a,32
-        sub    b
-t       ld     hl,txt1
-        push   bc
-        ld     b,a
-cicle   ld     a,(hl)
-        cp     0
-        jr     nz,contin
-        pop    bc
-        ret
-contin  rst    16
-        inc    hl
-        djnz   cicle
-        pop    bc
-        dec    b
-        jr     cicle1
-code    db    #07,#3D,#03,#00
+        POP     BC
+        DJNZ    REPIT
+        LD      HL,#5aC0
+        LD      DE,#5aC0+1
+        LD      BC,#20
+        PUSH    BC
+        LD      A,6
+        LD      (HL),A
+        LDIR
+        POP     BC
+        LD      A,3
+        LD      (HL),A
+        LDIR
+        IM      1
+        EI
+        HALT
+        LD      A,(23560)
+        CP      "s"
+        JP      Z,svetrk
+        HALT
+        LD      A,(23560)
+        CP      "S"
+        JP      Z,svetrk
+        RET
+svetrk  LD      A,2
+        OUT     (#FE),A
+        LD      HL,buffer
+        PUSH    HL
+        LD      DE,#0000
+        LD      BC,#1005
+        CALL    #3D13
+        XOR     A
+        OUT     (#FE),A
+        LD      HL,CPYRT
+        LD      DE,buffer+#850
+        LD      BC,8*3
+        LDIR
+        POP     HL
+        LD      DE,#0100
+        LD      BC,#1006
+        CALL    #3D13
+        RET
+scroll  LD     (y+1),A
+        LD     (t+1),HL
+        LD     B,31
+CICLE1  LD     A,22
+        RST    16
+y       LD     A,0
+        RST    16
+        LD     A,B
+        RST    16
+        LD     A,16
+        RST    16
+        LD     A,R
+        AND    7
+        RST    16
+        LD     A,17
+        RST    16
+        XOR    A
+        RST    16
+        LD     A,32
+        SUB    B
+t       LD     HL,txt1
+        PUSH   BC
+        LD     B,A
+CICLE   LD     A,(HL)
+        CP     0
+        JR     NZ,contin
+        POP    BC
+        RET
+contin  RST    16
+        INC    HL
+        DJNZ   CICLE
+        POP    BC
+        DEC    B
+        JR     CICLE1
+CODE    db    #07,#3D,#03,#00
         db    #02,#20,#0C,#80
         db    #06,#10,#09,#11
         db    #0d,#01,#FF,#FF
         db    #FF,#00,#3C
-mycpyrt db   "TRAKcopy"
+CPYRT   db   "TRAKcopy"
         db   "by DENYA"
         db   "soft '97"
 txt1 db "  DENYA PRESENT!!!      "
