@@ -1,0 +1,15 @@
+[submodule "emul/src/unrealspeccy"]
+	path = emul/src/unrealspeccy
+	url = https://github.com/mkoloberdin/unrealspeccy
+[submodule "emul/src/unrealspeccyp"]
+	path = emul/src/unrealspeccyp
+	url = https://bitbucket.org/djdron/unrealspeccyp
+[submodule "emul/src/fuse-emulator-fuse"]
+	path = emul/src/fuse-emulator-fuse
+	url = https://git.code.sf.net/p/fuse-emulator/fuse
+[submodule "emul/src/fuse-emulator-libspectrum"]
+	path = emul/src/fuse-emulator-libspectrum
+	url = https://git.code.sf.net/p/fuse-emulator/libspectrum
+[submodule "emul/src/fuse-emulator-fuse-utils"]
+	path = emul/src/fuse-emulator-fuse-utils
+	url = https://git.code.sf.net/p/fuse-emulator/fuse-utils
