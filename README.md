@@ -4,6 +4,11 @@
 Launch scripts for preconfigured collection of best emulators, roms and zx software.
 All you need to [spend time](overboot.asm) on a desert island.
 
+### Instant Speccy with OS-agnostic Javascript-based emulators 
+
+[**Qaop/JS** v1.4 by Jan Bobrowski](http://torinak.com/qaop) can [ripped version can run offline](emul/QAOP/qaop.html#ay#128) on Firefox and Chrome (use `google-chrome --allow-file-access-from-files`). Last updated circa 2012. Great but has no Betadisk128 (TRD, FDI) support.
+
+
 ### Best ZX-SPECTRUM emulators
 
 |Host OS|Emulator| Source code |Last updated|
