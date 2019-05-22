@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>jVGS offline</title>
+	<!--
+	* jVGS Javascript-based ZX Spectrum Emulator
+	* developed specially for Viva-Games.ru
+	* @author Epsiloncool
+    -->
+    <script type="text/javascript" src="jvgs/jquery.js"></script>
+	<script type="text/javascript" src="jvgs/jvgsc.min.js"></script>
+	<link href="jvgs/jvgs_main.css" type="text/css" rel="stylesheet">
+    <style type="text/css">
+    .fsmax {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        z-index: 100;
+        width: 100% !important;
+        height: 100% !important;
+        opacity: 0.9;
+        background: #444;
+    }
+    </style>
+</head>
+<body>
+<div id="outer_wrapper">
+	<div id="wrapper">
+		<div id="content">
+			<div id="content_wrapper" class="has-background has-shadow">
+            	<div id="game" class="right-contains">
+                	<div id="information_wrapper">
+
+                        <div style="height:24px;margin-bottom: 10px;">
+                                <div class="return_button button-small button-shadow button-background-yellow" style="display:none;float: right;margin: 1px auto 9px 20px;"><span style="font-family:Arial;color:#08f;">◄</span> К описанию </div>
+                                <div class="return_button2 button-small button-shadow button-background-yellow" style="display:none;float: right;margin: 1px auto 9px 20px;">Назад в игру <span style="font-family:Arial;color:#0f0;">►</span></div>
+                                <div style="clear:both;"></div>
+                        </div>
+
+					<!-- {:game_page:} -->
+                    <div id="appdata" style="display:none;" data-hash="{:hash:}"></div>
+
+                    <div class="appdat_inline" style="width:1000px;overflow-x: hidden;">
+					<div style="width:2040px;position:relative;overflow-x: hidden; overflow-y: hidden;left:0px;" id="playground">
+						<div class="appdat_inline_2" style="width:1000px;float:left;">
+			                <div id="information">
+                                <div class="play_button button-small button-shadow button-background-yellow" data-hash="1309407b14e62143960e1431fc6357b1492a4b92">Play<span style="font-family:Arial;color:#0f0;">►</span></div>
+				            </div><!--information-->
+						</div>
+						<div style="width:20px;float:left;">&nbsp;</div>
+						<div class="appdat_inline_block" style="width:1000px;float:left;">
+							<div class="appdat_inline_block_2" style="width:864px;float:left;">
+								<div class="" id="fscontainer">
+									<div id="applet_place" class="shadow appdat_inline_block_3" style="width: 864px; height: 700px; position: relative; margin: auto; float: none;"></div>
+								</div>
+								<br>
+								<div>
+									Open TRD, FDI, SCL, TAP, TZX, Z80, ROM file (ZIP supported):
+									<input type="file" id="files_selector" name="file" accept=".zip,.trd,.fdi,.scl,.tap,.tzx,.z80,.rom" />
+   								</div>
+  							    <div>
+									View size
+									<div id="accord_menu">
+										<ul>
+											<li data-rel="screen_x1">x1 [256x192]</li>
+											<li data-rel="screen_x2">x2 [512x384]</li>
+											<li data-rel="screen_x3">x3 [768x576]</li>
+											<li data-rel="screen_full">Full</li>
+										</ul>
+									</div>
+								</div>
+								<p>Quicksave: <b>F8</b> quickload: <b>F3</b></p>
+							</div>
+						</div>
+                    </div>
+                    </div>
+                    <!-- {:/game_page:} -->
+					</div><!--information_wrapper-->
+                </div><!--game-->
+            </div><!--content_wrapper-->
+	</div><!--content-->
+</div><!--outer_wrapper-->
+
+<script>
+var current_layout = 1;
+var mach = null;
+
+document.getElementById('files_selector').addEventListener('change', function(evt) {
+	// Loop through the FileList and render image files as thumbnails.
+	for (var i = 0, f; f = evt.target.files[i]; i++) {
+		var reader = new FileReader();
+		// Closure to capture the file information.
+		reader.onload = (function(theFile) {
+			return function(e) {
+				loadFromArrayBuffer(e.target.result, theFile.name);
+			};
+		})(f);
+		// Read in the image file as a data URL.
+		// reader.readAsDataURL(f) gives base64 string
+		// readAsArrayBuffer and readAsBinaryString both produce valid content for JSZip.
+		reader.readAsArrayBuffer(f);
+	}
+});
+
+// callback used by jVGS
+function jxAction(action, data, cb) {
+	console.log('jxAction', action, data, cb);
+}
+
+function loadRemoteUrl(url) {
+	JSZipUtils.getBinaryContent(url, function(error, arrayBuffer) {
+		if(error) {
+			alert('error', error)
+		} else {
+			loadFromArrayBuffer(arrayBuffer, url)
+		}
+	});
+}
+
+function loadFromArrayBuffer(arrayBuffer, filename) {
+   var k = current_layout;
+   if (k === 1000) {
+       k = 3;
+   }
+   setLayout(current_layout);
+       
+   // Scroll window to center
+   var wh = jQuery(window).height();
+   var gh = 224 * k + 28;
+       
+   setTimeout(function() {
+       if (mach) {
+           mach.focus();
+       }
+   }, 1000);
+
+    // machine_type_id
+    // 3 128 basic
+    // 6 trdos
+    var e = mach;
+    var b = 1;
+    var c = false;
+    var d = false;
+
+    e.loaded_binary = {
+		machine_type_id: 6,
+		binary: filename
+	};
+    e.setup_machine();
+
+    var g = arrayBuffer;
+    var h = filename.split(".").pop().toLowerCase();
+    console.log('ext:', h)
+    AA = arrayBuffer;
+    if ("zip"===h) {
+        try {
+            var k=new JSZip(g),l="",m=0,n;
+            for(n in k.files) {
+                var t=0,q=n.toLowerCase(),h=n.split(".").pop().toLowerCase();
+                switch(h) { 
+                    case "scl":case "fdi":case "trd":t=100;break;
+                    case "tap":t=50;break;
+                    case "tzx":case "z80":t=25;break;
+                    case "rom":t=12;break;
+                    default:t=0
+                } 
+                0<t&&t>=m&&(t===m?q<l&&(l=n,m=t):(l=n,m=t))
+            }
+            if (m > 0) { 
+                var r=k.file(l).asUint8Array();
+                e.loadBinaryData(r,l.split(".").pop().toLowerCase(),b)
+            } else alert('No supported images found in ZIP file')
+        } catch(z) {
+            alert('Broken ZIP file')
+        }
+    } else {
+        e.loadBinaryData(new Uint8Array(g),h,b)
+        e.exec("loadcontinue")
+    }
+}
+
+function setLayout(z) {
+    if (z === 1000) {
+        current_layout = z;
+    } else {
+        current_layout = Math.max(1, Math.min(3, z));
+    }
+    updateLayout();
+}
+
+function updateLayout() {
+	jQuery('#applet_place').css('float', 'none');
+	
+	z = current_layout;
+	if (z === 1000) {
+		setAppletFullSize(1, z);
+	} else {
+		setAppletFullSize(0, z);
+	}
+}
+
+/**
+ * Sets up size of applet
+ * 
+ * @param {int} sz 0 = not full-size, 1 = full-size
+ * @param {int} cl Size of layout: 0 = auto, 1,2,3 = 1x,2x,3x respectively
+ */
+function setAppletFullSize(sz, cl) {
+    var dx, dy, k;
+    var toset = false;
+    if (sz == 1) {
+        // Make best fit size for fullscreen display
+        toset = 1;
+        k = Math.min(Math.floor(jQuery(window).width() / 288), Math.floor((jQuery(window).height() - 28) / 224));
+        jQuery('#fscontainer').addClass('fsmax');
+    } else {
+        if (sz == 0) {
+            // Detect max available size
+            toset = 1;
+            
+            k = Math.min(cl, Math.floor((jQuery('#content_wrapper').width() - 140) / 288));
+            if (k < 1) {
+                k = 1;	// Show anyway on small screens
+            }
+            
+            jQuery('#fscontainer').removeClass('fsmax');
+        }
+    }
+    if (toset) {
+        dx = k * 288;
+        dy = k * 224 + 28;
+        
+        if (mach) {
+            mach.setsize(k);
+        }
+        
+        //jQuery('#fscontainer').css('width', dx + 'px').css('height', dy + 'px');
+        jQuery('#applet_place').css('width', dx + 'px').css('height', dy + 'px');
+        jQuery('#main_applet').css('width', dx + 'px').css('height', dy + 'px');
+    }
+}
+
+jQuery(document).ready(function(){
+
+current_layout = 2;	// Default = 2
+
+mach = new Spectrum();
+mach.init(2, '#applet_place', current_layout);
+mach.run();
+mach.loaded_binary = { machine_type_id: 6 };
+mach.setup_machine();
+mach.focus();
+
+// mach.getCanvas().on('focused', function(){});
+// mach.getCanvas().on('blured', function(){});
+// mach.getCanvas().on('mousedetected', function(){});
+// mach.getCanvas().on('mouseundetected', function(){});
+// mach.getCanvas().on('mousecatched', function(){});
+// mach.getCanvas().on('mousereleased', function(){});
+// mach.getCanvas().on('savetocloud', function(){});
+
+jQuery('#playground').animate({
+	'left': '-1020px'
+}, 500, function () {
+	jQuery('.return_button2').css('display', 'none');
+	jQuery('.return_button').css('display', 'block');
+});
+
+setLayout(current_layout);
+
+jQuery('.return_button').click(function(){
+	jQuery('#playground').animate({
+		'left': '0px'
+	}, 500, function(){
+		jQuery('.return_button').css('display', 'none');
+		jQuery('.return_button2').css('display', 'block');
+	});
+	return false;
+});
+jQuery('.return_button2').click(function(){
+	jQuery('#playground').animate({
+		'left': '-1020px'
+	}, 500, function(){
+		jQuery('.return_button').css('display', 'block');
+		jQuery('.return_button2').css('display', 'none');
+	});
+	return false;
+});
+
+jQuery('#fscontainer').bind('click', function(){
+	if (jQuery('#fscontainer').hasClass('fsmax')) {
+		setAppletFullSize(0, current_layout);
+	}
+});
+
+jQuery(window).resize(function(){
+	if (jQuery('#fscontainer').hasClass('fsmax')) {
+		setAppletFullSize(1, current_layout);
+	} else {
+		setAppletFullSize(0, current_layout);
+	}
+});
+						
+jQuery('#accord_menu').on('click', '[data-rel]', function(e){
+	e.preventDefault();
+	var a = jQuery('#main_applet').get(0);
+	var r = jQuery(this).attr('data-rel');
+	switch (r) {
+		case 'screen_x1':
+			setLayout(1);
+			break;
+		case 'screen_x2':
+			setLayout(2);
+			break;
+		case 'screen_x3':
+			setLayout(3);
+			break;
+		case 'screen_full':
+			setLayout(1000);
+			break;
+			/*
+		case 'speed_pause':
+			a.setPause(1);
+			break;
+		case 'speed_normal':
+			a.setModeTrueSpeed(1);
+			a.setPause(0);
+			break;
+		case 'speed_turbo':
+			a.setModeTrueSpeed(0);
+			break;
+			*/
+	}
+	if (mach) {
+		mach.focus();
+	}
+	
+	return false;
+});
+
+jQuery('#btn_save_game').on('click', function(){
+	if (mach) {
+		mach.saveState(0, function(){
+			mach.focus();
+		});
+	}
+});
+
+jQuery('#btn_save_game_new').on('click', function(){
+	if (mach) {
+		mach.saveState(1, function(){
+			mach.focus();
+		});
+	}
+});
+
+});
+
+</script>
+</body></html>

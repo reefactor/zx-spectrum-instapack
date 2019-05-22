@@ -6,6 +6,8 @@ All you need to [spend time](overboot.asm) on a desert island.
 
 ### Instant Speccy with OS-agnostic Javascript-based emulators 
 
+[**jVGS** adapted to run images from local file system](emul/jVGS/jvgs-offline.html) (see launch script [jvgs.sh](jvgs.sh))
+
 [**Qaop/JS** v1.4 by Jan Bobrowski](http://torinak.com/qaop) can [ripped version can run offline](emul/QAOP/qaop.html#ay#128) on Firefox and Chrome (use `google-chrome --allow-file-access-from-files`). Last updated circa 2012. Great but has no Betadisk128 (TRD, FDI) support.
 
 
@@ -22,6 +24,11 @@ All you need to [spend time](overboot.asm) on a desert island.
 
 
 ### Launchers
+
+#### Anywhere
+
+Just [open jVGS in your browser](emul/jVGS/jvgs-offline.html) (see launch script [jvgs.sh](jvgs.sh))
+
 
 #### Linux
 
