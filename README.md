@@ -6,9 +6,9 @@ All you need to [spend time](overboot.asm) on a desert island.
 
 ### Instant Speccy with OS-agnostic Javascript-based emulators 
 
-* [**jVGS** v1.1.4](emul/jVGS/jvgs-offline.html) by [Epsiloncool](https://viva-games.ru/) adapted to run images from local file system
+* [**jVGS** v1.1.4](https://reefactor.github.io/zx-spectrum-instapack/emul/jVGS/jvgs-offline.html) by [Epsiloncool](https://viva-games.ru/) adapted to run images from local file system
 
-* [**Qaop/JS** v1.4](emul/QAOP/qaop.html#ay#128) by [Jan Bobrowski](https://torinak.com/qaop) runs on Firefox and Chrome (use `google-chrome --allow-file-access-from-files`).  
+* [**Qaop/JS** v1.4](https://reefactor.github.io/zx-spectrum-instapack/emul/QAOP/qaop.html#ay#128) by [Jan Bobrowski](https://torinak.com/qaop) runs on Firefox and Chrome (use `google-chrome --allow-file-access-from-files`).  
 Last updated circa 2012. Great but has no Betadisk128 (TRD, FDI) support.
 
 
