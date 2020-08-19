@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<head>
+<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>jVGS offline</title>
@@ -26,48 +26,41 @@
     </style>
 </head>
 <body>
-<div id="outer_wrapper">
-	<div id="wrapper">
+<div id="wrapper">
 		<div id="content">
 			<div id="content_wrapper" class="has-background has-shadow">
             	<div id="game" class="right-contains">
-                	<div id="information_wrapper">
-
-                        <div style="height:24px;margin-bottom: 10px;">
-                                <div class="return_button button-small button-shadow button-background-yellow" style="display:none;float: right;margin: 1px auto 9px 20px;"><span style="font-family:Arial;color:#08f;">◄</span> К описанию </div>
-                                <div class="return_button2 button-small button-shadow button-background-yellow" style="display:none;float: right;margin: 1px auto 9px 20px;">Назад в игру <span style="font-family:Arial;color:#0f0;">►</span></div>
-                                <div style="clear:both;"></div>
-                        </div>
-
-					<!-- {:game_page:} -->
-                    <div id="appdata" style="display:none;" data-hash="{:hash:}"></div>
-
                     <div class="appdat_inline" style="width:1000px;overflow-x: hidden;">
 					<div style="width:2040px;position:relative;overflow-x: hidden; overflow-y: hidden;left:0px;" id="playground">
 						<div class="appdat_inline_2" style="width:1000px;float:left;">
 			                <div id="information">
-                                <div class="play_button button-small button-shadow button-background-yellow" data-hash="1309407b14e62143960e1431fc6357b1492a4b92">Play<span style="font-family:Arial;color:#0f0;">►</span></div>
-				            </div><!--information-->
+                                <div class="play_button button-small button-shadow button-background-yellow" data-hash="">
+									Init ...
+								</div>
+				            </div>
 						</div>
 						<div style="width:20px;float:left;">&nbsp;</div>
 						<div class="appdat_inline_block" style="width:1000px;float:left;">
 							<div class="appdat_inline_block_2" style="width:864px;float:left;">
+
 								<div class="" id="fscontainer">
 									<div id="applet_place" class="shadow appdat_inline_block_3" style="width: 864px; height: 700px; position: relative; margin: auto; float: none;"></div>
 								</div>
 								<br>
+								<button id="gogogo">Boot ZX Spectrum</button>
 								<div>
-									Open TRD, FDI, SCL, TAP, TZX, Z80, ROM file (ZIP supported):
 									<input type="file" id="files_selector" name="file" accept=".zip,.trd,.fdi,.scl,.tap,.tzx,.z80,.rom" />
+									<div>Open TRD, FDI, SCL, TAP, TZX, Z80, ROM file (ZIP supported)</div>
    								</div>
+								<br>
   							    <div>
-									View size
-									<div id="accord_menu">
+									<div id="accord_menu" style="cursor:pointer;">
+										View size
 										<ul>
-											<li data-rel="screen_x1">x1 [256x192]</li>
-											<li data-rel="screen_x2">x2 [512x384]</li>
-											<li data-rel="screen_x3">x3 [768x576]</li>
-											<li data-rel="screen_full">Full</li>
+											<li data-rel="screen_x1">Original 256x192</li>
+											<li data-rel="screen_x2">X2 512x384</li>
+											<li data-rel="screen_x3">X3 768x576</li>
+											<li data-rel="screen_full">Fullscreen</li>
 										</ul>
 									</div>
 								</div>
@@ -75,16 +68,13 @@
 							</div>
 						</div>
                     </div>
-                    </div>
-                    <!-- {:/game_page:} -->
-					</div><!--information_wrapper-->
                 </div><!--game-->
             </div><!--content_wrapper-->
-	</div><!--content-->
-</div><!--outer_wrapper-->
+		</div><!--wrapper-->
+</div><!--content-->
 
 <script>
-var current_layout = 1;
+var current_layout = 3;
 var mach = null;
 
 document.getElementById('files_selector').addEventListener('change', function(evt) {
@@ -244,14 +234,21 @@ function setAppletFullSize(sz, cl) {
 
 jQuery(document).ready(function(){
 
-current_layout = 2;	// Default = 2
+// Default is 2
+current_layout = 3;
 
-mach = new Spectrum();
-mach.init(2, '#applet_place', current_layout);
-mach.run();
-mach.loaded_binary = { machine_type_id: 6 };
-mach.setup_machine();
-mach.focus();
+jQuery('#gogogo').click(function() {
+	console.log('gogogo')
+
+	mach = new Spectrum();
+	mach.init(2, '#applet_place', current_layout);
+	mach.run();
+	mach.loaded_binary = { machine_type_id: 6 };
+	mach.setup_machine();
+	mach.focus();
+});
+
+
 
 // mach.getCanvas().on('focused', function(){});
 // mach.getCanvas().on('blured', function(){});
@@ -359,4 +356,5 @@ jQuery('#btn_save_game_new').on('click', function(){
 });
 
 </script>
-</body></html>
+</body>
+</html>
