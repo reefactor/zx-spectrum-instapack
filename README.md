@@ -16,13 +16,13 @@ Last updated circa 2012. Great but has no Betadisk128 (TRD, FDI) support.
 
 |Host OS|Emulator| Source code |Last updated|
 |---|---|---|---|
-|Crossplatform (JavaScript)|[**JVGS** v1.1.4](https://viva-games.ru/jvgs/jvgsc.min.js)|-|2016|
-|Windows|[**Unreal Speccy** v0.39](https://github.com/mkoloberdin/unrealspeccy)|[git v0.37](https://github.com/mkoloberdin/unrealspeccy) [snapshot v0.39](http://dlcorp.nedopc.com/viewforum.php?f=27)|2019|
-|Crossplatform|[**USP** v0.38 - Unreal Speccy Portable fork](https://bitbucket.org/djdron/unrealspeccyp)|[git](https://bitbucket.org/djdron/unrealspeccyp)|2018|
-|Crossplatform|[**Fuse** emulator v1.5.7](http://fuse-emulator.sourceforge.net)|[git](http://fuse-emulator.sourceforge.net/#Source)|2018|
-|DOS| [**x128** v0.94 by James McKay](emul/X128_094) | [snapshot](emul/src/X128) | 2002 |
-|DOS| [**r80** v0.30 by Raul Gomez Sanchez](emul/R80V030) | *WANTED* | 2000 |
-|DOS| [**Spectrum 128K** v3.05 by Nikolay Shalaev](emul/SHAL305) | [snapshot](emul/src/SHAL305)| 1999 |
+|Crossplatform|[**JVGS** v1.1.4](https://viva-games.ru/jvgs/jvgsc.min.js)|JavaScript *WANTED*|2016|
+|Windows|[**Unreal Speccy** v0.39](https://github.com/mkoloberdin/unrealspeccy)| C++ [git v0.37](https://github.com/mkoloberdin/unrealspeccy) [snapshot v0.39](http://dlcorp.nedopc.com/viewforum.php?f=27)|2019|
+|Crossplatform|[**USP** v0.38 - Unreal Speccy Portable fork](https://bitbucket.org/djdron/unrealspeccyp)| C++ [git](https://bitbucket.org/djdron/unrealspeccyp)|2018|
+|Crossplatform|[**Fuse** emulator v1.5.7](http://fuse-emulator.sourceforge.net)| C++ [git](http://fuse-emulator.sourceforge.net/#Source)|2018|
+|DOS| [**x128** v0.94 by James McKay](emul/X128_094) | C++ [snapshot](emul/src/X128) | 2002 |
+|DOS| [**r80** v0.30 by Raul Gomez Sanchez](emul/R80V030) | C++ *WANTED* | 2000 |
+|DOS| [**Spectrum 128K** v3.05 by Nikolay Shalaev](emul/SHAL305) | C++ [snapshot](emul/src/SHAL305)| 1999 |
 
 
 ### Launchers
