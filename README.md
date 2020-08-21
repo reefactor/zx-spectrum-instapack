@@ -29,7 +29,7 @@ Last updated circa 2012. Great but has no Betadisk128 (TRD, FDI) support.
 
 #### Anywhere
 
-Just [open jVGS in your browser](emul/jVGS/jvgs-offline.html) (see launch script [jvgs.sh](jvgs.sh))
+Just open jVGS in your browser [ONLINE](https://reefactor.github.io/zx-spectrum-instapack/emul/jVGS/jvgs-offline.html) or [OFFLINE]](emul/jVGS/jvgs-offline.html) or command line [jvgs.sh](jvgs.sh))
 
 
 #### Linux

@@ -53,7 +53,16 @@
 									<div>Open TRD, FDI, SCL, TAP, TZX, Z80, ROM file (ZIP supported)</div>
    								</div>
 								<br>
-  							    <div>
+
+                                <div>
+									<div id="trd_list" style="cursor:pointer;">
+										BETADISKS collection
+										<ul id="mydisks">
+										</ul>
+									</div>
+								</div>
+
+                                <div>
 									<div id="accord_menu" style="cursor:pointer;">
 										View size
 										<ul>
@@ -80,6 +89,7 @@ var mach = null;
 document.getElementById('files_selector').addEventListener('change', function(evt) {
 	// Loop through the FileList and render image files as thumbnails.
 	for (var i = 0, f; f = evt.target.files[i]; i++) {
+		console.log('file_selector', i, 'FILE:', f)
 		var reader = new FileReader();
 		// Closure to capture the file information.
 		reader.onload = (function(theFile) {
@@ -110,21 +120,19 @@ function loadRemoteUrl(url) {
 }
 
 function loadFromArrayBuffer(arrayBuffer, filename) {
-   var k = current_layout;
-   if (k === 1000) {
-       k = 3;
-   }
-   setLayout(current_layout);
+   	var k = current_layout;
+   	if (k === 1000) {
+	    k = 3;
+   	}
+   	setLayout(current_layout);
        
-   // Scroll window to center
-   var wh = jQuery(window).height();
-   var gh = 224 * k + 28;
+   	// Scroll window to center
+   	var wh = jQuery(window).height();
+   	var gh = 224 * k + 28;
        
-   setTimeout(function() {
-       if (mach) {
+	if (mach) {
            mach.focus();
-       }
-   }, 1000);
+	}
 
     // machine_type_id
     // 3 128 basic
@@ -239,16 +247,12 @@ current_layout = 3;
 
 jQuery('#gogogo').click(function() {
 	console.log('gogogo')
-
-	mach = new Spectrum();
-	mach.init(2, '#applet_place', current_layout);
-	mach.run();
-	mach.loaded_binary = { machine_type_id: 6 };
-	mach.setup_machine();
-	mach.focus();
+    // sound ok because triggered by user action
+    bootSpectrum()
 });
 
-
+// no sound due to chrome audiocontext policy
+bootSpectrum()
 
 // mach.getCanvas().on('focused', function(){});
 // mach.getCanvas().on('blured', function(){});
@@ -261,30 +265,11 @@ jQuery('#gogogo').click(function() {
 jQuery('#playground').animate({
 	'left': '-1020px'
 }, 500, function () {
-	jQuery('.return_button2').css('display', 'none');
-	jQuery('.return_button').css('display', 'block');
+
 });
 
 setLayout(current_layout);
 
-jQuery('.return_button').click(function(){
-	jQuery('#playground').animate({
-		'left': '0px'
-	}, 500, function(){
-		jQuery('.return_button').css('display', 'none');
-		jQuery('.return_button2').css('display', 'block');
-	});
-	return false;
-});
-jQuery('.return_button2').click(function(){
-	jQuery('#playground').animate({
-		'left': '-1020px'
-	}, 500, function(){
-		jQuery('.return_button').css('display', 'block');
-		jQuery('.return_button2').css('display', 'none');
-	});
-	return false;
-});
 
 jQuery('#fscontainer').bind('click', function(){
 	if (jQuery('#fscontainer').hasClass('fsmax')) {
@@ -302,7 +287,6 @@ jQuery(window).resize(function(){
 						
 jQuery('#accord_menu').on('click', '[data-rel]', function(e){
 	e.preventDefault();
-	var a = jQuery('#main_applet').get(0);
 	var r = jQuery(this).attr('data-rel');
 	switch (r) {
 		case 'screen_x1':
@@ -353,7 +337,52 @@ jQuery('#btn_save_game_new').on('click', function(){
 	}
 });
 
+
+render42DisksCollection()
+
 });
+
+function bootSpectrum() {
+    if (!window.mach) {
+        mach = new Spectrum();
+    }
+	mach.init(2, '#applet_place', current_layout);
+	mach.run();
+	mach.loaded_binary = { machine_type_id: 6 };
+	mach.setup_machine();
+	mach.focus();
+}
+
+
+function render42DisksCollection() {
+
+    // render list of 42 disks collection
+    for (var i = 1; i <= 42; i++) {
+        var ext = 'TRD'
+        if ((i >= 7 && i <= 10) || i == 34 || (i >= 39 && i <= 42)) {
+            ext = 'TD0'
+        }
+
+        if (i < 10) i = '0'+i;
+
+        jQuery('#mydisks').append(`<li data-rel="MYDISKS/${i}.${ext}">${i}.${ext}</li>`)
+    }
+
+    jQuery('#trd_list').on('click', '[data-rel]', function(e){
+        e.preventDefault();
+        var v = jQuery(this).attr('data-rel');
+        var baseUrl = 'https://reefactor.github.io/zx-spectrum-instapack/ZX/'
+        console.log(v)
+
+        if (mach) mach.reset()
+        bootSpectrum()
+        loadRemoteUrl(baseUrl + v)
+        mach.focus();
+
+        return false;
+    });
+
+}
 
 </script>
 </body>
