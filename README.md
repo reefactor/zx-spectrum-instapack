@@ -14,7 +14,7 @@ or [**Qaop** v1.4](https://reefactor.github.io/zx-spectrum-instapack/emul/QAOP/q
 |---|---|---|---|---|
 |Windows|[**Unreal Speccy** v0.39](emul/US0.39.0/)| C++ [git v0.37](https://github.com/mkoloberdin/unrealspeccy) [snapshot v0.39](http://dlcorp.nedopc.com/viewforum.php?f=27)|2019| SMT, Alone Coder and Deathsoft |
 |Crossplatform|[**USP** v0.38 - Unreal Speccy Portable fork](emul/usp)| C++ [git](https://bitbucket.org/djdron/unrealspeccyp)|2018| djdron |
-|Crossplatform|[**Fuse** emulator v1.5.7](linux-fuse.sh)| C++ [git](http://fuse-emulator.sourceforge.net/#Source)|2018| [Fuse Team](http://fuse-emulator.sourceforge.net) |
+|Crossplatform|[**Fuse** v1.5.7 linux](linux-fuse.sh) and [win32](emul/src/fuse-1.5.7-win32/)| C++ [git](http://fuse-emulator.sourceforge.net/#Source) [snapshot v1.5.7](emul/src/fuse-1.5.7.tar.gz) |2018| [Fuse Team](http://fuse-emulator.sourceforge.net) |
 |Crossplatform|[**JVGS** v1.1.4](emul/jVGS/)|JavaScript *WANTED*|2016| [Epsiloncool](https://viva-games.ru/) |
 |Crossplatform|[**Qaop/JS** v1.4](emul/QAOP/)|JavaScript *WANTED*|2012| [Jan Bobrowski](https://torinak.com/qaop) |
 |DOS| [**x128** v0.94](emul/X128_094) | C++ [snapshot](emul/src/X128) | 2002 | James McKay |
