@@ -1,35 +1,36 @@
 
 # ZX-SPECTRUM instant all-in pack
 
-Launch scripts for preconfigured collection of best emulators, roms and zx software.
-All you need to [spend time](overboot.asm) on a desert island.
+A currated collection of best emulators, roms and zx software.
+All you need to [spend time](overboot.asm) on a [desert island](#play-offline).
 
-### Instant Speccy with OS-agnostic Javascript-based emulators 
-
-* [**jVGS** v1.1.4](https://reefactor.github.io/zx-spectrum-instapack/emul/jVGS/jvgs-offline.html) by [Epsiloncool](https://viva-games.ru/) adapted to run images from local file system
-
-* [**Qaop/JS** v1.4](https://reefactor.github.io/zx-spectrum-instapack/emul/QAOP/qaop.html#ay#128) by [Jan Bobrowski](https://torinak.com/qaop) runs on Firefox and Chrome (use `google-chrome --allow-file-access-from-files`).  
-Last updated circa 2012. Great but has no Betadisk128 (TRD, FDI) support.
+Try [**jVGS**](https://reefactor.github.io/zx-spectrum-instapack/emul/jVGS/jvgs-offline.html) 
+or [**Qaop** v1.4](https://reefactor.github.io/zx-spectrum-instapack/emul/QAOP/qaop.html#ay#128) online
 
 
-### Best ZX-SPECTRUM emulators
+### Best ZX-SPECTRUM emulators shortlist
 
-|Host OS|Emulator| Source code |Last updated|
-|---|---|---|---|
-|Crossplatform|[**JVGS** v1.1.4](https://viva-games.ru/jvgs/jvgsc.min.js)|JavaScript *WANTED*|2016|
-|Windows|[**Unreal Speccy** v0.39](https://github.com/mkoloberdin/unrealspeccy)| C++ [git v0.37](https://github.com/mkoloberdin/unrealspeccy) [snapshot v0.39](http://dlcorp.nedopc.com/viewforum.php?f=27)|2019|
-|Crossplatform|[**USP** v0.38 - Unreal Speccy Portable fork](https://bitbucket.org/djdron/unrealspeccyp)| C++ [git](https://bitbucket.org/djdron/unrealspeccyp)|2018|
-|Crossplatform|[**Fuse** emulator v1.5.7](http://fuse-emulator.sourceforge.net)| C++ [git](http://fuse-emulator.sourceforge.net/#Source)|2018|
-|DOS| [**x128** v0.94 by James McKay](emul/X128_094) | C++ [snapshot](emul/src/X128) | 2002 |
-|DOS| [**r80** v0.30 by Raul Gomez Sanchez](emul/R80V030) | C++ *WANTED* | 2000 |
-|DOS| [**Spectrum 128K** v3.05 by Nikolay Shalaev](emul/SHAL305) | C++ [snapshot](emul/src/SHAL305)| 1999 |
+|Host OS|Emulator| Source code |Last updated| Author |
+|---|---|---|---|---|
+|Windows|[**Unreal Speccy** v0.39](emul/US0.39.0/)| C++ [git v0.37](https://github.com/mkoloberdin/unrealspeccy) [snapshot v0.39](http://dlcorp.nedopc.com/viewforum.php?f=27)|2019| SMT, Alone Coder and Deathsoft |
+|Crossplatform|[**USP** v0.38 - Unreal Speccy Portable fork](emul/usp)| C++ [git](https://bitbucket.org/djdron/unrealspeccyp)|2018| djdron |
+|Crossplatform|[**Fuse** emulator v1.5.7](linux-fuse.sh)| C++ [git](http://fuse-emulator.sourceforge.net/#Source)|2018| [Fuse Team](http://fuse-emulator.sourceforge.net) |
+|Crossplatform|[**JVGS** v1.1.4](emul/jVGS/)|JavaScript *WANTED*|2016| [Epsiloncool](https://viva-games.ru/) |
+|Crossplatform|[**Qaop/JS** v1.4](emul/QAOP/)|JavaScript *WANTED*|2012| [Jan Bobrowski](https://torinak.com/qaop) |
+|DOS| [**x128** v0.94](emul/X128_094) | C++ [snapshot](emul/src/X128) | 2002 | James McKay |
+|DOS| [**r80** v0.30](emul/R80V030) | C++ *WANTED* | 2000 | Raul Gomez Sanchez |
+|DOS| [**Spectrum 128K** v3.05](emul/SHAL305) | C++ [snapshot](emul/src/SHAL305)| 1999 | Nikolay Shalaev |
 
 
-### Launchers
+### Play offline
 
-#### Anywhere
+#### Any platform
 
-Just open jVGS in your browser [ONLINE](https://reefactor.github.io/zx-spectrum-instapack/emul/jVGS/jvgs-offline.html) or [OFFLINE](emul/jVGS/jvgs-offline.html) or command line [jvgs.sh](jvgs.sh))
+Just open [**jVGS** local](emul/jVGS/jvgs-offline.html) or use command line [jvgs.sh](jvgs.sh)) or [**Qaop** local](emul/QAOP/qaop.html#ay#128)
+
+Then open .tap snaphost or betadisk image from your local file system.
+(with Google Chrome use `google-chrome --allow-file-access-from-files`)
+
 
 
 #### Linux
@@ -108,4 +109,4 @@ UX NOTE: change `JOYSTICK` option from `KEMPSTON` to `CURSOR` in order to TRDOS 
 * https://vtrd.in
 * http://dlcorp.nedopc.com
 * http://www.zxspectrum.net
-* http://www.worldofspectrum.org
+* https://www.worldofspectrum.org
