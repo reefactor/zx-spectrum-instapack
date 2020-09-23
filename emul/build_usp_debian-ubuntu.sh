@@ -24,4 +24,5 @@ cp ./unreal_speccy_portable $USP_DIR
 cd $USP_DIR
 
 # enjoy
-./unreal_speccy_portable $1
+echo enjoy!:\n\t $PWD/unreal_speccy_portable $1
+# ./unreal_speccy_portable $1
