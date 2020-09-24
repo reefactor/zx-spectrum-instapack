@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # build Virtualbox VM (see Vagrantfile)
-# Usage:
-#   ./build_zxbox.sh
-#
+
 set -xe
 SCRIPTDIR=$(cd `dirname $0` && pwd)
 pushd $SCRIPTDIR
@@ -24,4 +22,10 @@ ssh $TARGETHOST "rm -rf ~/instapack"
 scp -rp $SCRIPTDIR $TARGETHOST:~/instapack
 set +e
 ssh $TARGETHOST "sudo bash ~/instapack/install_zxbox_ubuntu2004.sh"
-set -e
+
+if [ -e $FROM_UBUNTUS_ERVER ]; then
+  sleep 30
+  # reboot again for autologin
+  ssh $TARGETHOST "sudo reboot"
+  set -e
+fi

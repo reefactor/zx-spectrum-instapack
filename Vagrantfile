@@ -2,11 +2,13 @@
 # vi: set ft=ruby :
 
 # https://app.vagrantup.com/boxes/search
-vmbox_image = ENV["VMBOX_IMAGE"] || "generic/ubuntu2004"
+# "generic/ubuntu2004"
+# "peru/ubuntu-20.04-desktop-amd64"
+vmbox_image = ENV["VMBOX_IMAGE"] || "fasmat/ubuntu2004-desktop"
 
 
 # Check required vagrant dependencies plugins and install them
-required_plugins = %w( vagrant-reload vagrant-disksize vagrant-reload )
+required_plugins = %w( vagrant-reload vagrant-disksize vagrant-reload vagrant-vbguest)
 plugins_to_install = required_plugins.select { |plugin| not Vagrant.has_plugin? plugin }
 if not plugins_to_install.empty?
   puts "Installing plugins: #{plugins_to_install.join(' ')}"
@@ -33,10 +35,13 @@ Vagrant.configure("2") do |config|
   # set defaults for VMs
   config.vm.provider 'virtualbox' do |vb|
 
-    vb.name = "zx-spectrum-instapack-vbox"
+    vb.name = "zxbox"
 
     # enable native GUI window
     vb.gui = true
+
+    # enable RDP GUI access
+    vb.customize ["modifyvm", :id, "--vrde", "on", "--vrdemulticon", "on", "--vrdeport", "3389"]
 
     # hardware specs
     vb.customize ["modifyvm", :id, "--cpus", 2]
@@ -47,10 +52,16 @@ Vagrant.configure("2") do |config|
     vb.customize ['modifyvm', :id, "--natdnshostresolver1", "off"]
 
     # enable audio (none|dsound|oss|alsa|pulse|coreaudio: supported audio types depends on the host OS)
-    vb.customize ["modifyvm", :id, "--audio", "pulse", "--audioout", "on", "--audiocontroller", "ac97"]
+    vb.customize ["modifyvm", :id, "--audioout", "on"]
+    if RUBY_PLATFORM =~ /darwin/
+      vb.customize ["modifyvm", :id, '--audio', 'coreaudio']
+    elsif RUBY_PLATFORM =~ /mingw|mswin|bccwin|cygwin|emx/
+      vb.customize ["modifyvm", :id, '--audio', 'dsound']
+    elsif RUBY_PLATFORM =~ /linux/
+      vb.customize ["modifyvm", :id, '--audio', 'alsa']
+    end
 
-    # enable RDP GUI access
-    vb.customize ["modifyvm", :id, "--vrde", "on", "--vrdemulticon", "on", "--vrdeport", "3389"]
+    # virtualbox.customize ["modifyvm", :id, "--clipboard-mode", "bidirectional"]
 
     # solve issue 'stuck connection timeout retrying' (kernel selection menu)
     # https://stackoverflow.com/questions/22575261/vagrant-stuck-connection-timeout-retrying

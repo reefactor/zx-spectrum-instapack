@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Terminal=true
+Name=USP
+#Icon=
+Exec=/home/vagrant/instapack/linux-usp.sh
+
+
