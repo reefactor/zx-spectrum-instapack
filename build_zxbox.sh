@@ -23,9 +23,6 @@ scp -rp $SCRIPTDIR $TARGETHOST:~/instapack
 set +e
 ssh $TARGETHOST "sudo bash ~/instapack/install_zxbox_ubuntu2004.sh"
 
-if [ -e $FROM_UBUNTUS_ERVER ]; then
-  sleep 30
-  # reboot again for autologin
-  ssh $TARGETHOST "sudo reboot"
-  set -e
-fi
+
+echo "ZXBOX VM build complete."
+echo "Proceed with tuning and upload with vagrant_box_cloud_upload.sh"

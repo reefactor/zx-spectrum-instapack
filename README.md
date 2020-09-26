@@ -1,11 +1,26 @@
 
 # ZX-SPECTRUM instant all-in pack
 
-A currated collection of best emulators, roms and zx software.
+A currated collection of best emulators and software.
 All you need to [spend time](overboot.asm) on a [desert island](#play-offline).
 
-Try [**jVGS**](https://reefactor.github.io/zx-spectrum-instapack/emul/jVGS/jvgs-offline.html) 
+#### Online
+
+Try [**jVGS**](https://reefactor.github.io/zx-spectrum-instapack/emul/jVGS/jvgs-offline.html) ZX-Spectrum emulator 
 or [**Qaop** v1.4](https://reefactor.github.io/zx-spectrum-instapack/emul/QAOP/qaop.html#ay#128) online
+
+
+#### ZXBOX VM
+Download [ZXBOX](https://app.vagrantup.com/reefactor/boxes/ZXBOX) VM from vagrant cloud.  
+ZXBOX is [based on](build_zxbox.sh) Ubuntu20.04 + zx-spectrum instapack. You can [build your own version from sources](build_zxbox.sh)
+
+##### ZXBOX VM structure
+###### Nested emulation layers madness
+| Emu layer #3 -- `ZX Spectrum` | USP, FUSE  | Unreal Speccy | X128, r80, |
+|---|---|---|---|
+| Emu layer #2 -- `Crossplatform` |  |  [wine](https://www.winehq.org/) (Windows on Linux) | [dosbox](https://www.dosbox.com/) (MSDOS on Linux) |
+| Emu layer #1 -- `Common VM OS` | | Ubuntu 20.04 Desktop | |
+| HOST OS -- `VirtualBox` | | any [OS capable of running VirtualBox](https://www.virtualbox.org/manual/ch01.html#hostossupport)   | |
 
 
 ### Best ZX-SPECTRUM emulators shortlist

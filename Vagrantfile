@@ -2,8 +2,6 @@
 # vi: set ft=ruby :
 
 # https://app.vagrantup.com/boxes/search
-# "generic/ubuntu2004"
-# "peru/ubuntu-20.04-desktop-amd64"
 vmbox_image = ENV["VMBOX_IMAGE"] || "fasmat/ubuntu2004-desktop"
 
 
@@ -24,7 +22,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = vmbox_image
 
-  # enlarge your default disk size
+  # enlarge disk size
   config.disksize.size = '16GB'
 
   # allow ssh access from host with pubkey
@@ -68,6 +66,8 @@ Vagrant.configure("2") do |config|
     # reduce first-time boot long waiting (600 sec default timeout)
     config.vm.boot_timeout = 60
   end
+
+  # config.vm.network "forwarded_port", guest: 80, host: 80
 
   config.vm.define 'zxbox' do |vmbox|
     vmbox.vm.hostname = "zxbox"
