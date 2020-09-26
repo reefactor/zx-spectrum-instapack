@@ -15,12 +15,12 @@ Download [ZXBOX](https://app.vagrantup.com/reefactor/boxes/ZXBOX) VM from vagran
 ZXBOX is [based on](build_zxbox.sh) Ubuntu20.04 + zx-spectrum instapack. You can [build your own version from sources](build_zxbox.sh)
 
 ##### ZXBOX VM structure
-###### Nested emulation layers madness
-| Emu layer #3 -- `ZX Spectrum` | USP, FUSE  | Unreal Speccy | X128, r80, |
-|---|---|---|---|
-| Emu layer #2 -- `Crossplatform` |  |  [wine](https://www.winehq.org/) (Windows on Linux) | [dosbox](https://www.dosbox.com/) (MSDOS on Linux) |
-| Emu layer #1 -- `Common VM OS` | | Ubuntu 20.04 Desktop | |
-| HOST OS -- `VirtualBox` | | any [OS capable of running VirtualBox](https://www.virtualbox.org/manual/ch01.html#hostossupport)   | |
+##### Nested emulation layers madness
+| Emu layer #3 - `ZX Spectrum` | USP, Fuse  | Unreal Speccy | x128, r80, Shalaev |
+|---| :---: |---|:---:|
+| Layer #2 - `Crossplatform` |  |  [wine](https://www.winehq.org/) (Windows on Linux) | [dosbox](https://www.dosbox.com/) (MSDOS on Linux) |
+| Layer #1 - `common VM OS` | -//- | Ubuntu 20.04 Desktop | -//- |
+| HOST OS - `VirtualBox` | -//- | any [OS capable of running VirtualBox](https://www.virtualbox.org/manual/ch01.html#hostossupport)   | -//- |
 
 
 ### Best ZX-SPECTRUM emulators shortlist
