@@ -3,6 +3,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="#">
+
 	<title>jVGS offline</title>
 	<!--
 	* jVGS Javascript-based ZX Spectrum Emulator
@@ -23,16 +25,28 @@
         opacity: 0.9;
         background: #444;
     }
-    </style>
+	</style>
+	
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="ui/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
 </head>
 <body>
+
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<!-- NOTE: jquery-3.4.1 is disabled because jvgsc.min.js already has old jquery -->
+	<!-- TODO: fix jQuery().animate() error and update to new jquery -->
+    <!-- <script src="ui/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
+    <script src="ui/popper-1.16.0/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="ui/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
 <div id="wrapper">
 		<div id="content">
 			<div id="content_wrapper" class="has-background has-shadow">
             	<div id="game" class="right-contains">
-                    <div class="appdat_inline" style="width:1000px;overflow-x: hidden;">
-					<div style="width:2040px;position:relative;overflow-x: hidden; overflow-y: hidden;left:0px;" id="playground">
-						<div class="appdat_inline_2" style="width:1000px;float:left;">
+                    <div style="width:1000px;overflow-x: hidden;">
+					<div style="width:2540px;position:relative;overflow-x: hidden; overflow-y: hidden;left:0px;" id="playground">
+						<div style="width:1000px;float:left;">
 			                <div id="information">
                                 <div class="play_button button-small button-shadow button-background-yellow" data-hash="">
 									Init ...
@@ -41,40 +55,52 @@
 						</div>
 						<div style="width:20px;float:left;">&nbsp;</div>
 						<div class="appdat_inline_block" style="width:1000px;float:left;">
-							<div class="appdat_inline_block_2" style="width:864px;float:left;">
+							<div style="width:864px;float:left;">
 
 								<div class="" id="fscontainer">
-									<div id="applet_place" class="shadow appdat_inline_block_3" style="width: 864px; height: 700px; position: relative; margin: auto; float: none;"></div>
+									<div id="applet_place" class="shadow" style="width: 864px; height: 700px; position: relative; margin: auto; float: none;"></div>
 								</div>
 								<br>
-								<button id="gogogo">Boot ZX Spectrum</button>
+
+                                <div>
+									<div id="accord_menu2" class="btn-group btn-group-toggle" data-toggle="buttons">
+										<label class="btn btn-secondary">
+										  <input type="radio" name="options" id="screen_x1" autocomplete="off"> 256x192 (original)
+										</label>
+										<label class="btn btn-secondary">
+										  <input type="radio" name="options" id="screen_x2" autocomplete="off"> 512x384
+										</label>
+										<label class="btn btn-secondary active">
+										  <input type="radio" name="options" id="screen_x3" autocomplete="off" checked> 768x576
+										</label>
+										<label class="btn btn-secondary">
+										  <input type="radio" name="options" id="screen_full" autocomplete="off"> Fullscreen
+  									    </label>
+  
+									</div>
+								</div>
+
+								<br />
 								<div>
-									<input type="file" id="files_selector" name="file" accept=".zip,.trd,.fdi,.scl,.tap,.tzx,.z80,.rom" />
-									<div>Open TRD, FDI, SCL, TAP, TZX, Z80, ROM file (ZIP supported)</div>
+								Upload	<input type="file" id="files_selector" name="file" accept=".zip,.trd,.fdi,.scl,.tap,.tzx,.z80,.rom" />
    								</div>
-								<br>
 
-                                <div>
-									<div id="trd_list" style="cursor:pointer;">
-										BETADISKS collection
-										<ul id="mydisks">
-										</ul>
-									</div>
-								</div>
+								<br />
+								<button class="btn btn-outline-secondary btn-sm" id="gogogo">Reboot ZX Spectrum</button>
 
-                                <div>
-									<div id="accord_menu" style="cursor:pointer;">
-										View size
-										<ul>
-											<li data-rel="screen_x1">Original 256x192</li>
-											<li data-rel="screen_x2">X2 512x384</li>
-											<li data-rel="screen_x3">X3 768x576</li>
-											<li data-rel="screen_full">Fullscreen</li>
-										</ul>
-									</div>
-								</div>
-								<p>Quicksave: <b>F8</b> quickload: <b>F3</b></p>
 							</div>
+
+							<div class="disks_list" style="width:110px;float:right;">							
+								<div>
+									<div id="trd_list" style="cursor:pointer;">
+										BETADISKS
+
+										<div id="mydisks"></div>
+									</div>
+								</div>
+
+							</div>
+
 						</div>
                     </div>
                 </div><!--game-->
@@ -285,9 +311,13 @@ jQuery(window).resize(function(){
 	}
 });
 						
-jQuery('#accord_menu').on('click', '[data-rel]', function(e){
+
+jQuery('#accord_menu2 input[type="radio"]').click(function(e) {
 	e.preventDefault();
-	var r = jQuery(this).attr('data-rel');
+	var r = jQuery(this).attr('id');
+
+	console.log(r, jQuery(this) )
+
 	switch (r) {
 		case 'screen_x1':
 			setLayout(1);
@@ -320,6 +350,7 @@ jQuery('#accord_menu').on('click', '[data-rel]', function(e){
 	
 	return false;
 });
+
 
 jQuery('#btn_save_game').on('click', function(){
 	if (mach) {
@@ -365,8 +396,13 @@ function render42DisksCollection() {
 
         if (i < 10) i = '0'+i;
 
-        jQuery('#mydisks').append(`<li data-rel="MYDISKS/${i}.${ext}">${i}.${ext}</li>`)
+        jQuery('#mydisks').append(`
+			<div data-rel="MYDISKS/${i}.${ext}" style="margin-top: 10px"> 
+				<img src="ui/floppy_disk.svg" style="vertical-align:middle; display:inli1ne" width="21" height="22" />
+				<div class="btn btn-outline-primary btn-sm" style='vertical-align:middle; display:inline;'>${i}.${ext}</div> 
+			</div>`)
     }
+
 
     jQuery('#trd_list').on('click', '[data-rel]', function(e){
         e.preventDefault();
