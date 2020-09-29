@@ -15,26 +15,26 @@ Download [ZXBOX](https://app.vagrantup.com/reefactor/boxes/ZXBOX) VM from vagran
 ZXBOX is [based on](build_zxbox.sh) Ubuntu20.04 + zx-spectrum instapack. You can [build your own version from sources](build_zxbox.sh)
 
 ##### ZXBOX VM structure
-###### Nested emulation layers madness
-| Emu layer #3 -- `ZX Spectrum` | USP, FUSE  | Unreal Speccy | X128, r80, |
-|---|---|---|---|
-| Emu layer #2 -- `Crossplatform` |  |  [wine](https://www.winehq.org/) (Windows on Linux) | [dosbox](https://www.dosbox.com/) (MSDOS on Linux) |
-| Emu layer #1 -- `Common VM OS` | | Ubuntu 20.04 Desktop | |
-| HOST OS -- `VirtualBox` | | any [OS capable of running VirtualBox](https://www.virtualbox.org/manual/ch01.html#hostossupport)   | |
+##### Nested emulation layers madness
+| Emu layer #3 - `ZX Spectrum` | USP, Fuse  | Unreal Speccy | x128, r80, Shalaev |
+|---| :---: |---|:---:|
+| Layer #2 - `Crossplatform` |  |  [wine](https://www.winehq.org/) (Windows on Linux) | [dosbox](https://www.dosbox.com/) (MSDOS on Linux) |
+| Layer #1 - `common VM OS` | -//- | Ubuntu 20.04 Desktop | -//- |
+| HOST OS - `VirtualBox` | -//- | any [OS capable of running VirtualBox](https://www.virtualbox.org/manual/ch01.html#hostossupport)   | -//- |
 
 
-### Best ZX-SPECTRUM emulators shortlist
+### Top ZX-SPECTRUM emulators
 
-|Host OS|Emulator| Source code |Last updated| Author |
-|---|---|---|---|---|
-|Windows|[**Unreal Speccy** v0.39](emul/US0.39.0/)| C++ [git v0.37](https://github.com/mkoloberdin/unrealspeccy) [snapshot v0.39](http://dlcorp.nedopc.com/viewforum.php?f=27)|2019| SMT, Alone Coder and Deathsoft |
-|Crossplatform|[**USP** v0.38 - Unreal Speccy Portable fork](emul/usp)| C++ [git](https://bitbucket.org/djdron/unrealspeccyp)|2018| djdron |
-|Crossplatform|[**Fuse** v1.5.7 linux](linux-fuse.sh) and [win32](emul/fuse-1.5.7-win32/)| C++ [snapshot v1.5.7](emul/src/fuse-1.5.7.tar.gz) from [git](http://fuse-emulator.sourceforge.net/#Source) |2018| [Fuse Team](http://fuse-emulator.sourceforge.net) |
-|Crossplatform|[**JVGS** v1.1.4](emul/jVGS/)|JavaScript *WANTED*|2016| [Epsiloncool](https://viva-games.ru/) |
-|Crossplatform|[**Qaop/JS** v1.4](emul/QAOP/)|JavaScript *WANTED*|2012| [Jan Bobrowski](https://torinak.com/qaop) |
-|DOS| [**x128** v0.94](emul/X128_094) | C++ [snapshot](emul/src/X128) | 2002 | James McKay |
-|DOS| [**r80** v0.30](emul/R80V030) | C++ *WANTED* | 2000 | Raul Gomez Sanchez |
-|DOS| [**Spectrum 128K** v3.05](emul/SHAL305) | C++ [snapshot](emul/src/SHAL305)| 1999 | Nikolay Shalaev |
+| Host OS | Emulator | Source code | Last updated | Author | Supported formats | 
+|:---:|:---:|:---:|:---|---|---|
+|Windows|[**Unreal Speccy** v0.39](emul/US0.39.0/)| C++ [git v0.37](https://github.com/mkoloberdin/unrealspeccy) [snapshot v0.39](http://dlcorp.nedopc.com/viewforum.php?f=27)|2019| SMT, Dexus, Alone Coder, Deathsoft | TRD, FDI, TD0, SCL, UDI, SP, SNA, Z80, TAP, TZX, CSW | 
+|Crossplatform|[**USP** v0.38 - Unreal Speccy Portable fork](emul/usp)| C++ [git](https://bitbucket.org/djdron/unrealspeccyp)|2018| djdron, scor |  TRD, FDI, TD0, SCL, UDI, SP, SNA, Z80, TAP, TZX, CSW, SZX, RZX |
+|Crossplatform|[**Fuse** v1.5.7 linux](linux-fuse.sh) and [win32](emul/fuse-1.5.7-win32/)| C++ [snapshot v1.5.7](emul/src/fuse-1.5.7.tar.gz) from [git](http://fuse-emulator.sourceforge.net/#Source) |2018| [Fuse Team](http://fuse-emulator.sourceforge.net) | Z80, SNA, SZX, PZX, TAP, TZX, DSK, UDI, FDI, TD0, MGT, IMG, D40, D80, SAD, TRD, SCL, OPD |
+|Crossplatform|[**JVGS** v1.1.4](emul/jVGS/)|JavaScript *WANTED*|2016| [Epsiloncool](https://viva-games.ru/) | TRD, FDI, SCL, TAP, TZX, Z80, ROM |
+|Crossplatform|[**Qaop/JS** v1.4](emul/QAOP/)|JavaScript *WANTED*|2012| [Jan Bobrowski](https://torinak.com/qaop) | TAP, Z80, SNA, ROM, SCR |
+|DOS| [**x128** v0.94](emul/X128_094) | C++ [snapshot](emul/src/X128) | 2002 | James McKay | TRD, FDI, FDD, SCL, Z80, SNA, SLT, VOC, TZX, BLX |
+|DOS| [**r80** v0.30](emul/R80V030) | C++ *WANTED* | 2000 | Raul Gomez Sanchez | TRD, FDI, TAP, SNA, Z80, TZX, SLT, SCL  |
+|DOS| [**Spectrum 128K** v3.05](emul/SHAL305) | C++ [snapshot](emul/src/SHAL305)| 1999 | Nikolay Shalaev | TRD, FDI, TD0 TAP, TZX  |
 
 
 ### Play offline
