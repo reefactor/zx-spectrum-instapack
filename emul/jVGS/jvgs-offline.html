@@ -82,7 +82,7 @@
 
 								<br />
 								<div>
-								Upload	<input type="file" id="files_selector" name="file" accept=".zip,.trd,.fdi,.scl,.tap,.tzx,.z80,.rom" />
+								Upload	<input type="file" id="files_selector" name="file" accept=".zip,.trd,.scl,.tap,.tzx,.z80,.rom" />
    								</div>
 
 								<br />
@@ -391,14 +391,16 @@ function render42DisksCollection() {
     for (var i = 1; i <= 42; i++) {
         var ext = 'TRD'
         if ((i >= 7 && i <= 10) || i == 34 || (i >= 39 && i <= 42)) {
-            ext = 'TD0'
+            ext = 'FDI'
+			// appears that jvgs cannot read FDI files
+			continue;
         }
 
         if (i < 10) i = '0'+i;
 
         jQuery('#mydisks').append(`
 			<div data-rel="MYDISKS/${i}.${ext}" style="margin-top: 10px"> 
-				<img src="ui/floppy_disk.svg" style="vertical-align:middle; display:inli1ne" width="21" height="22" />
+				<img src="ui/floppy_disk.svg" style="vertical-align:middle; display:inli1ne" width="22" height="22" />
 				<div class="btn btn-outline-primary btn-sm" style='vertical-align:middle; display:inline;'>${i}.${ext}</div> 
 			</div>`)
     }
