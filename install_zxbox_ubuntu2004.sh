@@ -17,8 +17,7 @@ apt-get install -y fuse-emulator-sdl
 
 
 # build from sources
-mv $SCRIPTDIR/emul/usp $SCRIPTDIR/emul/usp.old
-bash $SCRIPTDIR/emul/build_usp_debian-ubuntu.sh
+bash $SCRIPTDIR/emul/build_UnrealSpeccyP_debian.sh
 
 # create shortcuts to lunch emulators
 ln -s $SCRIPTDIR /home/vagrant/Desktop
