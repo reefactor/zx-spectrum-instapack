@@ -26,9 +26,9 @@ ZXBOX is [based on](build_zxbox.sh) Ubuntu20.04 + zx-spectrum instapack. You can
 ### Top ZX-SPECTRUM emulators
 
 | Host OS | Emulator | Source code | Last updated | Author | Supported formats | 
-|:---:|:---:|:---:|:---|---|---|
+|:---:|:---:|:---:|:---:|---|---|
+|Crossplatform|[**USP** v0.86 - Unreal Speccy Portable (fork)](emul/USP)| C++ [git](https://github.com/djdron/UnrealSpeccyP) [snapshot v0.0.86.12](emul/src/UnrealSpeccyP-v0.0.86.12.tgz)|2020| djdron, scor |  TRD, FDI, TD0, SCL, UDI, SP, SNA, Z80, TAP, TZX, CSW, SZX, RZX |
 |Windows|[**Unreal Speccy** v0.39](emul/US0.39.0/)| C++ [git v0.37](https://github.com/mkoloberdin/unrealspeccy) [snapshot v0.39](http://dlcorp.nedopc.com/viewforum.php?f=27)|2019| SMT, Dexus, Alone Coder, Deathsoft | TRD, FDI, TD0, SCL, UDI, SP, SNA, Z80, TAP, TZX, CSW | 
-|Crossplatform|[**USP** v0.38 - Unreal Speccy Portable fork](emul/usp)| C++ [git](https://bitbucket.org/djdron/unrealspeccyp)|2018| djdron, scor |  TRD, FDI, TD0, SCL, UDI, SP, SNA, Z80, TAP, TZX, CSW, SZX, RZX |
 |Crossplatform|[**Fuse** v1.5.7 linux](linux-fuse.sh) and [win32](emul/fuse-1.5.7-win32/)| C++ [snapshot v1.5.7](emul/src/fuse-1.5.7.tar.gz) from [git](http://fuse-emulator.sourceforge.net/#Source) |2018| [Fuse Team](http://fuse-emulator.sourceforge.net) | Z80, SNA, SZX, PZX, TAP, TZX, DSK, UDI, FDI, TD0, MGT, IMG, D40, D80, SAD, TRD, SCL, OPD |
 |Crossplatform|[**JVGS** v1.1.4](emul/jVGS/)|JavaScript *WANTED*|2016| [Epsiloncool](https://viva-games.ru/) | TRD, SCL, TAP, TZX, Z80, ROM |
 |Crossplatform|[**Qaop/JS** v1.4](emul/QAOP/)|JavaScript *WANTED*|2012| [Jan Bobrowski](https://torinak.com/qaop) | TAP, Z80, SNA, ROM, SCR |
@@ -50,7 +50,7 @@ Then open .tap snaphost or betadisk image from your local file system.
 
 #### Linux
 
-Build and start USP
+Build and start Unreal Speccy Portable
 ```bash
 linux-usp.sh
 ```
@@ -100,7 +100,7 @@ dosbox-x128.sh
 
 #### USP notes
 
-To [build from sources on debian linux](emul/build_usp_debian-ubuntu.sh):
+To [build from sources on debian linux](emul/build_UnrealSpeccyP_debian.sh):
 ```bash
 sudo apt install cmake g++ libcurl4-openssl-dev libsdl2-dev
 
