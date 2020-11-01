@@ -6,26 +6,13 @@ All you need to [spend time](overboot.asm) on a [desert island](#play-offline).
 
 #### Online
 
-Try [**jVGS**](https://reefactor.github.io/zx-spectrum-instapack/emul/jVGS/jvgs-offline.html) ZX-Spectrum emulator 
-or [**Qaop** v1.4](https://reefactor.github.io/zx-spectrum-instapack/emul/QAOP/qaop.html#ay#128) online
-
-
-#### ZXBOX VM
-Download [ZXBOX](https://app.vagrantup.com/reefactor/boxes/ZXBOX) VM from vagrant cloud.  
-ZXBOX is [based on](build_zxbox.sh) Ubuntu20.04 + zx-spectrum instapack. You can [build your own version from sources](build_zxbox.sh)
-
-##### ZXBOX VM structure
-##### Nested emulation layers madness
-| Emu layer #3 - `ZX Spectrum` | USP, Fuse  | Unreal Speccy | x128, r80, Shalaev |
-|---| :---: |---|:---:|
-| Layer #2 - `Crossplatform` |  |  [wine](https://www.winehq.org/) (Windows on Linux) | [dosbox](https://www.dosbox.com/) (MSDOS on Linux) |
-| Layer #1 - `common VM OS` | -//- | Ubuntu 20.04 Desktop | -//- |
-| HOST OS - `VirtualBox` | -//- | any [OS capable of running VirtualBox](https://www.virtualbox.org/manual/ch01.html#hostossupport)   | -//- |
-
+Try [jVGS](https://reefactor.github.io/zx-spectrum-instapack/emul/jVGS/jvgs-offline.html) 
+or [Qaop](https://reefactor.github.io/zx-spectrum-instapack/emul/QAOP/qaop.html#ay#128) 
+emulators online.
 
 ### Top ZX-SPECTRUM emulators
 
-| Host OS | Emulator | Source code | Last updated | Author | Supported formats | 
+| Host OS | Emulator | Source code | Last updated | Author | Supported file formats | 
 |:---:|:---:|:---:|:---:|---|---|
 |Crossplatform|[**USP** - **Unreal Speccy Portable** fork](emul/USP)| C++ [git](https://github.com/djdron/UnrealSpeccyP) [snapshot v0.0.86.12](emul/src/UnrealSpeccyP-v0.0.86.12.tgz)|2020| djdron, scor |  TRD, FDI, TD0, SCL, UDI, SP, SNA, Z80, TAP, TZX, CSW, SZX, RZX |
 |Windows|[**Unreal Speccy** v0.39](emul/US0.39.0/)| C++ [git v0.37](https://github.com/mkoloberdin/unrealspeccy) [snapshot v0.39](http://dlcorp.nedopc.com/viewforum.php?f=27)|2019| SMT, Dexus, Alone Coder, Deathsoft | TRD, FDI, TD0, SCL, UDI, SP, SNA, Z80, TAP, TZX, CSW | 
@@ -37,35 +24,50 @@ ZXBOX is [based on](build_zxbox.sh) Ubuntu20.04 + zx-spectrum instapack. You can
 |DOS| [**Spectrum 128K** v3.05](emul/SHAL305) | C++ [snapshot](emul/src/SHAL305)| 1999 | Nikolay Shalaev | TRD, FDI, TD0 TAP, TZX  |
 
 
-### Play offline
+### ZXBOX VM
+Download [ZXBOX](https://app.vagrantup.com/reefactor/boxes/ZXBOX) VM from vagrant cloud.  
+ZXBOX is [based on](build_zxbox.sh) Ubuntu20.04 + zx-spectrum instapack. You can [build your own version from sources](build_zxbox.sh)
+
+##### ZXBOX VM structure
+##### Nested emulation layers madness
+| Layer #3 - Z80 Emulation | USP, Fuse  | Unreal Speccy | x128, r80, Shalaev |
+|:---| :---: |---|:---:|
+| Layer #2 - Crossplatform |  |  [wine](https://www.winehq.org/) (Windows on Linux) | [dosbox](https://www.dosbox.com/) (MSDOS on Linux) |
+| Layer #1 - Common VM OS | -//- | Ubuntu 20.04 Desktop | -//- |
+| HOST OS - VirtualBox | -//- | any [OS capable of running VirtualBox](https://www.virtualbox.org/manual/ch01.html#hostossupport)   | -//- |
+
+
+
+### HOWTO Start
 
 #### Any platform
 
-Just open [**jVGS** local](emul/jVGS/jvgs-offline.html) or use command line [jvgs.sh](jvgs.sh)) or [**Qaop** local](emul/QAOP/qaop.html#ay#128)
+Open in web browser [jVGS](emul/jVGS/jvgs-offline.html) or use command line [jvgs.sh](jvgs.sh)) or [Qaop](emul/QAOP/qaop.html#ay#128).
 
-Then open .tap snaphost or betadisk image from your local file system.
+Then open image from your local file system.
 (with Google Chrome use `google-chrome --allow-file-access-from-files`)
-
 
 
 #### Linux
 
-Build and start Unreal Speccy Portable
+Build from sources and start Unreal Speccy Portable
 ```bash
 linux-usp.sh
 ```
 
-Install and start Fuse
+Install from packages and start Fuse
 ```bash
 linux-fuse.sh
 ```
 
-Start unrealspeccy via wine
+Start UnrealSpeccy with wine
 ```bash
 wine-unrealspeccy.sh
 ```
 
 #### Windows
+
+Start UnrealSpeccy
 ```
 win-unrealspeccy.bat
 ```
@@ -77,7 +79,7 @@ Start r80 via dosbox
 dosbox-r80.sh
 ```
 
-Start shalaev via dosbox
+Start Shalaev via dosbox
 ```
 dosbox-shalaev.sh
 ```
@@ -114,8 +116,7 @@ cp -r ../../../res .
 ./unreal_speccy_portable
 ```
 
-Checkout `BROWSE WEB` option in Main Menu. 
-Huge online catalog is maintained by [vtrd.in](https://vtrd.in) community. 
+Checkout `BROWSE WEB` option in Main Menu for huge online software catalog maintained by [vtrd.in](https://vtrd.in) community. 
 
 UX NOTE: change `JOYSTICK` option from `KEMPSTON` to `CURSOR` in order to TRDOS menu to work
 
@@ -125,3 +126,4 @@ UX NOTE: change `JOYSTICK` option from `KEMPSTON` to `CURSOR` in order to TRDOS 
 * http://dlcorp.nedopc.com
 * http://www.zxspectrum.net
 * https://www.worldofspectrum.org
+* https://viva-games.ru/
