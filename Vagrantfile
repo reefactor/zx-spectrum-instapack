@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
     vb.gui = true
 
     # enable RDP GUI access
-    vb.customize ["modifyvm", :id, "--vrde", "on", "--vrdemulticon", "on", "--vrdeport", "3389"]
+    vb.customize ["modifyvm", :id, "--vrde", "on", "--vrdemulticon", "on", "--vrdeport", "3390", "--vrdeaddress", "0.0.0.0"]
 
     # hardware specs
     vb.customize ["modifyvm", :id, "--cpus", 2]

@@ -11,7 +11,7 @@ echo "AutomaticLogin = vagrant" >> /etc/gdm3/custom.conf
 
 
 apt-get install -y dosbox wine libgles2-mesa
-dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install wine32
+dpkg --add-architecture i386 && sudo apt-get update -y && sudo apt-get install -y wine32
 
 apt-get install -y fuse-emulator-sdl
 
@@ -20,7 +20,9 @@ apt-get install -y fuse-emulator-sdl
 bash $SCRIPTDIR/emul/build_UnrealSpeccyP_debian.sh
 
 # create shortcuts to lunch emulators
+cp $SCRIPTDIR/usp.desktop /usr/share/applications/
 ln -s $SCRIPTDIR /home/vagrant/Desktop
+# TODO FIX "Allow Launching" UI step
 cp $SCRIPTDIR/usp.desktop /home/vagrant/Desktop/
 
 
