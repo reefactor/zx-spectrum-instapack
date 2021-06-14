@@ -1,0 +1,747 @@
+<HTML>
+<HEAD>
+ <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1251">
+ <META NAME="Author" CONTENT="Alex">
+ <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (Win95; I) [Netscape]">
+ <META NAME="KEYWORDS" CONTENT="zx, spectrum, speccy, sinclair, z80, assembler">
+ <TITLE>Как написать игру для ZX Spectrum на ассемблере - Приложение I</TITLE>
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#FF0000" ALINK="#000066">
+
+<BASEFONT SIZE=3>
+
+<h2><a name="n00">ПРИЛОЖЕНИЕ I</a></h2>
+<hr>
+<h3>КОМАНДЫ АССЕМБЛЕРА</h3>
+Это приложение содержит таблицу кодировки команд микропроцессора Z80. В первой графе указывается мнемоника, во второй&nbsp;- соответствующий ей машинный код, а в последней&nbsp;- время исполнения инструкции, измеряемое в тактах микропроцессора. Для условных и циклических команд (таких как LDIR) даются два значения времени, так как при соблюдении условия или завершении цикла на их выполнение требуется больше тактов.
+Для некоторых команд приведены два варианта машинных кодов, но время исполнения относится только к более короткому варианту. Следует помнить, что ассемблер при трансляции мнемоник также выбирает более короткий код. Вообще же для многих команд существуют дополнительные варианты кодировки, но они уже относятся к набору так называемых <i>недокументированных команд</i>, некоторые из них приведены в следующем приложении.
+Обозначения: ADDR&nbsp;- двухбайтовый адрес, N&nbsp;- однобайтовое число, NN&nbsp;- двухбайтовое число, PORT&nbsp;- младший байт адреса порта, XX&nbsp;- шестнадцатеричный байт-аргумент, Д&nbsp;- байт смещения (-128...+127).
+
+<p>
+<center><table border=0 cellspacing=0 cellpadding=4>
+<tr valign=top><td>
+<center><table border=1 cellspacing=0 cellpadding=4>
+<tr align=center><td><b>Команда</b></td><td><b>Коды</b></td><td><b>T</b></td></tr>
+<tr><td>ADC A,(HL)</td><td>8E</td><td>7</td></tr>
+<tr><td>ADC A,(IX+Д)</td><td>DD8EXX</td><td>19</td></tr>
+<tr><td>ADC A,(IY+Д)</td><td>FD8EXX</td><td>19</td></tr>
+<tr><td>ADC A,A</td><td>8F</td><td>4</td></tr>
+<tr><td>ADC A,B</td><td>88</td><td>4</td></tr>
+<tr><td>ADC A,C</td><td>89</td><td>4</td></tr>
+<tr><td>ADC A,D</td><td>8A</td><td>4</td></tr>
+<tr><td>ADC A,E</td><td>8B</td><td>4</td></tr>
+<tr><td>ADC A,H</td><td>8C</td><td>4</td></tr>
+<tr><td>ADC A,L</td><td>8D</td><td>4</td></tr>
+<tr><td>ADC A,N</td><td>CEXX</td><td>7</td></tr>
+<tr><td>ADC HL,BC</td><td>ED4A</td><td>15</td></tr>
+<tr><td>ADC HL,DE</td><td>ED5A</td><td>15</td></tr>
+<tr><td>ADC HL,HL</td><td>ED6A</td><td>15</td></tr>
+<tr><td>ADC HL,SP</td><td>ED7A</td><td>15</td></tr>
+<tr><td>ADD A,(HL)</td><td>86</td><td>7</td></tr>
+<tr><td>ADD A,(IX+Д)</td><td>DD86XX</td><td>19</td></tr>
+<tr><td>ADD A,(IY+Д)</td><td>FD86XX</td><td>19</td></tr>
+<tr><td>ADD A,A</td><td>87</td><td>4</td></tr>
+<tr><td>ADD A,B</td><td>80</td><td>4</td></tr>
+<tr><td>ADD A,C</td><td>81</td><td>4</td></tr>
+<tr><td>ADD A,D</td><td>82</td><td>4</td></tr>
+<tr><td>ADD A,E</td><td>83</td><td>4</td></tr>
+<tr><td>ADD A,H</td><td>84</td><td>4</td></tr>
+<tr><td>ADD A,L</td><td>85</td><td>4</td></tr>
+<tr><td>ADD A,N</td><td>C6XX</td><td>7</td></tr>
+<tr><td>ADD HL,BC</td><td>09</td><td>11</td></tr>
+<tr><td>ADD HL,DE</td><td>19</td><td>11</td></tr>
+<tr><td>ADD HL,HL</td><td>29</td><td>11</td></tr>
+<tr><td>ADD HL,SP</td><td>39</td><td>11</td></tr>
+<tr><td>ADD IX,BC</td><td>DD09</td><td>15</td></tr>
+<tr><td>ADD IX,DE</td><td>DD19</td><td>15</td></tr>
+<tr><td>ADD IX,IX</td><td>DD29</td><td>15</td></tr>
+<tr><td>ADD IX,SP</td><td>DD39</td><td>15</td></tr>
+<tr><td>ADD IY,BC</td><td>FD09</td><td>15</td></tr>
+<tr><td>ADD IY,DE</td><td>FD19</td><td>15</td></tr>
+<tr><td>ADD IY,IY</td><td>FD29</td><td>15</td></tr>
+<tr><td>ADD IY,SP</td><td>FD39</td><td>15</td></tr>
+<tr><td>AND (HL)</td><td>A6</td><td>7</td></tr>
+<tr><td>AND (IX+Д)</td><td>DDA6XX</td><td>19</td></tr>
+<tr><td>AND (IY+Д)</td><td>FDA6XX</td><td>19</td></tr>
+<tr><td>AND A</td><td>A7</td><td>4</td></tr>
+<tr><td>AND B</td><td>A0</td><td>4</td></tr>
+<tr><td>AND C</td><td>A1</td><td>4</td></tr>
+<tr><td>AND D</td><td>A2</td><td>4</td></tr>
+<tr><td>AND E</td><td>A3</td><td>4</td></tr>
+<tr><td>AND H</td><td>A4</td><td>4</td></tr>
+<tr><td>AND L</td><td>A5</td><td>4</td></tr>
+<tr><td>AND N</td><td>E6XX</td><td>7</td></tr>
+<tr><td>BIT 0,(HL)</td><td>CB46</td><td>12</td></tr>
+<tr><td>BIT 0,(IX+Д)</td><td>DDCBXX46</td><td>20</td></tr>
+<tr><td>BIT 0,(IY+Д)</td><td>FDCBXX46</td><td>20</td></tr>
+<tr><td>BIT 0,A</td><td>CB47</td><td>8</td></tr>
+<tr><td>BIT 0,B</td><td>CB40</td><td>8</td></tr>
+<tr><td>BIT 0,C</td><td>CB41</td><td>8</td></tr>
+<tr><td>BIT 0,D</td><td>CB42</td><td>8</td></tr>
+<tr><td>BIT 0,E</td><td>CB43</td><td>8</td></tr>
+<tr><td>BIT 0,H</td><td>CB44</td><td>8</td></tr>
+<tr><td>BIT 0,L</td><td>CB45</td><td>8</td></tr>
+<tr><td>BIT 1,(HL)</td><td>CB4E</td><td>12</td></tr>
+<tr><td>BIT 1,(IX+Д)</td><td>DDCBXX4E</td><td>20</td></tr>
+<tr><td>BIT 1,(IY+Д)</td><td>FDCBXX4E</td><td>20</td></tr>
+<tr><td>BIT 1,A</td><td>CB4F</td><td>8</td></tr>
+<tr><td>BIT 1,B</td><td>CB48</td><td>8</td></tr>
+<tr><td>BIT 1,C</td><td>CB49</td><td>8</td></tr>
+<tr><td>BIT 1,D</td><td>CB4A</td><td>8</td></tr>
+<tr><td>BIT 1,E</td><td>CB4B</td><td>8</td></tr>
+<tr><td>BIT 1,H</td><td>CB4C</td><td>8</td></tr>
+<tr><td>BIT 1,L</td><td>CB4D</td><td>8</td></tr>
+<tr><td>BIT 2,(HL)</td><td>CB56</td><td>12</td></tr>
+<tr><td>BIT 2,(IX+Д)</td><td>DDCBXX56</td><td>20</td></tr>
+<tr><td>BIT 2,(IY+Д)</td><td>FDCBXX56</td><td>20</td></tr>
+<tr><td>BIT 2,A</td><td>CB57</td><td>8</td></tr>
+<tr><td>BIT 2,B</td><td>CB50</td><td>8</td></tr>
+<tr><td>BIT 2,C</td><td>CB51</td><td>8</td></tr>
+<tr><td>BIT 2,D</td><td>CB52</td><td>8</td></tr>
+<tr><td>BIT 2,E</td><td>CB53</td><td>8</td></tr>
+<tr><td>BIT 2,H</td><td>CB54</td><td>8</td></tr>
+<tr><td>BIT 2,L</td><td>CB55</td><td>8</td></tr>
+<tr><td>BIT 3,(HL)</td><td>CB5E</td><td>12</td></tr>
+<tr><td>BIT 3,(IX+Д)</td><td>DDCBXX5E</td><td>20</td></tr>
+<tr><td>BIT 3,(IY+Д)</td><td>FDCBXX5E</td><td>8</td></tr>
+<tr><td>BIT 3,A</td><td>CB5F</td><td>8</td></tr>
+<tr><td>BIT 3,B</td><td>CB58</td><td>8</td></tr>
+<tr><td>BIT 3,C</td><td>CB59</td><td>8</td></tr>
+<tr><td>BIT 3,D</td><td>CB5A</td><td>8</td></tr>
+<tr><td>BIT 3,E</td><td>CB5B</td><td>8</td></tr>
+<tr><td>BIT 3,H</td><td>CB5C</td><td>8</td></tr>
+<tr><td>BIT 3,L</td><td>CB5D</td><td>8</td></tr>
+<tr><td>BIT 4,(HL)</td><td>CB66</td><td>12</td></tr>
+<tr><td>BIT 4,(IX+Д)</td><td>DDCBXX66</td><td>20</td></tr>
+<tr><td>BIT 4,(IY+Д)</td><td>FDCBXX66</td><td>20</td></tr>
+<tr><td>BIT 4,A</td><td>CB67</td><td>8</td></tr>
+<tr><td>BIT 4,B</td><td>CB60</td><td>8</td></tr>
+<tr><td>BIT 4,C</td><td>CB61</td><td>8</td></tr>
+<tr><td>BIT 4,D</td><td>CB62</td><td>8</td></tr>
+<tr><td>BIT 4,E</td><td>CB63</td><td>8</td></tr>
+<tr><td>BIT 4,H</td><td>CB64</td><td>8</td></tr>
+<tr><td>BIT 4,L</td><td>CB65</td><td>8</td></tr>
+<tr><td>BIT 5,(HL)</td><td>CB6E</td><td>12</td></tr>
+<tr><td>BIT 5,(IX+Д)</td><td>DDCBXX6E</td><td>20</td></tr>
+<tr><td>BIT 5,(IY+Д)</td><td>FDCBXX6E</td><td>20</td></tr>
+<tr><td>BIT 5,A</td><td>CB6F</td><td>8</td></tr>
+<tr><td>BIT 5,B</td><td>CB68</td><td>8</td></tr>
+<tr><td>BIT 5,C</td><td>CB69</td><td>8</td></tr>
+<tr><td>BIT 5,D</td><td>CB6A</td><td>8</td></tr>
+<tr><td>BIT 5,E</td><td>CB6B</td><td>8</td></tr>
+<tr><td>BIT 5,H</td><td>CB6C</td><td>8</td></tr>
+<tr><td>BIT 5,L</td><td>CB6D</td><td>8</td></tr>
+<tr><td>BIT 6,(HL)</td><td>CB76</td><td>12</td></tr>
+<tr><td>BIT 6,(IX+Д)</td><td>DDCBXX76</td><td>20</td></tr>
+<tr><td>BIT 6,(IY+Д)</td><td>FDCBXX76</td><td>20</td></tr>
+<tr><td>BIT 6,A</td><td>CB77</td><td>8</td></tr>
+<tr><td>BIT 6,B</td><td>CB70</td><td>8</td></tr>
+<tr><td>BIT 6,C</td><td>CB71</td><td>8</td></tr>
+<tr><td>BIT 6,D</td><td>CB72</td><td>8</td></tr>
+<tr><td>BIT 6,E</td><td>CB73</td><td>8</td></tr>
+<tr><td>BIT 6,H</td><td>CB74</td><td>8</td></tr>
+<tr><td>BIT 6,L</td><td>CB75</td><td>8</td></tr>
+<tr><td>BIT 7,(HL)</td><td>CB7E</td><td>12</td></tr>
+<tr><td>BIT 7,(IX+Д)</td><td>DDCBXX7E</td><td>20</td></tr>
+<tr><td>BIT 7,(IY+Д)</td><td>FDCBXX7E</td><td>20</td></tr>
+<tr><td>BIT 7,A</td><td>CB7F</td><td>8</td></tr>
+<tr><td>BIT 7,B</td><td>CB78</td><td>8</td></tr>
+<tr><td>BIT 7,C</td><td>CB79</td><td>8</td></tr>
+<tr><td>BIT 7,D</td><td>CB7A</td><td>8</td></tr>
+<tr><td>BIT 7,E</td><td>CB7B</td><td>8</td></tr>
+<tr><td>BIT 7,H</td><td>CB7C</td><td>8</td></tr>
+<tr><td>BIT 7,L</td><td>CB7D</td><td>8</td></tr>
+<tr><td>CALL ADDR</td><td>CDXXXX</td><td>17</td></tr>
+<tr><td>CALL C,ADDR</td><td>DCXXXX</td><td>10/17</td></tr>
+<tr><td>CALL M,ADDR</td><td>FCXXXX</td><td>10/17</td></tr>
+<tr><td>CALL NC,ADDR</td><td>D4XXXX</td><td>10/17</td></tr>
+<tr><td>CALL NZ,ADDR</td><td>C4XXXX</td><td>10/17</td></tr>
+<tr><td>CALL P,ADDR</td><td>F4XXXX</td><td>10/17</td></tr>
+<tr><td>CALL PE,ADDR</td><td>ECXXXX</td><td>10/17</td></tr>
+<tr><td>CALL PO,ADDR</td><td>E4XXXX</td><td>10/17</td></tr>
+<tr><td>CALL Z,ADDR</td><td>CCXXXX</td><td>10/17</td></tr>
+<tr><td>CCF</td><td>3F</td><td>4</td></tr>
+<tr><td>CP (HL)</td><td>BE</td><td>7</td></tr>
+<tr><td>CP (IX+Д)</td><td>DDBEXX</td><td>19</td></tr>
+<tr><td>CP (IY+Д)</td><td>FDBEXX</td><td>19</td></tr>
+<tr><td>CP A</td><td>BF</td><td>4</td></tr>
+<tr><td>CP B</td><td>B8</td><td>4</td></tr>
+<tr><td>CP C</td><td>B9</td><td>4</td></tr>
+<tr><td>CP D</td><td>BA</td><td>4</td></tr>
+<tr><td>CP E</td><td>BB</td><td>4</td></tr>
+<tr><td>CP H</td><td>BC</td><td>4</td></tr>
+<tr><td>CP L</td><td>BD</td><td>4</td></tr>
+<tr><td>CP N</td><td>FEXX</td><td>7</td></tr>
+<tr><td>CPD</td><td>EDA9</td><td>16</td></tr>
+<tr><td>CPDR</td><td>EDB9</td><td>21/16</td></tr>
+<tr><td>CPI</td><td>EDA1</td><td>16</td></tr>
+<tr><td>CPIR</td><td>EDB1</td><td>21/16</td></tr>
+<tr><td>CPL</td><td>2F</td><td>4</td></tr>
+<tr><td>DAA</td><td>27</td><td>4</td></tr>
+<tr><td>DEC (HL)</td><td>35</td><td>11</td></tr>
+<tr><td>DEC (IX+Д)</td><td>DD35XX</td><td>23</td></tr>
+<tr><td>DEC (IY+Д)</td><td>FD35XX</td><td>23</td></tr>
+<tr><td>DEC A</td><td>3D</td><td>4</td></tr>
+<tr><td>DEC B</td><td>05</td><td>4</td></tr>
+<tr><td>DEC BC</td><td>0B</td><td>6</td></tr>
+<tr><td>DEC C</td><td>0D</td><td>4</td></tr>
+<tr><td>DEC D</td><td>15</td><td>4</td></tr>
+<tr><td>DEC DE</td><td>1B</td><td>6</td></tr>
+<tr><td>DEC E</td><td>1D</td><td>4</td></tr>
+<tr><td>DEC H</td><td>25</td><td>4</td></tr>
+<tr><td>DEC HL</td><td>2B</td><td>6</td></tr>
+<tr><td>DEC IX</td><td>DD2B</td><td>10</td></tr>
+<tr><td>DEC IY</td><td>FD2B</td><td>10</td></tr>
+<tr><td>DEC L</td><td>2D</td><td>4</td></tr>
+<tr><td>DEC SP</td><td>3B</td><td>6</td></tr>
+<tr><td>DI</td><td>F3</td><td>4</td></tr>
+<tr><td>DJNZ Д</td><td>10XX</td><td>13/8</td></tr>
+<tr><td>EI</td><td>FB</td><td>4</td></tr>
+<tr><td>EX (SP),HL</td><td>E3</td><td>19</td></tr>
+<tr><td>EX (SP),IX</td><td>DDE3</td><td>23</td></tr>
+<tr><td>EX (SP),IY</td><td>FDE3</td><td>23</td></tr>
+<tr><td>EX AF,AF'</td><td>08</td><td>4</td></tr>
+<tr><td>EX DE,HL</td><td>EB</td><td>4</td></tr>
+<tr><td>EXX</td><td>D9</td><td>4</td></tr>
+<tr><td>HALT</td><td>76</td><td>4</td></tr>
+<tr><td>IM 0</td><td>ED46</td><td>8</td></tr>
+<tr><td>IM 1</td><td>ED56</td><td>8</td></tr>
+<tr><td>IM 2</td><td>ED5E</td><td>8</td></tr>
+<tr><td>IN (HL),(C)</td><td>ED70</td><td>12</td></tr>
+<tr><td>IN A,(C)</td><td>ED78</td><td>12</td></tr>
+<tr><td>IN A,(PORT)</td><td>DBXX</td><td>11</td></tr>
+<tr><td>IN B,(C)</td><td>ED40</td><td>12</td></tr>
+<tr><td>IN C,(C)</td><td>ED48</td><td>12</td></tr>
+<tr><td>IN D,(C)</td><td>ED50</td><td>12</td></tr>
+<tr><td>IN E,(C)</td><td>ED58</td><td>12</td></tr>
+<tr><td>IN H,(C)</td><td>ED60</td><td>12</td></tr>
+<tr><td>IN L,(C)</td><td>ED68</td><td>12</td></tr>
+<tr><td>INC (HL)</td><td>34</td><td>11</td></tr>
+<tr><td>INC (IX+Д)</td><td>DD34XX</td><td>23</td></tr>
+<tr><td>INC (IY+Д)</td><td>FD34XX</td><td>23</td></tr>
+<tr><td>INC A</td><td>3C</td><td>4</td></tr>
+<tr><td>INC B</td><td>04</td><td>4</td></tr>
+<tr><td>INC BC</td><td>03</td><td>6</td></tr>
+<tr><td>INC C</td><td>0C</td><td>4</td></tr>
+<tr><td>INC D</td><td>14</td><td>4</td></tr>
+<tr><td>INC DE</td><td>13</td><td>6</td></tr>
+<tr><td>INC E</td><td>1C</td><td>4</td></tr>
+<tr><td>INC H</td><td>24</td><td>4</td></tr>
+<tr><td>INC HL</td><td>23</td><td>6</td></tr>
+<tr><td>INC IX</td><td>DD23</td><td>10</td></tr>
+<tr><td>INC IY</td><td>FD23</td><td>10</td></tr>
+<tr><td>INC L</td><td>2C</td><td>4</td></tr>
+<tr><td>INC SP</td><td>33</td><td>6</td></tr>
+<tr><td>IND</td><td>EDAA</td><td>16</td></tr>
+<tr><td>INDR</td><td>EDBA</td><td>21/16</td></tr>
+<tr><td>INI</td><td>EDA2</td><td>16</td></tr>
+<tr><td>INIR</td><td>EDB2</td><td>21/16</td></tr>
+<tr><td>JP (HL)</td><td>E9</td><td>4</td></tr>
+<tr><td>JP (IX)</td><td>DDE9</td><td>8</td></tr>
+<tr><td>JP (IY)</td><td>FDE9</td><td>8</td></tr>
+<tr><td>JP ADDR</td><td>C3XXXX</td><td>10</td></tr>
+<tr><td>JP C,ADDR</td><td>DAXXXX</td><td>10</td></tr>
+<tr><td>JP M,ADDR</td><td>FAXXXX</td><td>10</td></tr>
+<tr><td>JP NC,ADDR</td><td>D2XXXX</td><td>10</td></tr>
+<tr><td>JP NZ,ADDR</td><td>C2XXXX</td><td>10</td></tr>
+<tr><td>JP P,ADDR</td><td>F2XXXX</td><td>10</td></tr>
+<tr><td>JP PE,ADDR</td><td>EAXXXX</td><td>10</td></tr>
+<tr><td>JP PO,ADDR</td><td>E2XXXX</td><td>10</td></tr>
+<tr><td>JP Z,ADDR</td><td>CAXXXX</td><td>10</td></tr>
+<tr><td>JR Д</td><td>18XX</td><td>12</td></tr>
+<tr><td>JR C,Д</td><td>38XX</td><td>12/7</td></tr>
+<tr><td>JR NC,Д</td><td>30XX</td><td>12/7</td></tr>
+<tr><td>JR NZ,Д</td><td>20XX</td><td>12/7</td></tr>
+<tr><td>JR Z,Д</td><td>28XX</td><td>12/7</td></tr>
+<tr><td>LD (ADDR),A</td><td>32XXXX</td><td>13</td></tr>
+<tr><td>LD (ADDR),BC</td><td>ED43XXXX</td><td>20</td></tr>
+<tr><td>LD (ADDR),DE</td><td>ED53XXXX</td><td>20</td></tr>
+<tr><td>LD (ADDR),HL</td><td>22XXXX<br>ED63XXXX</td><td>16</td></tr>
+<tr><td>LD (ADDR),IX</td><td>DD22XXXX</td><td>20</td></tr>
+<tr><td>LD (ADDR),IY</td><td>FD22XXXX</td><td>20</td></tr>
+<tr><td>LD (ADDR),SP</td><td>ED73XXXX</td><td>20</td></tr>
+<tr><td>LD (BC),A</td><td>02</td><td>7</td></tr>
+<tr><td>LD (DE),A</td><td>12</td><td>7</td></tr>
+<tr><td>LD (HL),A</td><td>77</td><td>7</td></tr>
+<tr><td>LD (HL),B</td><td>70</td><td>7</td></tr>
+<tr><td>LD (HL),C</td><td>71</td><td>7</td></tr>
+<tr><td>LD (HL),D</td><td>72</td><td>7</td></tr>
+<tr><td>LD (HL),E</td><td>73</td><td>7</td></tr>
+<tr><td>LD (HL),H</td><td>74</td><td>7</td></tr>
+<tr><td>LD (HL),L</td><td>75</td><td>7</td></tr>
+<tr><td>LD (HL),N</td><td>36XX</td><td>10</td></tr>
+<tr><td>LD (IX+Д),A</td><td>DD77XX</td><td>19</td></tr>
+<tr><td>LD (IX+Д),B</td><td>DD70XX</td><td>19</td></tr>
+<tr><td>LD (IX+Д),C</td><td>DD71XX</td><td>19</td></tr>
+<tr><td>LD (IX+Д),D</td><td>DD72XX</td><td>19</td></tr>
+<tr><td>LD (IX+Д),E</td><td>DD73XX</td><td>19</td></tr>
+<tr><td>LD (IX+Д),H</td><td>DD74XX</td><td>19</td></tr>
+<tr><td>LD (IX+Д),L</td><td>DD75XX</td><td>19</td></tr>
+<tr><td>LD (IX+Д),N</td><td>DD36XXXX</td><td>19</td></tr>
+<tr><td>LD (IY+Д),A</td><td>FD77XX</td><td>19</td></tr>
+<tr><td>LD (IY+Д),B</td><td>FD70XX</td><td>19</td></tr>
+<tr><td>LD (IY+Д),C</td><td>FD71XX</td><td>19</td></tr>
+<tr><td>LD (IY+Д),D</td><td>FD72XX</td><td>19</td></tr>
+<tr><td>LD (IY+Д),E</td><td>FD73XX</td><td>19</td></tr>
+<tr><td>LD (IY+Д),H</td><td>FD74XX</td><td>19</td></tr>
+<tr><td>LD (IY+Д),L</td><td>FD75XX</td><td>19</td></tr>
+<tr><td>LD (IY+Д),N</td><td>FD36XXXX</td><td>19</td></tr>
+<tr><td>LD A,(ADDR)</td><td>3AXXXX</td><td>13</td></tr>
+<tr><td>LD A,(BC)</td><td>0A</td><td>7</td></tr>
+<tr><td>LD A,(DE)</td><td>1A</td><td>7</td></tr>
+<tr><td>LD A,(HL)</td><td>7E</td><td>7</td></tr>
+<tr><td>LD A,(IX+Д)</td><td>DD7EXX</td><td>19</td></tr>
+<tr><td>LD A,(IY+Д)</td><td>FD7EXX</td><td>19</td></tr>
+<tr><td>LD A,A</td><td>7F</td><td>4</td></tr>
+<tr><td>LD A,B</td><td>78</td><td>4</td></tr>
+<tr><td>LD A,C</td><td>79</td><td>4</td></tr>
+<tr><td>LD A,D</td><td>7A</td><td>4</td></tr>
+<tr><td>LD A,E</td><td>7B</td><td>4</td></tr>
+<tr><td>LD A,H</td><td>7C</td><td>4</td></tr>
+<tr><td>LD A,I</td><td>ED57</td><td>9</td></tr>
+<tr><td>LD A,L</td><td>7D</td><td>4</td></tr>
+<tr><td>LD A,R</td><td>ED5F</td><td>9</td></tr>
+<tr><td>LD A,N</td><td>3EXX</td><td>7</td></tr>
+<tr><td>LD B,(HL)</td><td>46</td><td>7</td></tr>
+<tr><td>LD B,(IX+Д)</td><td>DD46XX</td><td>19</td></tr>
+<tr><td>LD B,(IY+Д)</td><td>FD46XX</td><td>19</td></tr>
+<tr><td>LD B,A</td><td>47</td><td>4</td></tr>
+<tr><td>LD B,B</td><td>40</td><td>4</td></tr>
+<tr><td>LD B,C</td><td>41</td><td>4</td></tr>
+<tr><td>LD B,D</td><td>42</td><td>4</td></tr>
+<tr><td>LD B,E</td><td>43</td><td>4</td></tr>
+<tr><td>LD B,H</td><td>44</td><td>4</td></tr>
+<tr><td>LD B,L</td><td>45</td><td>4</td></tr>
+<tr><td>LD B,N</td><td>06XX</td><td>7</td></tr>
+<tr><td>LD BC,(ADDR)</td><td>ED4BXXXX</td><td>20</td></tr>
+<tr><td>LD BC,NN</td><td>01XXXX</td><td>10</td></tr>
+<tr><td>LD C,(HL)</td><td>4E</td><td>7</td></tr>
+<tr><td>LD C,(IX+Д)</td><td>DD4EXX</td><td>19</td></tr>
+<tr><td>LD C,(IY+Д)</td><td>FD4EXX</td><td>19</td></tr>
+<tr><td>LD C,A</td><td>4F</td><td>4</td></tr>
+<tr><td>LD C,B</td><td>48</td><td>4</td></tr>
+<tr><td>LD C,C</td><td>49</td><td>4</td></tr>
+<tr><td>LD C,D</td><td>4A</td><td>4</td></tr>
+<tr><td>LD C,E</td><td>4B</td><td>4</td></tr>
+<tr><td>LD C,H</td><td>4C</td><td>4</td></tr>
+<tr><td>LD C,L</td><td>4D</td><td>4</td></tr>
+<tr><td>LD C,N</td><td>0EXX</td><td>7</td></tr>
+<tr><td>LD D,(HL)</td><td>56</td><td>7</td></tr>
+<tr><td>LD D,(IX+Д)</td><td>DD56XX</td><td>19</td></tr>
+<tr><td>LD D,(IY+Д)</td><td>FD56XX</td><td>19</td></tr>
+<tr><td>LD D,A</td><td>57</td><td>4</td></tr>
+<tr><td>LD D,B</td><td>50</td><td>4</td></tr>
+<tr><td>LD D,C</td><td>51</td><td>4</td></tr>
+<tr><td>LD D,D</td><td>52</td><td>4</td></tr>
+<tr><td>LD D,E</td><td>53</td><td>4</td></tr>
+<tr><td>LD D,H</td><td>54</td><td>4</td></tr>
+<tr><td>LD D,L</td><td>55</td><td>4</td></tr>
+<tr><td>LD D,N</td><td>16XX</td><td>7</td></tr>
+<tr><td>LD DE,(ADDR)</td><td>ED5BXXXX</td><td>20</td></tr>
+<tr><td>LD DE,NN</td><td>11XXXX</td><td>10</td></tr>
+<tr><td>LD E,(HL)</td><td>5E</td><td>7</td></tr>
+<tr><td>LD E,(IX+Д)</td><td>DD5EXX</td><td>19</td></tr>
+<tr><td>LD E,(IY+Д)</td><td>FD5EXX</td><td>19</td></tr>
+<tr><td>LD E,A</td><td>5F</td><td>4</td></tr>
+<tr><td>LD E,B</td><td>58</td><td>4</td></tr>
+<tr><td>LD E,C</td><td>59</td><td>4</td></tr>
+<tr><td>LD E,D</td><td>5A</td><td>4</td></tr>
+<tr><td>LD E,E</td><td>5B</td><td>4</td></tr>
+<tr><td>LD E,H</td><td>5C</td><td>4</td></tr>
+<tr><td>LD E,L</td><td>5D</td><td>4</td></tr>
+<tr><td>LD E,N</td><td>1EXX</td><td>7</td></tr>
+<tr><td>LD H,(HL)</td><td>66</td><td>7</td></tr>
+<tr><td>LD H,(IX+Д)</td><td>DD66XX</td><td>19</td></tr>
+<tr><td>LD H,(IY+Д)</td><td>FD66XX</td><td>19</td></tr>
+<tr><td>LD H,A</td><td>67</td><td>4</td></tr>
+<tr><td>LD H,B</td><td>60</td><td>4</td></tr>
+<tr><td>LD H,C</td><td>61</td><td>4</td></tr>
+<tr><td>LD H,D</td><td>62</td><td>4</td></tr>
+<tr><td>LD H,E</td><td>63</td><td>4</td></tr>
+<tr><td>LD H,H</td><td>64</td><td>4</td></tr>
+<tr><td>LD H,L</td><td>65</td><td>4</td></tr>
+<tr><td>LD H,N</td><td>26XX</td><td>7</td></tr>
+<tr><td>LD HL,(ADDR)</td><td>2AXXXX<br>ED6BXXXX</td><td>16</td></tr>
+<tr><td>LD HL,NN</td><td>21XXXX</td><td>10</td></tr>
+<tr><td>LD I,A</td><td>ED47</td><td>9</td></tr>
+<tr><td>LD IX,(ADDR)</td><td>DD2AXXXX</td><td>20</td></tr>
+<tr><td>LD IX,NN</td><td>DD21XXXX</td><td>14</td></tr>
+<tr><td>LD IY,(ADDR)</td><td>FD2AXXXX</td><td>20</td></tr>
+<tr><td>LD IY,NN</td><td>FD21XXXX</td><td>14</td></tr>
+<tr><td>LD L,(HL)</td><td>6E</td><td>7</td></tr>
+<tr><td>LD L,(IX+Д)</td><td>DD6EXX</td><td>19</td></tr>
+</table></center>
+
+</td>
+<td>
+<center><table border=1 cellspacing=0 cellpadding=4>
+<tr align=center><td><b>Команда</b></td><td><b>Коды</b></td><td><b>T</b></td></tr>
+
+<tr><td>LD L,(IY+Д)</td><td>FD6EXX</td><td>19</td></tr>
+<tr><td>LD L,A</td><td>6F</td><td>4</td></tr>
+<tr><td>LD L,B</td><td>68</td><td>4</td></tr>
+<tr><td>LD L,C</td><td>69</td><td>4</td></tr>
+<tr><td>LD L,D</td><td>6A</td><td>4</td></tr>
+<tr><td>LD L,E</td><td>6B</td><td>4</td></tr>
+<tr><td>LD L,H</td><td>6C</td><td>4</td></tr>
+<tr><td>LD L,L</td><td>6D</td><td>4</td></tr>
+<tr><td>LD L,N</td><td>2EXX</td><td>7</td></tr>
+<tr><td>LD R,A</td><td>ED4F</td><td>9</td></tr>
+<tr><td>LD SP,(ADDR)</td><td>ED7BXXXX</td><td>20</td></tr>
+<tr><td>LD SP,IX</td><td>DDF9</td><td>10</td></tr>
+<tr><td>LD SP,IY</td><td>FDF9</td><td>10</td></tr>
+<tr><td>LD SP,HL</td><td>F9</td><td>6</td></tr>
+<tr><td>LD SP,NN</td><td>31XXXX</td><td>10</td></tr>
+<tr><td>LDD</td><td>EDA8</td><td>16</td></tr>
+<tr><td>LDDR</td><td>EDB8</td><td>21/16</td></tr>
+<tr><td>LDI</td><td>EDA0</td><td>16</td></tr>
+<tr><td>LDIR</td><td>EDB0</td><td>21/16</td></tr>
+<tr><td>NEG</td><td>ED44</td><td>8</td></tr>
+<tr><td>NOP</td><td>00</td><td>4</td></tr>
+<tr><td>OR (HL)</td><td>B6</td><td>7</td></tr>
+<tr><td>OR (IX+Д)</td><td>DDB6XX</td><td>19</td></tr>
+<tr><td>OR (IY+Д)</td><td>FDB6XX</td><td>19</td></tr>
+<tr><td>OR A</td><td>B7</td><td>4</td></tr>
+<tr><td>OR B</td><td>B0</td><td>4</td></tr>
+<tr><td>OR C</td><td>B1</td><td>4</td></tr>
+<tr><td>OR D</td><td>B2</td><td>4</td></tr>
+<tr><td>OR E</td><td>B3</td><td>4</td></tr>
+<tr><td>OR H</td><td>B4</td><td>4</td></tr>
+<tr><td>OR L</td><td>B5</td><td>4</td></tr>
+<tr><td>OR N</td><td>F6XX</td><td>7</td></tr>
+<tr><td>OTDR</td><td>EDBB</td><td>21/15</td></tr>
+<tr><td>OTIR</td><td>EDB3</td><td>21/15</td></tr>
+<tr><td>OUT (C),A</td><td>ED79</td><td>12</td></tr>
+<tr><td>OUT (C),B</td><td>ED41</td><td>12</td></tr>
+<tr><td>OUT (C),C</td><td>ED49</td><td>12</td></tr>
+<tr><td>OUT (C),D</td><td>ED51</td><td>12</td></tr>
+<tr><td>OUT (C),E</td><td>ED59</td><td>12</td></tr>
+<tr><td>OUT (C),H</td><td>ED61</td><td>12</td></tr>
+<tr><td>OUT (C),L</td><td>ED69</td><td>12</td></tr>
+<tr><td>OUT (PORT),A</td><td>D3XX</td><td>12</td></tr>
+<tr><td>OUTD</td><td>EDAB</td><td>16</td></tr>
+<tr><td>OUTI</td><td>EDA3</td><td>16</td></tr>
+<tr><td>POP AF</td><td>F1</td><td>10</td></tr>
+<tr><td>POP BC</td><td>C1</td><td>10</td></tr>
+<tr><td>POP DE</td><td>D1</td><td>10</td></tr>
+<tr><td>POP HL</td><td>E1</td><td>10</td></tr>
+<tr><td>POP IX</td><td>DDE1</td><td>14</td></tr>
+<tr><td>POP IY</td><td>FDE1</td><td>14</td></tr>
+<tr><td>PUSH AF</td><td>F5</td><td>11</td></tr>
+<tr><td>PUSH BC</td><td>C5</td><td>11</td></tr>
+<tr><td>PUSH DE</td><td>D5</td><td>11</td></tr>
+<tr><td>PUSH HL</td><td>E5</td><td>11</td></tr>
+<tr><td>PUSH IX</td><td>DDE5</td><td>15</td></tr>
+<tr><td>PUSH IY</td><td>FDE5</td><td>15</td></tr>
+<tr><td>RES 0,(HL)</td><td>CB86</td><td>15</td></tr>
+<tr><td>RES 0,(IX+Д)</td><td>DDCBXX86</td><td>23</td></tr>
+<tr><td>RES 0,(IY+Д)</td><td>FDCBXX86</td><td>23</td></tr>
+<tr><td>RES 0,A</td><td>CB87</td><td>8</td></tr>
+<tr><td>RES 0,B</td><td>CB80</td><td>8</td></tr>
+<tr><td>RES 0,C</td><td>CB81</td><td>8</td></tr>
+<tr><td>RES 0,D</td><td>CB82</td><td>8</td></tr>
+<tr><td>RES 0,E</td><td>CB83</td><td>8</td></tr>
+<tr><td>RES 0,H</td><td>CB84</td><td>8</td></tr>
+<tr><td>RES 0,L</td><td>CB85</td><td>8</td></tr>
+<tr><td>RES 1,(HL)</td><td>CB8E</td><td>15</td></tr>
+<tr><td>RES 1,(IX+Д)</td><td>DDCBXX8E</td><td>23</td></tr>
+<tr><td>RES 1,(IY+Д)</td><td>FDCBXX8E</td><td>23</td></tr>
+<tr><td>RES 1,A</td><td>CB8F</td><td>8</td></tr>
+<tr><td>RES 1,B</td><td>CB88</td><td>8</td></tr>
+<tr><td>RES 1,C</td><td>CB89</td><td>8</td></tr>
+<tr><td>RES 1,D</td><td>CB8A</td><td>8</td></tr>
+<tr><td>RES 1,E</td><td>CB8B</td><td>8</td></tr>
+<tr><td>RES 1,H</td><td>CB8C</td><td>8</td></tr>
+<tr><td>RES 1,L</td><td>CB8D</td><td>8</td></tr>
+<tr><td>RES 2,(HL)</td><td>CB96</td><td>15</td></tr>
+<tr><td>RES 2,(IX+Д)</td><td>DDCBXX96</td><td>23</td></tr>
+<tr><td>RES 2,(IY+Д)</td><td>FDCBXX96</td><td>23</td></tr>
+<tr><td>RES 2,A</td><td>CB97</td><td>8</td></tr>
+<tr><td>RES 2,B</td><td>CB90</td><td>8</td></tr>
+<tr><td>RES 2,C</td><td>CB91</td><td>8</td></tr>
+<tr><td>RES 2,D</td><td>CB92</td><td>8</td></tr>
+<tr><td>RES 2,E</td><td>CB93</td><td>8</td></tr>
+<tr><td>RES 2,H</td><td>CB94</td><td>8</td></tr>
+<tr><td>RES 2,L</td><td>CB95</td><td>8</td></tr>
+<tr><td>RES 3,(HL)</td><td>CB9E</td><td>15</td></tr>
+<tr><td>RES 3,(IX+Д)</td><td>DDCBXX9E</td><td>23</td></tr>
+<tr><td>RES 3,(IY+Д)</td><td>FDCBXX9E</td><td>23</td></tr>
+<tr><td>RES 3,A</td><td>CB9F</td><td>8</td></tr>
+<tr><td>RES 3,B</td><td>CB98</td><td>8</td></tr>
+<tr><td>RES 3,C</td><td>CB99</td><td>8</td></tr>
+<tr><td>RES 3,D</td><td>CB9A</td><td>8</td></tr>
+<tr><td>RES 3,E</td><td>CB9B</td><td>8</td></tr>
+<tr><td>RES 3,H</td><td>CB9C</td><td>8</td></tr>
+<tr><td>RES 3,L</td><td>CB9D</td><td>8</td></tr>
+<tr><td>RES 4,(HL)</td><td>CBA6</td><td>15</td></tr>
+<tr><td>RES 4,(IX+Д)</td><td>DDCBXXA6</td><td>23</td></tr>
+<tr><td>RES 4,(IY+Д)</td><td>FDCBXXA6</td><td>23</td></tr>
+<tr><td>RES 4,A</td><td>CBA7</td><td>8</td></tr>
+<tr><td>RES 4,B</td><td>CBA0</td><td>8</td></tr>
+<tr><td>RES 4,C</td><td>CBA1</td><td>8</td></tr>
+<tr><td>RES 4,D</td><td>CBA2</td><td>8</td></tr>
+<tr><td>RES 4,E</td><td>CBA3</td><td>8</td></tr>
+<tr><td>RES 4,H</td><td>CBA4</td><td>8</td></tr>
+<tr><td>RES 4,L</td><td>CBA5</td><td>8</td></tr>
+<tr><td>RES 5,(HL)</td><td>CBAE</td><td>15</td></tr>
+<tr><td>RES 5,(IX+Д)</td><td>DDCBXXAE</td><td>23</td></tr>
+<tr><td>RES 5,(IY+Д)</td><td>FDCBXXAE</td><td>23</td></tr>
+<tr><td>RES 5,A</td><td>CBAF</td><td>8</td></tr>
+<tr><td>RES 5,B</td><td>CBA8</td><td>8</td></tr>
+<tr><td>RES 5,C</td><td>CBA9</td><td>8</td></tr>
+<tr><td>RES 5,D</td><td>CBAA</td><td>8</td></tr>
+<tr><td>RES 5,E</td><td>CBAB</td><td>8</td></tr>
+<tr><td>RES 5,H</td><td>CBAC</td><td>8</td></tr>
+<tr><td>RES 5,L</td><td>CBAD</td><td>8</td></tr>
+<tr><td>RES 6,(HL)</td><td>CBB6</td><td>15</td></tr>
+<tr><td>RES 6,(IX+Д)</td><td>DDCBXXB6</td><td>23</td></tr>
+<tr><td>RES 6,(IY+Д)</td><td>FDCBXXB6</td><td>23</td></tr>
+<tr><td>RES 6,A</td><td>CBB7</td><td>8</td></tr>
+<tr><td>RES 6,B</td><td>CBB0</td><td>8</td></tr>
+<tr><td>RES 6,C</td><td>CBB1</td><td>8</td></tr>
+<tr><td>RES 6,D</td><td>CBB2</td><td>8</td></tr>
+<tr><td>RES 6,E</td><td>CBB3</td><td>8</td></tr>
+<tr><td>RES 6,H</td><td>CBB4</td><td>8</td></tr>
+<tr><td>RES 6,L</td><td>CBB5</td><td>8</td></tr>
+<tr><td>RES 7,(HL)</td><td>CBBE</td><td>15</td></tr>
+<tr><td>RES 7,(IX+Д)</td><td>DDCBXXBE</td><td>23</td></tr>
+<tr><td>RES 7,(IY+Д)</td><td>FDCBXXBE</td><td>23</td></tr>
+<tr><td>RES 7,A</td><td>CBBF</td><td>8</td></tr>
+<tr><td>RES 7,B</td><td>CBB8</td><td>8</td></tr>
+<tr><td>RES 7,C</td><td>CBB9</td><td>8</td></tr>
+<tr><td>RES 7,D</td><td>CBBA</td><td>8</td></tr>
+<tr><td>RES 7,E</td><td>CBBB</td><td>8</td></tr>
+<tr><td>RES 7,H</td><td>CBBC</td><td>8</td></tr>
+<tr><td>RES 7,L</td><td>CBBD</td><td>8</td></tr>
+<tr><td>RET</td><td>C9</td><td>10</td></tr>
+<tr><td>RET C</td><td>D8</td><td>11/5</td></tr>
+<tr><td>RET M</td><td>F8</td><td>11/5</td></tr>
+<tr><td>RET NC</td><td>D0</td><td>11/5</td></tr>
+<tr><td>RET NZ</td><td>C0</td><td>11/5</td></tr>
+<tr><td>RET P</td><td>F0</td><td>11/5</td></tr>
+<tr><td>RET PE</td><td>E8</td><td>11/5</td></tr>
+<tr><td>RET PO</td><td>E0</td><td>11/5</td></tr>
+<tr><td>RET Z</td><td>C8</td><td>11/5</td></tr>
+<tr><td>RETI</td><td>ED4D</td><td>14</td></tr>
+<tr><td>RETN</td><td>ED45</td><td>14</td></tr>
+<tr><td>RL (HL)</td><td>CB16</td><td>15</td></tr>
+<tr><td>RL (IX+Д)</td><td>DDCBXX16</td><td>23</td></tr>
+<tr><td>RL (IY+Д)</td><td>FDCBXX16</td><td>23</td></tr>
+<tr><td>RL A</td><td>CB17</td><td>8</td></tr>
+<tr><td>RL B</td><td>CB10</td><td>8</td></tr>
+<tr><td>RL C</td><td>CB11</td><td>8</td></tr>
+<tr><td>RL D</td><td>CB12</td><td>8</td></tr>
+<tr><td>RL E</td><td>CB13</td><td>8</td></tr>
+<tr><td>RL H</td><td>CB14</td><td>8</td></tr>
+<tr><td>RL L</td><td>CB15</td><td>8</td></tr>
+<tr><td>RLA</td><td>17</td><td>4</td></tr>
+<tr><td>RLC (HL)</td><td>CB06</td><td>15</td></tr>
+<tr><td>RLC (IX+Д)</td><td>DDCBXX06</td><td>23</td></tr>
+<tr><td>RLC (IY+Д)</td><td>FDCBXX06</td><td>23</td></tr>
+<tr><td>RLC A</td><td>CB07</td><td>8</td></tr>
+<tr><td>RLC B</td><td>CB00</td><td>8</td></tr>
+<tr><td>RLC C</td><td>CB01</td><td>8</td></tr>
+<tr><td>RLC D</td><td>CB02</td><td>8</td></tr>
+<tr><td>RLC E</td><td>CB03</td><td>8</td></tr>
+<tr><td>RLC H</td><td>CB04</td><td>8</td></tr>
+<tr><td>RLC L</td><td>CB05</td><td>8</td></tr>
+<tr><td>RLCA</td><td>07</td><td>4</td></tr>
+<tr><td>RLD</td><td>ED6F</td><td>18</td></tr>
+<tr><td>RR (HL)</td><td>CB1E</td><td>15</td></tr>
+<tr><td>RR (IX+Д)</td><td>DDCBXX1E</td><td>23</td></tr>
+<tr><td>RR (IY+Д)</td><td>FDCBXX1E</td><td>23</td></tr>
+<tr><td>RR A</td><td>CB1F</td><td>8</td></tr>
+<tr><td>RR B</td><td>CB18</td><td>8</td></tr>
+<tr><td>RR C</td><td>CB19</td><td>8</td></tr>
+<tr><td>RR D</td><td>CB1A</td><td>8</td></tr>
+<tr><td>RR E</td><td>CB1B</td><td>8</td></tr>
+<tr><td>RR H</td><td>CB1C</td><td>8</td></tr>
+<tr><td>RR L</td><td>CB1D</td><td>8</td></tr>
+<tr><td>RRA</td><td>1F</td><td>4</td></tr>
+<tr><td>RRC (HL)</td><td>CB0E</td><td>15</td></tr>
+<tr><td>RRC (IX+Д)</td><td>DDCBXX0E</td><td>23</td></tr>
+<tr><td>RRC (IY+Д)</td><td>FDCBXX0E</td><td>23</td></tr>
+<tr><td>RRC A</td><td>CB0F</td><td>8</td></tr>
+<tr><td>RRC B</td><td>CB08</td><td>8</td></tr>
+<tr><td>RRC C</td><td>CB09</td><td>8</td></tr>
+<tr><td>RRC D</td><td>CB0A</td><td>8</td></tr>
+<tr><td>RRC E</td><td>CB0B</td><td>8</td></tr>
+<tr><td>RRC H</td><td>CB0C</td><td>8</td></tr>
+<tr><td>RRC L</td><td>CB0D</td><td>8</td></tr>
+<tr><td>RRCA</td><td>0F</td><td>4</td></tr>
+<tr><td>RRD</td><td>ED67</td><td>18</td></tr>
+<tr><td>RST 00</td><td>C7</td><td>11</td></tr>
+<tr><td>RST 08</td><td>CF</td><td>11</td></tr>
+<tr><td>RST 10</td><td>D7</td><td>11</td></tr>
+<tr><td>RST 18</td><td>DF</td><td>11</td></tr>
+<tr><td>RST 20</td><td>E7</td><td>11</td></tr>
+<tr><td>RST 28</td><td>EF</td><td>11</td></tr>
+<tr><td>RST 30</td><td>F7</td><td>11</td></tr>
+<tr><td>RST 38</td><td>FF</td><td>11</td></tr>
+<tr><td>SBC A,(HL)</td><td>9E</td><td>7</td></tr>
+<tr><td>SBC A,(IX+Д)</td><td>DD9EXX</td><td>19</td></tr>
+<tr><td>SBC A,(IY+Д)</td><td>FD9EXX</td><td>19</td></tr>
+<tr><td>SBC A,A</td><td>9F</td><td>4</td></tr>
+<tr><td>SBC A,B</td><td>98</td><td>4</td></tr>
+<tr><td>SBC A,C</td><td>99</td><td>4</td></tr>
+<tr><td>SBC A,D</td><td>9A</td><td>4</td></tr>
+<tr><td>SBC A,E</td><td>9B</td><td>4</td></tr>
+<tr><td>SBC A,H</td><td>9C</td><td>4</td></tr>
+<tr><td>SBC A,L</td><td>9D</td><td>4</td></tr>
+<tr><td>SBC A,N</td><td>DEXX</td><td>7</td></tr>
+<tr><td>SBC HL,BC</td><td>ED42</td><td>15</td></tr>
+<tr><td>SBC HL,DE</td><td>ED52</td><td>15</td></tr>
+<tr><td>SBC HL,HL</td><td>ED62</td><td>15</td></tr>
+<tr><td>SBC HL,SP</td><td>ED72</td><td>15</td></tr>
+<tr><td>SCF</td><td>37</td><td>4</td></tr>
+<tr><td>SET 0,(HL)</td><td>CBC6</td><td>15</td></tr>
+<tr><td>SET 0,(IX+Д)</td><td>DDCBXXC6</td><td>23</td></tr>
+<tr><td>SET 0,(IY+Д)</td><td>FDCBXXC6</td><td>23</td></tr>
+<tr><td>SET 0,A</td><td>CBC7</td><td>8</td></tr>
+<tr><td>SET 0,B</td><td>CBC0</td><td>8</td></tr>
+<tr><td>SET 0,C</td><td>CBC1</td><td>8</td></tr>
+<tr><td>SET 0,D</td><td>CBC2</td><td>8</td></tr>
+<tr><td>SET 0,E</td><td>CBC3</td><td>8</td></tr>
+<tr><td>SET 0,H</td><td>CBC4</td><td>8</td></tr>
+<tr><td>SET 0,L</td><td>CBC5</td><td>8</td></tr>
+<tr><td>SET 1,(HL)</td><td>CBCE</td><td>15</td></tr>
+<tr><td>SET 1,(IX+Д)</td><td>DDCBXXCE</td><td>23</td></tr>
+<tr><td>SET 1,(IY+Д)</td><td>FDCBXXCE</td><td>23</td></tr>
+<tr><td>SET 1,A</td><td>CBCF</td><td>8</td></tr>
+<tr><td>SET 1,B</td><td>CBC8</td><td>8</td></tr>
+<tr><td>SET 1,C</td><td>CBC9</td><td>8</td></tr>
+<tr><td>SET 1,D</td><td>CBCA</td><td>8</td></tr>
+<tr><td>SET 1,E</td><td>CBCB</td><td>8</td></tr>
+<tr><td>SET 1,H</td><td>CBCC</td><td>8</td></tr>
+<tr><td>SET 1,L</td><td>CBCD</td><td>8</td></tr>
+<tr><td>SET 2,(HL)</td><td>CBD6</td><td>15</td></tr>
+<tr><td>SET 2,(IX+Д)</td><td>DDCBXXD6</td><td>23</td></tr>
+<tr><td>SET 2,(IY+Д)</td><td>FDCBXXD6</td><td>23</td></tr>
+<tr><td>SET 2,A</td><td>CBD7</td><td>8</td></tr>
+<tr><td>SET 2,B</td><td>CBD0</td><td>8</td></tr>
+<tr><td>SET 2,C</td><td>CBD1</td><td>8</td></tr>
+<tr><td>SET 2,D</td><td>CBD2</td><td>8</td></tr>
+<tr><td>SET 2,E</td><td>CBD3</td><td>8</td></tr>
+<tr><td>SET 2,H</td><td>CBD4</td><td>8</td></tr>
+<tr><td>SET 2,L</td><td>CBD5</td><td>8</td></tr>
+<tr><td>SET 3,(HL)</td><td>CBDE</td><td>15</td></tr>
+<tr><td>SET 3,(IX+Д)</td><td>DDCBXXDE</td><td>23</td></tr>
+<tr><td>SET 3,(IY+Д)</td><td>FDCBXXDE</td><td>23</td></tr>
+<tr><td>SET 3,A</td><td>CBDF</td><td>8</td></tr>
+<tr><td>SET 3,B</td><td>CBD8</td><td>8</td></tr>
+<tr><td>SET 3,C</td><td>CBD9</td><td>8</td></tr>
+<tr><td>SET 3,D</td><td>CBDA</td><td>8</td></tr>
+<tr><td>SET 3,E</td><td>CBDB</td><td>8</td></tr>
+<tr><td>SET 3,H</td><td>CBDC</td><td>8</td></tr>
+<tr><td>SET 3,L</td><td>CBDD</td><td>8</td></tr>
+<tr><td>SET 4,(HL)</td><td>CBE6</td><td>15</td></tr>
+<tr><td>SET 4,(IX+Д)</td><td>DDCBXXE6</td><td>23</td></tr>
+<tr><td>SET 4,(IY+Д)</td><td>FDCBXXE6</td><td>23</td></tr>
+<tr><td>SET 4,A</td><td>CBE7</td><td>8</td></tr>
+<tr><td>SET 4,B</td><td>CBE0</td><td>8</td></tr>
+<tr><td>SET 4,C</td><td>CBE1</td><td>8</td></tr>
+<tr><td>SET 4,D</td><td>CBE2</td><td>8</td></tr>
+<tr><td>SET 4,E</td><td>CBE3</td><td>8</td></tr>
+<tr><td>SET 4,H</td><td>CBE4</td><td>8</td></tr>
+<tr><td>SET 4,L</td><td>CBE5</td><td>8</td></tr>
+<tr><td>SET 5,(HL)</td><td>CBEE</td><td>15</td></tr>
+<tr><td>SET 5,(IX+Д)</td><td>DDCBXXEE</td><td>23</td></tr>
+<tr><td>SET 5,(IY+Д)</td><td>FDCBXXEE</td><td>23</td></tr>
+<tr><td>SET 5,A</td><td>CBEF</td><td>8</td></tr>
+<tr><td>SET 5,B</td><td>CBE8</td><td>8</td></tr>
+<tr><td>SET 5,C</td><td>CBE9</td><td>8</td></tr>
+<tr><td>SET 5,D</td><td>CBEA</td><td>8</td></tr>
+<tr><td>SET 5,E</td><td>CBEB</td><td>8</td></tr>
+<tr><td>SET 5,H</td><td>CBEC</td><td>8</td></tr>
+<tr><td>SET 5,L</td><td>CBED</td><td>8</td></tr>
+<tr><td>SET 6,(HL)</td><td>CBF6</td><td>15</td></tr>
+<tr><td>SET 6,(IX+Д)</td><td>DDCBXXF6</td><td>23</td></tr>
+<tr><td>SET 6,(IY+Д)</td><td>FDCBXXF6</td><td>23</td></tr>
+<tr><td>SET 6,A</td><td>CBF7</td><td>8</td></tr>
+<tr><td>SET 6,B</td><td>CBF0</td><td>8</td></tr>
+<tr><td>SET 6,C</td><td>CBF1</td><td>8</td></tr>
+<tr><td>SET 6,D</td><td>CBF2</td><td>8</td></tr>
+<tr><td>SET 6,E</td><td>CBF3</td><td>8</td></tr>
+<tr><td>SET 6,H</td><td>CBF4</td><td>8</td></tr>
+<tr><td>SET 6,L</td><td>CBF5</td><td>8</td></tr>
+<tr><td>SET 7,(HL)</td><td>CBFE</td><td>15</td></tr>
+<tr><td>SET 7,(IX+Д)</td><td>DDCBXXFE</td><td>23</td></tr>
+<tr><td>SET 7,(IY+Д)</td><td>FDCBXXFE</td><td>23</td></tr>
+<tr><td>SET 7,A</td><td>CBFF</td><td>8</td></tr>
+<tr><td>SET 7,B</td><td>CBF8</td><td>8</td></tr>
+<tr><td>SET 7,C</td><td>CBF9</td><td>8</td></tr>
+<tr><td>SET 7,D</td><td>CBFA</td><td>8</td></tr>
+<tr><td>SET 7,E</td><td>CBFB</td><td>8</td></tr>
+<tr><td>SET 7,H</td><td>CBFC</td><td>8</td></tr>
+<tr><td>SET 7,L</td><td>CBFD</td><td>8</td></tr>
+<tr><td>SLA (HL)</td><td>CB26</td><td>15</td></tr>
+<tr><td>SLA (IX+Д)</td><td>DDCBXX26</td><td>23</td></tr>
+<tr><td>SLA (IY+Д)</td><td>FDCBXX26</td><td>23</td></tr>
+<tr><td>SLA A</td><td>CB27</td><td>8</td></tr>
+<tr><td>SLA B</td><td>CB20</td><td>8</td></tr>
+<tr><td>SLA C</td><td>CB21</td><td>8</td></tr>
+<tr><td>SLA D</td><td>CB22</td><td>8</td></tr>
+<tr><td>SLA E</td><td>CB23</td><td>8</td></tr>
+<tr><td>SLA H</td><td>CB24</td><td>8</td></tr>
+<tr><td>SLA L</td><td>CB25</td><td>8</td></tr>
+<tr><td>SRA (HL)</td><td>CB2E</td><td>15</td></tr>
+<tr><td>SRA (IX+Д)</td><td>DDCBXX2E</td><td>23</td></tr>
+<tr><td>SRA (IY+Д)</td><td>FDCBXX2E</td><td>23</td></tr>
+<tr><td>SRA A</td><td>CB2F</td><td>8</td></tr>
+<tr><td>SRA B</td><td>CB28</td><td>8</td></tr>
+<tr><td>SRA C</td><td>CB29</td><td>8</td></tr>
+<tr><td>SRA D</td><td>CB2A</td><td>8</td></tr>
+<tr><td>SRA E</td><td>CB2B</td><td>8</td></tr>
+<tr><td>SRA H</td><td>CB2C</td><td>8</td></tr>
+<tr><td>SRA L</td><td>CB2D</td><td>8</td></tr>
+<tr><td>SRL (HL)</td><td>CB3E</td><td>15</td></tr>
+<tr><td>SRL (IX+Д)</td><td>DDCBXX3E</td><td>23</td></tr>
+<tr><td>SRL (IY+Д)</td><td>FDCBXX3E</td><td>23</td></tr>
+<tr><td>SRL A</td><td>CB3F</td><td>8</td></tr>
+<tr><td>SRL B</td><td>CB38</td><td>8</td></tr>
+<tr><td>SRL C</td><td>CB39</td><td>8</td></tr>
+<tr><td>SRL D</td><td>CB3A</td><td>8</td></tr>
+<tr><td>SRL E</td><td>CB3B</td><td>8</td></tr>
+<tr><td>SRL H</td><td>CB3C</td><td>8</td></tr>
+<tr><td>SRL L</td><td>CB3D</td><td>8</td></tr>
+<tr><td>SUB (HL)</td><td>96</td><td>7</td></tr>
+<tr><td>SUB (IX+Д)</td><td>DD96XX</td><td>19</td></tr>
+<tr><td>SUB (IY+Д)</td><td>FD96XX</td><td>19</td></tr>
+<tr><td>SUB A</td><td>97</td><td>4</td></tr>
+<tr><td>SUB B</td><td>90</td><td>4</td></tr>
+<tr><td>SUB C</td><td>91</td><td>4</td></tr>
+<tr><td>SUB D</td><td>92</td><td>4</td></tr>
+<tr><td>SUB E</td><td>93</td><td>4</td></tr>
+<tr><td>SUB H</td><td>94</td><td>4</td></tr>
+<tr><td>SUB L</td><td>95</td><td>4</td></tr>
+<tr><td>SUB N</td><td>D6XX</td><td>7</td></tr>
+<tr><td>XOR (HL)</td><td>AE</td><td>7</td></tr>
+<tr><td>XOR (IX+Д)</td><td>DDAEXX</td><td>19</td></tr>
+<tr><td>XOR (IY+Д)</td><td>FDAEXX</td><td>19</td></tr>
+<tr><td>XOR A</td><td>AF</td><td>4</td></tr>
+<tr><td>XOR B</td><td>A8</td><td>4</td></tr>
+<tr><td>XOR C</td><td>A9</td><td>4</td></tr>
+<tr><td>XOR D</td><td>AA</td><td>4</td></tr>
+<tr><td>XOR E</td><td>AB</td><td>4</td></tr>
+<tr><td>XOR H</td><td>AC</td><td>4</td></tr>
+<tr><td>XOR L</td><td>AD</td><td>4</td></tr>
+<tr><td>XOR N</td><td>EEXX</td><td>7
+</table></center>
+</td><tr>
+</table></center>
+
+<hr>
+
+<center><table border=0 cellpadding=24>
+<tr><td>
+<a href="wgasm11.htm#n00"><img src="prev.gif" border=0 hspace=8>Глава 11</a></td>
+<a href="append02.htm#n00">Приложение II<img src="next.gif" border=0 hspace=8></a>
+</td></tr>
+</table></center>
+<center><a href="wgasmtoc.htm#n00">Оглавление</a></center>
+
+<hr>
+
+</BODY>
+</HTML>

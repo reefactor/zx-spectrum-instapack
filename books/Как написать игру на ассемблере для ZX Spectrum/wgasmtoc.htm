@@ -1,0 +1,163 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1251">
+   <META NAME="Author" CONTENT="Alex">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (Win95; I) [Netscape]">
+   <META NAME="KEYWORDS" CONTENT="zx, spectrum, speccy, sinclair, z80, assembler">
+   <TITLE>Как написать игру для ZX Spectrum на ассемблере - ВВЕДЕНИЕ</TITLE>
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#FF0000" ALINK="#000066">
+
+<BASEFONT SIZE=3>
+
+<H2><a name="n00">Оглавление</a></H2>
+<a href="intro.htm#n00">ВВЕДЕНИЕ</a><br><br>
+<b><a href="wgasm01.htm#n00">ГЛАВА ПЕРВАЯ, в которой обсуждается структура игровой программы</a></b><br>
+<ul>
+<a href="wgasm01.htm#n01">Заставка</a><br>
+<a href="wgasm01.htm#n02">Игровое пространство</a><br>
+<a href="wgasm01.htm#n03">Взаимодействие с играющим</a><br>
+<a href="wgasm01.htm#n04">Оценка игровой ситуации</a><br>
+<a href="wgasm01.htm#n05">Звуковое сопровождение игры</a><br>
+</ul>
+<b><a href="wgasm02.htm#n00">ГЛАВА ВТОРАЯ, из которой вы узнаете о&nbsp;том, что же такое ассемблер и&nbsp;чем он отличается от Бейсика и&nbsp;машинных кодов, а&nbsp;также усвоите некоторые основные понятия</a></b><br>
+<ul>
+<a href="wgasm02.htm#n01">Машинные коды и ассемблер</a><br>
+<a href="wgasm02.htm#n02">Что может микропроцессор Z80?</a><br>
+<a href="wgasm02.htm#n03">Преимущества и недостатки языка ассемблера</a><br>
+<a href="wgasm02.htm#n04">Организация памяти</a><br>
+<ul>
+<a href="wgasm02.htm#n04-1">ПЗУ и ОЗУ</a><br>
+<a href="wgasm02.htm#n04-2">Системные области</a><br>
+<a href="wgasm02.htm#n04-3">Строение экрана</a><br>
+</ul>
+<a href="wgasm02.htm#n05">Регистры и регистровые пары</a><br>
+<a href="wgasm02.htm#n06">Простейшая программа в машинных кодах</a><br>
+</ul>
+<b><a href="wgasm03.htm#n00">ГЛАВА ТРЕТЬЯ, обучающая вводу и редактированию игровых программ в&nbsp;ассемблере GENS4</a></b><br>
+<ul>
+<a href="wgasm03.htm#n01">Загрузка GENS4</a><br>
+<a href="wgasm03.htm#n02">Структура ассемблерной строки</a><br>
+<a href="wgasm03.htm#n03">Ввод строки</a><br>
+<a href="wgasm03.htm#n04">Просмотр текста</a><br>
+<a href="wgasm03.htm#n05">Трансляция программы</a><br>
+<a href="wgasm03.htm#n06">Выход из GENS</a><br>
+<a href="wgasm03.htm#n07">Внесение в текст изменений</a><br>
+<a href="wgasm03.htm#n08">Сохранение и загрузка текстов и программ</a><br>
+<a href="wgasm03.htm#n09">Удаление текста</a><br>
+</ul>
+<b><a href="wgasm04.htm#n00">ГЛАВА ЧЕТВЕРТАЯ, показывающая, как сделать надпись на экране и&nbsp;создать простейшие изображения</a></b><br>
+<ul>
+<a href="wgasm04.htm#n01">Вывод буквенных и цифровых символов</a><br>
+<a href="wgasm04.htm#n02">Подготовка экрана к работе из ассемблера</a><br>
+<a href="wgasm04.htm#n03">Печать целых чисел</a><br>
+<a href="wgasm04.htm#n04">Рисование графических примитивов</a><br>
+<ul>
+<a href="wgasm04.htm#n04-1">Точки</a><br>
+<a href="wgasm04.htm#n04-2">Прямые линии</a><br>
+<a href="wgasm04.htm#n04-3">Дуги</a><br>
+<a href="wgasm04.htm#n04-4">Окружности</a><br>
+</ul>
+<a href="wgasm04.htm#n05">Статические заставки</a><br>
+<a href="wgasm04.htm#n06">Изготовление новых наборов символов (фонтов)</a><br>
+</ul>
+<b><a href="wgasm05.htm#n00">ГЛАВА ПЯТАЯ, в которой изображения становятся подвижными</a></b><br>
+<ul>
+<a href="wgasm05.htm#n01">Организация циклов в ассемблере</a><br>
+<ul>
+<a href="wgasm05.htm#n01-1">Простые циклы</a><br>
+<a href="wgasm05.htm#n01-2">Вложенные циклы</a><br>
+<a href="wgasm05.htm#n01-3">Проверка условий. Флаги</a><br>
+<a href="wgasm05.htm#n01-4">Условные и безусловные переходы</a><br>
+<a href="wgasm05.htm#n01-5">Операция сравнения</a><br>
+<a href="wgasm05.htm#n01-6">&laquo;Длинные&raquo; циклы</a><br>
+<a href="wgasm05.htm#n01-7">Логические операции</a><br>
+</ul>
+<a href="wgasm05.htm#n02">Перемещения символов</a><br>
+<ul>
+<a href="wgasm05.htm#n02-1">Печатающий квадрат</a><br>
+<a href="wgasm05.htm#n02-2">Бегущая строка</a><br>
+<a href="wgasm05.htm#n02-3">&laquo;Волна&raquo;</a><br>
+<a href="wgasm05.htm#n02-4">&laquo;Растворение&raquo; символов</a><br>
+<a href="wgasm05.htm#n02-5">Ответ на задачу</a><br>
+</ul>
+<a href="wgasm05.htm#n03">Окна</a><br>
+<ul>
+<a href="wgasm05.htm#n03-1">Формирование окна</a><br>
+<a href="wgasm05.htm#n03-2">Динамическое окно</a><br>
+<a href="wgasm05.htm#n03-3">&laquo;Размножающиеся&raquo; окна</a><br>
+</ul>
+<a href="wgasm05.htm#n04">Спрайты (программа &laquo;ПРЫГАЮЩИЙ ЧЕЛОВЕЧЕК&raquo;)</a><br>
+<a href="wgasm05.htm#n05">Мультипликационная заставка</a><br>
+</ul>
+<b><a href="wgasm06.htm#n00">ГЛАВА ШЕСТАЯ, в которой демонстрируются возможности ассемблера на&nbsp;примере создания многокадровых заставок</a></b><br>
+<ul>
+<a href="wgasm06.htm#n01">Создание простейших звуков</a><br>
+<a href="wgasm06.htm#n02">Манипуляции с буквами</a><br>
+<ul>
+<a href="wgasm06.htm#n02-1">Печать символов высотой в два знакоместа</a><br>
+<a href="wgasm06.htm#n02-2">Печать символов шириной в два знакоместа</a><br>
+</ul>
+<a href="wgasm06.htm#n03">Как сделать название игры</a><br>
+<a href="wgasm06.htm#n04">Скроллинги окон</a><br>
+<a href="wgasm06.htm#n05">Ввод элемента случайности</a><br>
+<a href="wgasm06.htm#n06">Многокадровая заставка</a><br>
+</ul>
+<b><a href="wgasm07.htm#n00">ГЛАВА СЕДЬМАЯ, в которой вы научитесь создавать все элементы игрового пространства</a></b><br>
+<ul>
+<a href="wgasm07.htm#n01">Быстрый вывод спрайтов</a><br>
+<a href="wgasm07.htm#n02">Спрайт-генератор</a><br>
+<a href="wgasm07.htm#n03">Мультипликация</a><br>
+<a href="wgasm07.htm#n04">Построение пейзажей</a><br>
+<a href="wgasm07.htm#n05">Формирование изображения в памяти</a><br>
+</ul>
+<b><a href="wgasm08.htm#n00">ГЛАВА ВОСЬМАЯ, в которой рассказывается о том, как управлять ходом игры</a></b><br>
+<ul>
+<a href="wgasm08.htm#n01">Управление с помощью клавиатуры</a><br>
+<a href="wgasm08.htm#n02">Управление джойстиком</a><br>
+<a href="wgasm08.htm#n03">Совместное управление клавиатурой и джойстиком</a><br>
+</ul>
+<b><a href="wgasm09.htm#n00">ГЛАВА ДЕВЯТАЯ, из которой вы узнаете, как подсчитать число заработанных очков и&nbsp;вообще оценить состояние игры</a></b><br>
+<ul>
+<a href="wgasm09.htm#n01">Подсчет количественных величин</a><br>
+<a href="wgasm09.htm#n02">Работа с калькулятором</a><br>
+<a href="wgasm09.htm#n03">Контроль времени (работа с прерываниями)</a><br>
+</ul>
+<b><a href="wgasm10.htm#n00">ГЛАВА ДЕСЯТАЯ, в которой показано, как заставить компьютер звучать по&nbsp;вашим нотам</a></b><br>
+<ul>
+<a href="wgasm10.htm#n01">Получение чистого тона</a><br>
+<a href="wgasm10.htm#n02">Создание звуковых эффектов</a><br>
+<a href="wgasm10.htm#n03">Музыкальный сопроцессор</a><br>
+<a href="wgasm10.htm#n04">Музыкальный редактор WHAM FX</a><br>
+</ul>
+<b><a href="wgasm11.htm#n00">ГЛАВА ОДИННАДЦАТАЯ, рассказывающая о некоторых дополнительных возможностях ассемблера GENS4</a></b><br>
+<ul>
+<a href="wgasm11.htm#n01">Функция поиска/замены</a><br>
+<a href="wgasm11.htm#n02">Управление трансляцией</a><br>
+<ul>
+<a href="wgasm11.htm#n02-1">Ключи ассемблирования</a><br>
+<a href="wgasm11.htm#n02-2">Установка размера таблицы меток</a><br>
+</ul>
+<a href="wgasm11.htm#n03">Трансляция больших программ</a><br>
+<a href="wgasm11.htm#n04">Макроопределения</a><br>
+<a href="wgasm11.htm#n05">Директивы условной трансляции</a><br>
+</ul>
+<a href="append01.htm#n00">ПРИЛОЖЕНИЕ I. Команды ассемблера</a><br><br>
+<a href="append02.htm#n00">ПРИЛОЖЕНИЕ II. Некоторые недокументированные команды</a><br><br>
+<a href="liter.htm#n00">ЛИТЕРАТУРА</a><br>
+<p>
+
+<hr>
+
+<center><table border=0 cellpadding=24>
+<tr><td>
+<a href="titul.htm#n00"><img src="prev.gif" border=0 hspace=8>Титул</a></td>
+<a href="intro.htm#n00">Введение<img src="next.gif" border=0 hspace=8></a>
+</td></tr>
+</table></center>
+
+<hr>
+
+</BODY>
+</HTML>
