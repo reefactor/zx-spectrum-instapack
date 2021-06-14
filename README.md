@@ -1,7 +1,7 @@
 
 # ZX-SPECTRUM instant all-in pack
 
-A currated collection of best emulators and software.
+A currated collection of best [emulators](emul), [programming books](books) and [software](ZX).
 All you need to [spend time](overboot.asm) on a [desert island](#play-offline).
 
 #### Online
