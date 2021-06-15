@@ -2,5 +2,5 @@
 
 /emul/UnrealSpeccyP/
 
-/.vagrant
-/zxbox.box
+/zxbox/.vagrant
+/zxbox/zxbox.box

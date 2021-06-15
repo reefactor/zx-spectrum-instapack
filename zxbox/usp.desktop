@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Terminal=true
+Name=Unreal Speccy Portable
+#Icon=
+Exec=/home/vagrant/zx-spectrum-instapack/linux-usp.sh
+
+

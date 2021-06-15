@@ -25,11 +25,23 @@ emulators online.
 
 
 ### ZXBOX VM
-Download [ZXBOX](https://app.vagrantup.com/reefactor/boxes/ZXBOX) VM from vagrant cloud.  
-ZXBOX is [based on](build_zxbox.sh) Ubuntu20.04 + zx-spectrum instapack. You can [build your own version from sources](build_zxbox.sh)
 
-##### ZXBOX VM structure
-##### Nested emulation layers madness
+ZXBOX is an Ubuntu 20.04 Virtualbox VM with preinstalled emulators and over 8Gb of ZX Spectrum software.
+
+[Download ZXBOX](https://app.vagrantup.com/reefactor/boxes/ZXBOX) VM from vagrant cloud or [build from sources](zxbox/build_zxbox.sh).
+
+
+##### ZXBOX VM contents
+
+* Unreal Speccy Portable emulator [compiled from sources](zxbox/install_zxbox_ubuntu2004.sh)
+* Fuse emulator + ROMs pack
+* Wine (to run [Unreal Speccy v0.39 for Windows](emul/US0.39.0/))
+* DOSBOX (to run X128, r80 and Shalaev emulators)
+* over [8Gb of ZX Spectrum software](zxbox/TOSEC-2021-repack-fileslist.txt) collection based on [TOSEC 2021 release](https://www.tosecdev.org/news/releases/167-tosec-release-2021-02-14) repacked and released by [ladyeklipse](https://sourceforge.net/u/ladyeklipse/profile)
+* File commanders for easy browsing
+
+
+##### Nested emulation layers structure
 | Layer #3 - Z80 Emulation | USP, Fuse  | Unreal Speccy | x128, r80, Shalaev |
 |:---| :---: |---|:---:|
 | Layer #2 - Crossplatform |  |  [wine](https://www.winehq.org/) (Windows on Linux) | [dosbox](https://www.dosbox.com/) (MSDOS on Linux) |
@@ -127,3 +139,4 @@ UX NOTE: change `JOYSTICK` option from `KEMPSTON` to `CURSOR` in order to TRDOS 
 * http://www.zxspectrum.net
 * https://www.worldofspectrum.org
 * https://viva-games.ru/
+* https://sourceforge.net/u/ladyeklipse/profile
