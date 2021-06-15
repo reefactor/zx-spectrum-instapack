@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Terminal=true
+Name=Fuse
+#Icon=
+Exec=/home/vagrant/zx-spectrum-instapack/linux-fuse.sh
+
+
