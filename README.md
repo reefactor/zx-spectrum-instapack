@@ -26,9 +26,11 @@ emulators online.
 
 ### ZXBOX VM
 
-ZXBOX is an Ubuntu 20.04 Virtualbox VM with preinstalled emulators and over 8Gb of ZX Spectrum software.
+ZXBOX is an Ubuntu 20.04 Virtualbox VM with preinstalled emulators and over 10Gb of ZX Spectrum software.
 
 [Download ZXBOX](https://app.vagrantup.com/reefactor/boxes/ZXBOX) VM from vagrant cloud or [build from sources](zxbox/build_zxbox.sh).
+
+Ubuntu has enabled autologin with default vagrant user `vagrant` with password `vagrant`
 
 
 ##### ZXBOX VM contents
@@ -37,8 +39,9 @@ ZXBOX is an Ubuntu 20.04 Virtualbox VM with preinstalled emulators and over 8Gb 
 * Fuse emulator + ROMs pack
 * Wine (to run [Unreal Speccy v0.39 for Windows](emul/US0.39.0/))
 * DOSBOX (to run X128, r80 and Shalaev emulators)
-* over [8Gb of ZX Spectrum software](zxbox/TOSEC-2021-repack-fileslist.txt) collection based on [TOSEC 2021 release](https://www.tosecdev.org/news/releases/167-tosec-release-2021-02-14) repacked and released by [ladyeklipse](https://sourceforge.net/u/ladyeklipse/profile)
-* File commanders for easy browsing
+* over [8Gb of ZX Spectrum software - TOSEC-2021-repack filelist](zxbox/TOSEC-2021-repack-fileslist.txt) collection based on [TOSEC 2021 release](https://www.tosecdev.org/news/releases/167-tosec-release-2021-02-14) repacked and released by [ladyeklipse](https://sourceforge.net/u/ladyeklipse/profile)
+* over 4Gb of ZX Spectrum software - Virtual TRDOS (DVD 1.7 2007) collection from https://vtrd.in/
+* Double Commander and Midnight Commander for fast-and-old-school navigation
 
 
 ##### Nested emulation layers structure
@@ -134,9 +137,8 @@ UX NOTE: change `JOYSTICK` option from `KEMPSTON` to `CURSOR` in order to TRDOS 
 
 
 ### CREDITS
-* https://vtrd.in
-* http://dlcorp.nedopc.com
-* http://www.zxspectrum.net
-* https://www.worldofspectrum.org
-* https://viva-games.ru/
-* https://sourceforge.net/u/ladyeklipse/profile
+* https://vtrd.in for Virtual TR-DOS archive and comunity
+* http://dlcorp.nedopc.com for Unreal Speccy emulator
+* https://viva-games.ru/ for jVGS emulator
+* https://sourceforge.net/u/ladyeklipse/profile for largest collection
+* https://www.worldofspectrum.org for the Mission

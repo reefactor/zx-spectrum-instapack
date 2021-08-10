@@ -26,6 +26,9 @@ scp -rp $(realpath $SCRIPTDIR/../) $TARGETHOST:$install_path
 # install
 ssh $TARGETHOST "sudo bash $install_path/zxbox/install_zxbox_ubuntu2004.sh"
 
+# cleanup
+ssh $TARGETHOST "rm .ssh/authorized_keys"
+
 
 echo "ZXBOX VM build complete."
 echo "Proceed with tuning and upload with 'package_vagrant_box.sh'"
